@@ -46,7 +46,7 @@ class SegmentDatagram:
         header += self.segmentation_params['num_segments'].to_bytes(4, 'big')
         return header
 
-    def get_datagram(self):
+    def to_bytes(self):
         return self.get_segment_header() + self.segment_data
 
 
@@ -67,15 +67,15 @@ class SampleDatagram:
             self.is_segment
         )
 
-    def get_datagram(self):
+    def to_bytes(self) -> bytes:
         header = self.get_sample_header()
         if self.is_segment:
             assert isinstance(self.sample_data, SegmentDatagram)
-            header += self.sample_data.get_datagram()
+            header += self.sample_data.to_bytes()
         else:
             assert isinstance(self.sample_data, bytes)
             header += self.sample_data
         return header
     
     def size(self):
-        return len(self.get_datagram())
+        return len(self.to_bytes())

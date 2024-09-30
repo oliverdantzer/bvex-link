@@ -6,6 +6,7 @@
 from collections import deque
 import math
 from shared.src.sample import Sample
+from shared.src.encode_telemetry import SampleDatagram
 
 
 
@@ -54,60 +55,56 @@ class SampleDataSegmentedBuffer(SampleDataBuffer):
     def is_empty(self):
         return self.seq_num >= self.num_segments and not self.retransmit_seq_nums
 
-    def pop(self) -> bytes:
+    def pop(self) -> SampleDatagram:
+        datagram = None
         if self.seq_num < self.num_segments:
+            datagram = self.get_datagram(self.seq_num)
             self.seq_num += 1
+        elif self.retransmit_seq_nums:
+            retransmit_seq_num = self.retransmit_seq_nums.pop()
+            datagram = self.get_datagram(retransmit_seq_num)
+        else:
+            raise BufferError("Cannot pop empty data buffer")
+        return datagram
+
+    def peek(self) -> SampleDatagram:
+        if self.seq_num < self.num_segments:
             return self.get_datagram(self.seq_num)
         elif self.retransmit_seq_nums:
-            seq_num = self.retransmit_seq_nums.pop()
-            return self.get_datagram(seq_num)
+            retransmit_seq_num = self.retransmit_seq_nums.pop()
+            return self.get_datagram(retransmit_seq_num)
         else:
             raise BufferError("Cannot pop empty data buffer")
-
-    def pop_size(self):
-        if self.seq_num < self.num_segments:
-            return self.get_datagram(self.seq_num + 1)
-        elif self.retransmit_seq_nums:
-            seq_num = self.retransmit_seq_nums.pop()
-            return self.get_datagram(seq_num)
-        else:
-            raise BufferError("Cannot pop empty data buffer")
-
-type Sample = Class
-
 
 class SendBuffer:
-    def __init__(self, payload_size: int = 1024, sample_class: Sample = Sample):
-        self.metrics_samples: dict[str, int] = {}
-        self.samples_priority = deque()
-        self.samples: dict[str, SampleDataBuffer] = {}
-        
+    def __init__(self, payload_size: int = 1024):
+        # For demo, we will use a single sample metric
+        self.metric_id = 'img'
+        self.sample_buffers: list[SampleDataSegmentedBuffer] = []
         self.payload_size = payload_size  # in bytes
         self.segment_size = payload_size - 28  # in bytes
 
     def set_payload_size(self, payload_size: int):
         self.payload_size = payload_size
         self.segment_size = min(self.segment_size, payload_size - 28)
+        self.sample_buffers = []
 
     def set_segment_size(self, segment_size: int):
         self.segment_size = segment_size
         self.payload_size = max(segment_size + 28, self.payload_size)
+        self.sample_buffers = []
 
     def add(self, sample: Sample):
-        send_data = None
-        if sample.get_singleton_datagram_size() < self.payload_size:
-            send_data = SampleDataBuffer(sample)
-        else:
-            send_data = SampleDataSegmentedBuffer(sample, self.payload_size)
-        self.samples_priority.append(sample.get_id())
-        self.samples[sample.get_id()] = send_data
-
-    def first_sample_id(self):
-        return self.samples_priority[0]
+        buffer = SampleDataSegmentedBuffer(sample, self.payload_size)
+        self.sample_buffers.append(buffer)
 
     def get_payload(self):
-        payload = bytes()
-        while len(self.samples_priority):
-            sample_id = self.first_sample_id()
-            self.samples[sample_id].
-            if 
+        if len(self.sample_buffers):
+            payload = bytes()
+            for sample_buffer in self.sample_buffers:
+                while not sample_buffer.is_empty():
+                    if len(payload) + sample_buffer.peek().size() > self.payload_size:
+                        return payload
+                    else:
+                        payload += sample_buffer.pop().to_bytes()
+            return payload

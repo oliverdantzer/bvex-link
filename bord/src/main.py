@@ -30,7 +30,7 @@ async def main():
     await asyncio.gather(
         telemetry_loop(send_buffer),
         server.downlink_loop(send_buffer),
-        server.receive_loop()
+        server.receive_loop(send_buffer)
     )
 
 if __name__ == "__main__":
