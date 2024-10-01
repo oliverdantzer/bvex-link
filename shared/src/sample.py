@@ -1,4 +1,4 @@
-import encode_telemetry
+from encode_telemetry import SegmentationParams, SampleDatagram, SegmentedDataDict
 
 
 class Sample:
@@ -10,13 +10,6 @@ class Sample:
     def get_id(self) -> str:
         return self.metric_id + str(self.sample_time)
 
-    def get_sample_header(self, is_segment: bool = False) -> bytes:
-        return encode_telemetry.construct_sample_header(
-            self.metric_id,
-            self.sample_time,
-            is_segment
-        )
-
     def get_data_segment(self, seq_num, segment_size) -> bytes:
         return self.sample_data[
             seq_num * segment_size:
@@ -26,22 +19,19 @@ class Sample:
             )
         ]
 
-    def get_datagram(self, segmentation_params: encode_telemetry.SegmentationParameters | None = None) -> encode_telemetry.SampleDatagram:
-        sample_data = None
-
-        if segmentation_params:
-            sample_data = encode_telemetry.SegmentDatagram(
-                segmentation_params,
-                self.get_data_segment(
-                    segmentation_params['seq_num'],
-                    segmentation_params['segment_size']
-                )
-            )
-        else:
-            sample_data = self.sample_data
-
-        return encode_telemetry.SampleDatagram(
-            self.metric_id,
-            self.sample_time,
-            self.sample_data
+    # TODO: change to segmentation_params: SegmentationParameters | None = None
+    def get_datagram(self, seq_num, segment_size, num_segments) -> SampleDatagram:
+        segmentation_params: SegmentationParams = {
+            'seq_num': seq_num,
+            'segment_size': segment_size,
+            'num_segments': num_segments,
+            'segment_data': self.get_data_segment(seq_num, segment_size)
+        }
+        sample_segment_data_dict: SegmentedDataDict = {
+            'metric_id': self.metric_id,
+            'sample_time': self.sample_time,
+            'sample_data_segment': segmentation_params
+        }
+        return SampleDatagram(
+            sample_segment_data_dict
         )

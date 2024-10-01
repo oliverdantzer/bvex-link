@@ -12,12 +12,12 @@ class TelemetryMetric(Generic[T]):
     def __init__(self, metric_id: str, getReading: Callable[[], Sample]):
         self.metric_id = metric_id
         self.getReading = getReading
-        self.sample_rate = 1/2  # Hz
+        self.sample_rate = 1/10  # Hz
         self.timeSinceLastDownlink = math.inf
 
 
 metrics: set[TelemetryMetric] = {
-    TelemetryMetric("temp", reading.get_temp_reading),
+    TelemetryMetric("img", reading.get_img_reading),
 }
 
 

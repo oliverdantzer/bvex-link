@@ -6,48 +6,48 @@
 from collections import deque
 import math
 from shared.src.sample import Sample
-from shared.src.encode_telemetry import SampleDatagram
+from shared.src.encode_telemetry import SampleDatagram, TelemetryPayload
 
 
 
 
 
-class SampleDataBuffer:
-    def __init__(self, sample: Sample):
-        self.sample: Sample = sample
-        self.empty = True
+# class SampleDataBuffer:
+#     def __init__(self, sample: Sample):
+#         self.sample: Sample = sample
+#         self.empty = True
 
-    def read(self):
-        if not self.empty:
-            return self.sample.get_datagram()
-        else:
-            raise BufferError("Cannot read empty data buffer")
+#     def read(self):
+#         if not self.empty:
+#             return self.sample.get_datagram()
+#         else:
+#             raise BufferError("Cannot read empty data buffer")
 
-    def pop(self):
-        datagram = self.read()
-        self.empty = True
+#     def pop(self):
+#         datagram = self.read()
+#         self.empty = True
 
-    def retransmit(self):
-        self.empty = False
+#     def retransmit(self):
+#         self.empty = False
 
-    def is_empty(self):
-        return self.empty
+#     def is_empty(self):
+#         return self.empty
 
 
-class SampleDataSegmentedBuffer(SampleDataBuffer):
+class SampleDataSegmentedBuffer:
     def __init__(self, sample: Sample, segment_size: int):
-        super().__init__(sample)
+        self.sample = sample
         self.seq_num = 0
         self.retransmit_seq_nums = set()
         self.segment_size = segment_size  # in bytes
         self.num_segments = math.ceil(len(sample.sample_data) / segment_size)
 
-    def get_datagram(self, seq_num: int):
-        return self.sample.get_datagram({
-            'seq_num': seq_num,
-            'segment_size': self.segment_size,
-            'num_segments': self.num_segments
-        })
+    def get_datagram(self, seq_num: int) -> SampleDatagram:
+        return self.sample.get_datagram(
+            seq_num,
+            self.segment_size,
+            self.num_segments
+        )
 
     def retransmit(self, seq_num: int):
         self.retransmit_seq_nums.add(seq_num)
@@ -100,11 +100,11 @@ class SendBuffer:
 
     def get_payload(self):
         if len(self.sample_buffers):
-            payload = bytes()
+            payload = TelemetryPayload(self.payload_size)
             for sample_buffer in self.sample_buffers:
                 while not sample_buffer.is_empty():
-                    if len(payload) + sample_buffer.peek().size() > self.payload_size:
+                    if payload.size() + sample_buffer.peek().size() > self.payload_size:
                         return payload
                     else:
-                        payload += sample_buffer.pop().to_bytes()
+                        payload.add(sample_buffer.pop())
             return payload

@@ -1,81 +1,66 @@
-from typing import TypedDict
-import struct
-
-# sample header (16 bytes):
-# 0-6: 7 byte metric_id (utf-8)
-# 7-14: 4 byte sample_time (32-bit int)
-# 15: 1 byte options:
-#   0th bit: is_segment (bool)
+from typing import TypedDict, Union
+import json
+import base64
 
 
-def construct_sample_header(metric_id: str, sample_time: int, is_segment: bool = False):
-    header = bytes()
-
-    # Convert to 7-byte utf-8 string
-    metric_id_bytes = metric_id.encode('utf-8')
-    assert len(metric_id.encode('utf-8')) == 7
-    header += metric_id_bytes
-
-    # Convert to 32-bit unsigned integer in big-endian format
-    sample_time_bytes = struct.pack('>I', sample_time)
-    header += sample_time_bytes
-
-    # Convert to 1-byte unsigned integer in big-endian format
-    options = int(is_segment).to_bytes(1, 'big')
-    header += options
-
-    return header
-
-
-class SegmentationParameters(TypedDict):
+class SegmentationParams(TypedDict):
     seq_num: int
     segment_size: int
     num_segments: int
+    segment_data: bytes
 
 
-class SegmentDatagram:
-    def __init__(self, segmentation_params: SegmentationParameters, segment_data: bytes):
-        self.segment_data = segment_data
-        self.segmentation_params = segmentation_params
+class SingletonDataDict(TypedDict):
+    metric_id: str
+    sample_time: int
+    sample_data: bytes
 
-    # segment header (12 bytes):
-    def get_segment_header(self) -> bytes:
-        header = bytes()
-        header += self.segmentation_params['seq_num'].to_bytes(4, 'big')
-        header += self.segmentation_params['segment_size'].to_bytes(4, 'big')
-        header += self.segmentation_params['num_segments'].to_bytes(4, 'big')
-        return header
 
-    def to_bytes(self):
-        return self.get_segment_header() + self.segment_data
+class SegmentedDataDict(TypedDict):
+    metric_id: str
+    sample_time: int
+    sample_data_segment: SegmentationParams
 
 
 class SampleDatagram:
-    def __init__(self, metric_id: str, sample_time: int, sample_data: bytes | SegmentDatagram):
-        self.metric_id = metric_id
-        self.sample_time = sample_time
-        self.sample_data = sample_data
-        self.is_segment = isinstance(self.sample_data, SegmentDatagram)
+    # TODO: change to data: Union[SingletonDataDict, SegmentedDataDict]
+    def __init__(self, data: SegmentedDataDict):
+        self.data = data
 
     def get_id(self) -> str:
-        return self.metric_id + str(self.sample_time)
+        return self.data['metric_id'] + str(self.data['sample_time'])
 
-    def get_sample_header(self) -> bytes:
-        return construct_sample_header(
-            self.metric_id,
-            self.sample_time,
-            self.is_segment
-        )
+    def size(self):
+        return len(json.dumps(self.data))
+
+    def json_dict(self):
+        return self.data.copy()
+
+
+class BytesEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, bytes):
+            return base64.b64encode(o).decode("ascii")
+        else:
+            return super().default(o)
+
+
+class TelemetryPayload:
+    def __init__(self, max_size: int):
+        self.samples: list[SampleDatagram] = []
+        self.max_size = max_size
+
+    def add(self, sample: SampleDatagram):
+        # TODO: Make this more robust
+        if self.size() + sample.size() + len(", ") > self.max_size:
+            raise BufferError("Payload is full")
+        self.samples.append(sample)
 
     def to_bytes(self) -> bytes:
-        header = self.get_sample_header()
-        if self.is_segment:
-            assert isinstance(self.sample_data, SegmentDatagram)
-            header += self.sample_data.to_bytes()
-        else:
-            assert isinstance(self.sample_data, bytes)
-            header += self.sample_data
-        return header
-    
+        return json.dumps(
+            [sample.json_dict() for sample in self.samples],
+            cls=BytesEncoder
+        ).encode()
+
     def size(self):
         return len(self.to_bytes())
