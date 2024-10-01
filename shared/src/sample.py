@@ -1,4 +1,4 @@
-from encode_telemetry import SegmentationParams, SampleDatagram, SegmentedDataDict
+from shared.src.encode_telemetry import SegmentationParams, SampleDatagram, SegmentedDataDict
 
 
 class Sample:
@@ -35,3 +35,20 @@ class Sample:
         return SampleDatagram(
             sample_segment_data_dict
         )
+    
+    # TODO: make more robust
+    def min_datagram_size(self) -> int:
+        segmentation_params: SegmentationParams = {
+            'seq_num': 0,
+            'segment_size': 1,
+            'num_segments': 1,
+            'segment_data': "0".encode()
+        }
+        sample_segment_data_dict: SegmentedDataDict = {
+            'metric_id': self.metric_id,
+            'sample_time': self.sample_time,
+            'sample_data_segment': segmentation_params
+        }
+        return SampleDatagram(
+            sample_segment_data_dict
+        ).size()

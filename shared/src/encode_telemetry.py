@@ -1,6 +1,7 @@
-from typing import TypedDict, Union
+from typing import TypedDict, Union, cast
 import json
 import base64
+from copy import deepcopy
 
 
 class SegmentationParams(TypedDict):
@@ -31,18 +32,17 @@ class SampleDatagram:
         return self.data['metric_id'] + str(self.data['sample_time'])
 
     def size(self):
-        return len(json.dumps(self.data))
+        return len(str(self))
 
-    def json_dict(self):
-        return self.data.copy()
+    def json_dict(self) -> dict:
+        data_dict = cast(dict, deepcopy(self.data))
+        data_dict['sample_data_segment']['segment_data'] = base64.b64encode(
+            data_dict['sample_data_segment']['segment_data']
+        ).decode("ascii")
+        return data_dict
 
-
-class BytesEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, bytes):
-            return base64.b64encode(o).decode("ascii")
-        else:
-            return super().default(o)
+    def __repr__(self):
+        return json.dumps(self.json_dict())
 
 
 class TelemetryPayload:
@@ -58,8 +58,7 @@ class TelemetryPayload:
 
     def to_bytes(self) -> bytes:
         return json.dumps(
-            [sample.json_dict() for sample in self.samples],
-            cls=BytesEncoder
+            [sample.json_dict() for sample in self.samples]
         ).encode()
 
     def size(self):

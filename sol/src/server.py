@@ -1,7 +1,8 @@
 import socket
 import logging
-from shared.src.decode_command import decode_commands
-from shared.src.encode_command import Command
+from shared.src.decode_telemetry import decode_telemetry
+from shared.src.encode_command import Command, encode_commands
+from shared.src.encode_telemetry import SampleDatagram
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -51,9 +52,9 @@ class Server:
             print(e)
             return None
 
-    def receive_commands(self) -> list[Command]:
-        commands_data = self.pop_recieve_buffer()
-        if not commands_data:
+    def receive_telemetry(self) -> list[SampleDatagram]:
+        telemetry_data = self.pop_recieve_buffer()
+        if not telemetry_data:
             return []
-        commands = decode_commands(commands_data)
-        return commands
+        segments = decode_telemetry(telemetry_data)
+        return segments

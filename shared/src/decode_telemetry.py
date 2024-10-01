@@ -1,4 +1,4 @@
-from encode_telemetry import SampleDatagram, SegmentedDataDict
+from shared.src.encode_telemetry import SampleDatagram, SegmentedDataDict
 import json
 from typing import cast
 import base64

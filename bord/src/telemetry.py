@@ -13,22 +13,18 @@ class TelemetryMetric(Generic[T]):
         self.metric_id = metric_id
         self.getReading = getReading
         self.sample_rate = 1/10  # Hz
-        self.timeSinceLastDownlink = math.inf
+        self.lastDownlinkTime = -math.inf
 
 
 metrics: set[TelemetryMetric] = {
-    TelemetryMetric("img", reading.get_img_reading),
+    TelemetryMetric("msg", reading.get_msg_reading),
 }
 
 
-async def telemetry_loop(send_buffer: SendBuffer):
-    dt = 0
+def add_telemetry(send_buffer: SendBuffer):
     t = time.time()
-    while True:
-        dt = time.time() - t
-        t = time.time()
-        for metric in metrics:
-            metric.timeSinceLastDownlink += dt
-            if metric.timeSinceLastDownlink >= (1/metric.sample_rate):
-                send_buffer.add(metric.getReading())
-                metric.timeSinceLastDownlink = 0
+    for metric in metrics:
+        timeSinceLastDownlink = t - metric.lastDownlinkTime
+        if timeSinceLastDownlink >= (1/metric.sample_rate):
+            send_buffer.add(metric.getReading())
+            metric.lastDownlinkTime = t

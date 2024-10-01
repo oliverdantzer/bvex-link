@@ -1,16 +1,27 @@
 from dotenv import load_dotenv
-import os
 import sys
+import os
+from sol.src.run import run
 
-if __name__ == "__main__":
+def main():
     args = sys.argv[1:]
     if "--dev" in args:
-        # variables defined in first call of load_dotenv
-        # will override definitions of same variables in
-        # subsequent calls of load_dotenv
-        print("Running sol in development mode")
+        print("Running bord in development mode") 
         load_dotenv("./.env.development")
-    load_dotenv()
+    
+    load_dotenv("./.env")
+    print(os.path.abspath(""))
+    port = os.getenv("SOL_PORT")
+    assert port is not None
+    server_address = ('0.0.0.0', int(port))
 
-    import reciever
-    reciever.udp_server()
+    target_ip = os.environ.get("BORD_IP_ADDR")
+    assert target_ip is not None
+    target_port = os.getenv("BORD_PORT")
+    assert target_port is not None
+    target_address = (target_ip, int(target_port))
+    run(server_address, target_address)
+    
+
+if __name__ == "__main__":
+    main()

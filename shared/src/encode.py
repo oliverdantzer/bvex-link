@@ -11,3 +11,6 @@ def encode_img(image: Image.Image) -> bytes:
     image.save(byte_stream, format="webp", quality=100)  # Adjust quality as needed
     compressed_bytes = byte_stream.getvalue()
     return compressed_bytes
+
+def encode_msg(message: str) -> bytes:
+    return message.encode('utf-8')

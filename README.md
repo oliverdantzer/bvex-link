@@ -24,3 +24,5 @@ SEGMENT DATA
 
 
 each metric has dict of loaded time : 
+
+bord: `cd bord && source ./win-venv.sh && python src/main.py --dev`
