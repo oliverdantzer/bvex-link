@@ -13,6 +13,7 @@ def run(server_address, target_address):
     send_buffer = SendBuffer(payload_size=240)
     send_buffer.set_max_segment_data_size(10)
     add_telemetry(send_buffer)
+    ack_sample = False
     
     loop = asyncio.get_event_loop()
     
@@ -25,14 +26,25 @@ def run(server_address, target_address):
     
     async def main_loop():
         while True:
-            payload = send_buffer.get_payload()
+            payload = None
+            try:
+                payload = send_buffer.get_payload()
+            except PopEmptySendBufferError:
+                print("Empty buffer")
+                if not ack_sample:
+                    send_buffer.sample_buffers[0].seq_num = 0
             if payload and payload != b'[]':
                 server.send_packet(payload)
             commands = server.receive_commands()
             if commands:
                 for command in commands:
                     print(f"Received command: {command}")
-            await asyncio.sleep(0.1)  # Add a small sleep to prevent a tight loop
+                    if (command['command'] == "retransmit_segment"):
+                        send_buffer.set_retransmit_seq_nums(command['sample_id'], command['seq_nums'])
+                    if (command['command'] == "ack_sample"):
+                        ack_sample = True
+                        
+            await asyncio.sleep(0.1)  # Add a small sleep to "prevent a tight loop"?
 
     try:
         loop.run_until_complete(main_loop())

@@ -38,7 +38,8 @@ class SampleDataSegmentedBuffer:
     def __init__(self, sample: Sample, segment_size: int):
         self.sample = sample
         self.seq_num = 0
-        self.retransmit_seq_nums = set()
+        self.retransmit_seq_nums = []
+        self.retransmit_seq_num_pos = 0
         self.segment_size = segment_size  # in bytes
         self.num_segments = math.ceil(len(sample.sample_data) / segment_size)
         print("Num segments: ", self.num_segments)
@@ -53,8 +54,8 @@ class SampleDataSegmentedBuffer:
             self.num_segments
         )
 
-    def retransmit(self, seq_num: int):
-        self.retransmit_seq_nums.add(seq_num)
+    def set_retransmit_seq_nums(self, seq_nums: list[int]):
+        self.retransmit_seq_nums = seq_nums
 
     def is_empty(self):
         return self.seq_num >= self.num_segments and not self.retransmit_seq_nums
@@ -65,19 +66,25 @@ class SampleDataSegmentedBuffer:
             datagram = self.get_datagram(self.seq_num)
             self.seq_num += 1
         elif self.retransmit_seq_nums:
-            retransmit_seq_num = self.retransmit_seq_nums.pop()
+            if self.retransmit_seq_num_pos >= len(self.retransmit_seq_nums):
+                self.retransmit_seq_num_pos = 0
+            retransmit_seq_num = self.retransmit_seq_nums[self.retransmit_seq_num_pos]
+            self.retransmit_seq_num_pos += 1
+            if self.retransmit_seq_num_pos >= len(self.retransmit_seq_nums):
+                self.retransmit_seq_num_pos = 0
             datagram = self.get_datagram(retransmit_seq_num)
         else:
             raise BufferError("Cannot pop empty data buffer")
         return datagram
 
-    # TODO: fix peek will not return same as pop
-    
+    # TODO: make it so it doesn't change state, might not return same as pop
     def peek(self) -> SampleDatagram:
         if self.seq_num < self.num_segments:
             return self.get_datagram(self.seq_num)
         elif self.retransmit_seq_nums:
-            retransmit_seq_num = self.retransmit_seq_nums.pop()
+            if self.retransmit_seq_num_pos >= len(self.retransmit_seq_nums):
+                self.retransmit_seq_num_pos = 0
+            retransmit_seq_num = self.retransmit_seq_nums[self.retransmit_seq_num_pos]
             return self.get_datagram(retransmit_seq_num)
         else:
             raise BufferError("Cannot pop empty data buffer")
@@ -96,6 +103,12 @@ class SendBuffer:
     def set_payload_size(self, payload_size: int):
         self.max_payload_size = payload_size
         self.sample_buffers = []
+    
+    def set_retransmit_seq_nums(self, sample_id: str, seq_nums: list[int]):
+        for sample_buffer in self.sample_buffers:
+            if sample_buffer.sample.get_id() == sample_id:
+                sample_buffer.set_retransmit_seq_nums(seq_nums)
+                return
 
     def set_max_segment_data_size(self, segment_size: int):
         self.max_segment_data_size = segment_size

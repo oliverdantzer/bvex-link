@@ -2,6 +2,7 @@ import socket
 import logging
 from shared.src.decode_command import decode_commands
 from shared.src.encode_command import Command
+import random
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +34,10 @@ class Server:
     def send_packet(self, data: bytes):
         """Send a packet to sol."""
         print("Sending packet ", data.decode("utf-8"))
-        self.sock.sendto(data, self.target_address)
+        if (random.random() < 0.1):  # Simulate packet loss 90%
+            self.sock.sendto(data, self.target_address)
+        else:
+            print("Packet lost")
 
     def pop_recieve_buffer(self) -> bytes | None:
         try:
