@@ -23,16 +23,21 @@ def run(server_address, target_address):
 
     async def main_loop():
         while True:
+            commands = []
             segments = server.receive_telemetry()
             for segment in segments:
                 print(segment.data['sample_data_segment']
                       ['segment_data'].decode())
                 telemetry_buffer.add_segment(segment)
+            
             missing_seq_nums = telemetry_buffer.missing_seq_nums()
             if missing_seq_nums:
                 assert telemetry_buffer.sample_id is not None
-                commands = [retransmit_segment_command(
-                    telemetry_buffer.sample_id, list(missing_seq_nums))]
+                commands.append(retransmit_segment_command(
+                    telemetry_buffer.sample_id, list(missing_seq_nums)))
+            
+            
+            if commands:
                 server.send_packet(encode_commands(commands))
             if telemetry_buffer.is_complete():
                 # Sort the items by the first value in each tuple

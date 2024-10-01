@@ -3,6 +3,7 @@ import logging
 from shared.src.decode_telemetry import decode_telemetry
 from shared.src.encode_command import Command, encode_commands
 from shared.src.encode_telemetry import SampleDatagram
+import random
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,8 +34,11 @@ class Server:
 
     def send_packet(self, data: bytes):
         """Send a packet to sol."""
-        print("Sending packet ", data.decode("utf-8"))
-        self.sock.sendto(data, self.target_address)
+        print("Sending packet", data.decode("utf-8"))
+        if (random.random() < 0.1):  # Simulate packet loss 90%
+            self.sock.sendto(data, self.target_address)
+        else:
+            print("Packet lost")
 
     def pop_recieve_buffer(self) -> bytes | None:
         try:
