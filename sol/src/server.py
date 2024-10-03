@@ -35,7 +35,7 @@ class Server:
     def send_packet(self, data: bytes):
         """Send a packet to sol."""
         print("Sending packet", data.decode("utf-8"))
-        if (random.random() < 0.1):  # Simulate packet loss 90%
+        if (random.random() < 0.5):  # Simulate packet loss 90%
             self.sock.sendto(data, self.target_address)
         else:
             print("Packet lost")
