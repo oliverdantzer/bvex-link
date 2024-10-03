@@ -10,8 +10,8 @@ import sys, signal
 
 def run(server_address, target_address):
     server = Server(server_address, target_address)
-    send_buffer = SendBuffer(payload_size=240)
-    send_buffer.set_max_segment_data_size(10)
+    send_buffer = SendBuffer(payload_size=1024)
+    send_buffer.set_max_segment_data_size(50)
     add_telemetry(send_buffer)
     ack_sample = False
     
@@ -40,6 +40,8 @@ def run(server_address, target_address):
                 for command in commands:
                     print(f"Received command: {command}")
                     if (command['command'] == "retransmit_segment"):
+                        if len(command['seq_nums']) == 0:
+                            return
                         send_buffer.set_retransmit_seq_nums(command['sample_id'], command['seq_nums'])
                     if (command['command'] == "ack_sample"):
                         ack_sample = True
