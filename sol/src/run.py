@@ -53,7 +53,10 @@ def run(server_address, target_address):
                 data = bytes()
                 for key, data_segment in sorted_segments:
                     data += data_segment
-                print(data.decode())
+                filename = "sample.txt"
+                print(f"Finished downlink of sample, saving data to {filename}")
+                with open(filename, 'w') as file:
+                    file.write(data.decode())
                 break
             # Add a small sleep to prevent a tight loop
             await asyncio.sleep(0.1)
