@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Check if the correct number of arguments is provided
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 [tun interface name] [forward target interface name]"
+    exit 1
+fi
+
+# Assigning variables correctly (no spaces around '=')
+tun_name=$1
+target_name=$2
+
+# Create TUN interface with the given name and bring it up
+sudo ip tuntap add dev $tun_name mode tun user $(whoami)
+sudo ip link set $tun_name up
+
+# Assign IP address to the TUN interface
+sudo ip addr add 10.0.0.1/24 dev $tun_name
+
+# applies NAT (Network Address Translation) to outgoing packets.
+# makes all packets leaving target masquerade as coming from target
+# instead of which interface they originally came from
+# (such as tun interface we made)
+sudo iptables -t nat -A POSTROUTING -o $target_name -j MASQUERADE
+
+# forwards all packets from tun interface to target interface
+sudo iptables -A FORWARD -i $tun_name -o $target_name -j ACCEPT
+
+# forwards replies to connections that were initiated on
+# the tun interface
+sudo iptables -A FORWARD -i $target_name -o $tun_name -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Function to clean up
+cleanup() {
+    # Remove the TUN interface
+    sudo ip link set $tun_name down
+    sudo ip tuntap del dev $tun_name mode tun
+
+    # Flush the iptables rules
+    sudo iptables -t nat -D POSTROUTING -o $target_name -j MASQUERADE
+    sudo iptables -D FORWARD -i $tun_name -o $target_name -j ACCEPT
+    sudo iptables -D FORWARD -i $target_name -o $tun_name -m state --state RELATED,ESTABLISHED -j ACCEPT
+}
+
+# Trap to call cleanup function on exit
+trap cleanup EXIT
+
+# Infinite loop
+while true; do
+    sleep 1  # Sleep for a second to prevent high CPU usage
+done
+
