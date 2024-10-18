@@ -8,8 +8,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(Boost REQUIRED COMPONENTS asio)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 if(Boost_FOUND)
-    add_executable(onboard-link daytime-async-tcp-server.cpp)
-    target_link_libraries(onboard-link PRIVATE Boost::asio)
+    add_executable(main daytime-udp.cpp)
+    target_link_libraries(main PRIVATE Boost::asio)
+    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
 endif()
