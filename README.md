@@ -1,15 +1,16 @@
+Onboard software: ./onboard-link/
+Command software ./command/
+
 Max sample rate = 1Hz
 32-bit unix time (breaks in 2038)
 
 For each sample type:
-    Sol defines sample rate
-
+Sol defines sample rate
 
 Two telemetry sample types:
-    File and json
+File and json
 
 Telemetry header:
-
 
 Bord has PACKET_SIZE variable
 
@@ -21,8 +22,6 @@ SEGMENT NUMBER(int)
 TOTAL NUM OF SEGMENTS(int)
 SEGMENT DATA
 
-
-
-each metric has dict of loaded time : 
+each metric has dict of loaded time :
 
 bord: `cd bord && source ./win-venv.sh && python src/main.py --dev`

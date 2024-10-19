@@ -8,6 +8,7 @@
 #include <boost/bind/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
+#include "telemetry.hpp"
 
 using boost::asio::ip::udp;
 
@@ -17,12 +18,14 @@ class send_server
 {
 public:
     send_server(boost::asio::io_service &io_service,
+                Telemetry &telemetry,
                 boost::asio::ip::port_type port,
                 boost::asio::ip::port_type target_port,
                 std::size_t bps);
 
 private:
     udp::socket socket_;
+    Telemetry &telemetry_;
     udp::endpoint remote_endpoint_;
     std::vector<char> recv_buffer_;
     boost::asio::steady_timer timer_;

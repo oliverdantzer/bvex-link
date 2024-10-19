@@ -18,7 +18,9 @@ find_package(Boost REQUIRED COMPONENTS asio)
 find_package(nlohmann_json CONFIG REQUIRED)
 
 if(Boost_FOUND)
-    add_executable(main src/main.cpp src/send_server.cpp src/send_server.hpp src/recv_server.cpp src/recv_server.hpp)
+    file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
+    add_executable(main ${SOURCES})
+    
     target_link_libraries(main PRIVATE Boost::asio)
     target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
 endif()

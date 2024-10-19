@@ -1,4 +1,5 @@
 #include "send_server.hpp"
+#include <boost/make_shared.hpp>
 
 boost::shared_ptr<std::string> get_message()
 {
@@ -6,10 +7,12 @@ boost::shared_ptr<std::string> get_message()
 }
 
 send_server::send_server(boost::asio::io_service &io_service,
+                         Telemetry &telemetry,
                          boost::asio::ip::port_type port,
                          boost::asio::ip::port_type target_port,
                          size_t bps)
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
+      telemetry_(telemetry),
       remote_endpoint_(udp::v4(), target_port),
       timer_(io_service),
       bps_(bps)
@@ -19,10 +22,11 @@ send_server::send_server(boost::asio::io_service &io_service,
 
 void send_server::start_send()
 {
-    boost::shared_ptr<std::string> message = get_message();
-    socket_.async_send_to(boost::asio::buffer(*message), remote_endpoint_,
+    std::string message = telemetry_.pop(80085);
+    boost::shared_ptr<std::string> message_ptr = boost::make_shared<std::string>(message);
+    socket_.async_send_to(boost::asio::buffer(*message_ptr), remote_endpoint_,
                           boost::bind(&send_server::handle_send,
-                                      this, message,
+                                      this, message_ptr,
                                       boost::asio::placeholders::error,
                                       boost::asio::placeholders::bytes_transferred));
 }
