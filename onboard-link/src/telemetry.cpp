@@ -2,6 +2,7 @@
 #include <cmath>
 #include <ctime>
 #include <string>
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
@@ -26,10 +27,10 @@ std::string Sample::to_json()
     return j.dump();
 }
 
-Telemetry::Telemetry() {
+Telemetry::Telemetry(Command &command) {
     return;
 }
 
-std::string Telemetry::pop(size_t max_size) {
+std::string Telemetry::pop() {
     return get_temp_reading().to_json();
 }

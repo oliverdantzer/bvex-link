@@ -1,4 +1,8 @@
 #include "recv_server.hpp"
+#include <iostream>
+#include <string>
+#include <boost/bind/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 using boost::asio::ip::udp;
 
