@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
         Command command = Command(100);
         Telemetry telemetry = Telemetry(command);
         boost::asio::io_service io_service;
-        send_server send_server(io_service, telemetry, command, send_port, target_port, 400);
-        recv_server recv_server(io_service, recv_port);
+        SendServer send_server(io_service, telemetry, command, send_port, target_port, 400);
+        RecvServer recv_server(io_service, recv_port);
         io_service.run();
     }
     catch (std::exception &e)

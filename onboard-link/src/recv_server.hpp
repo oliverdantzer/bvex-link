@@ -8,14 +8,14 @@
 
 using boost::asio::ip::udp;
 
-class recv_server
+class RecvServer
 {
 public:
-    recv_server(boost::asio::io_service &io_service,  int port, std::size_t buffer_size = 4096);
+    RecvServer(boost::asio::io_service &io_service, int port, std::size_t buffer_size = 4096);
 
 private:
-    void start_receive();
-    void handle_receive(const boost::system::error_code &error, std::size_t bytes_recvd);
+    void start_recv();
+    void handle_recv(const boost::system::error_code &error, std::size_t bytes_recvd);
 
     udp::socket socket_;
     udp::endpoint remote_endpoint_;
