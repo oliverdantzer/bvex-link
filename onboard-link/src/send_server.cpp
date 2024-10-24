@@ -1,6 +1,7 @@
 #include "send_server.hpp"
-#include <boost/make_shared.hpp>
+
 #include <boost/bind/bind.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 
@@ -9,18 +10,14 @@ boost::shared_ptr<std::string> get_message()
     return boost::shared_ptr<std::string>(new std::string("Hello"));
 }
 
-SendServer::SendServer(boost::asio::io_service &io_service,
-                       Telemetry &telemetry,
-                       Command &command,
+SendServer::SendServer(boost::asio::io_service& io_service,
+                       Telemetry& telemetry, Command& command,
                        boost::asio::ip::port_type port,
-                       boost::asio::ip::address &target_address,
-                       boost::asio::ip::port_type target_port,
-                       size_t bps)
+                       boost::asio::ip::address target_address,
+                       boost::asio::ip::port_type target_port)
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
-      telemetry_(telemetry),
-      remote_endpoint_(target_address, target_port),
-      timer_(io_service),
-      command_(command)
+      telemetry_(telemetry), remote_endpoint_(target_address, target_port),
+      schedule_send_timer_(io_service), command_(command)
 {
     SendServer::start_send();
 }
@@ -28,33 +25,34 @@ SendServer::SendServer(boost::asio::io_service &io_service,
 void SendServer::start_send()
 {
     std::string message = telemetry_.pop();
-    boost::shared_ptr<std::string> message_ptr = boost::make_shared<std::string>(message);
+    boost::shared_ptr<std::string> message_ptr =
+        boost::make_shared<std::string>(message);
     // calls this.handle_send, giving
     // it the shared_ptr to the message
     // once the data is handed off to the OS
     // networking stack for transmission
-    socket_.async_send_to(boost::asio::buffer(*message_ptr), remote_endpoint_,
-                          boost::bind(&SendServer::handle_send,
-                                      this, message_ptr,
-                                      boost::asio::placeholders::error,
-                                      boost::asio::placeholders::bytes_transferred));
+    socket_.async_send_to(
+        boost::asio::buffer(*message_ptr), remote_endpoint_,
+        boost::bind(&SendServer::handle_send, this, message_ptr,
+                    boost::asio::placeholders::error,
+                    boost::asio::placeholders::bytes_transferred));
 }
 
 // Handles
 void SendServer::handle_send(boost::shared_ptr<std::string> /*message*/,
-                             const boost::system::error_code &error,
+                             const boost::system::error_code& error,
                              std::size_t sent_size /*bytes_transferred*/)
 {
-    if (error)
-    {
-        std::cerr << "Error code" << error.to_string() << "on receive msg: " << error.message() << std::endl;
+    if(error) {
+        std::cerr << "Error code" << error.to_string()
+                  << "on receive msg: " << error.message() << std::endl;
     }
     // Schedule sending of next packet, given the number of bytes sent
     SendServer::schedule_send(sent_size);
 }
 
-// At the point this is called, we have already waited for async_send_to_ to give
-// the packet to the OS. Given the number of bytes sent in the last packet
+// At the point this is called, we have already waited for async_send_to_ to
+// give the packet to the OS. Given the number of bytes sent in the last packet
 // and our desired bps, calculate the time until the next packet
 // can be sent assuming the OS sends the previous packet at
 // our desired bps. Then, schedule the next packet to be sent
@@ -67,10 +65,12 @@ void SendServer::schedule_send(std::size_t sent_size)
     auto seconds_until_sent = bits_sent / command_.get_bps();
     auto interval = std::chrono::milliseconds(seconds_until_sent * 1000);
 #ifdef DEBUG
-    std::cout << "Sent " << sent_size << " bytes to port " << remote_endpoint_.port() << std::endl;
-    std::cout << "Waiting " << std::to_string(interval.count()) << "ms to send next packet" << std::endl;
+    std::cout << "Sent " << sent_size << " bytes to port "
+              << remote_endpoint_.port() << std::endl;
+    std::cout << "Waiting " << std::to_string(interval.count())
+              << "ms to send next packet" << std::endl;
 #endif
     // Set the timer's expiry time relative to now.
-    timer_.expires_after(interval);
-    timer_.async_wait(boost::bind(&SendServer::start_send, this));
+    schedule_send_timer_.expires_after(interval);
+    schedule_send_timer_.async_wait(boost::bind(&SendServer::start_send, this));
 }
