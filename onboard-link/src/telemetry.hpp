@@ -1,24 +1,26 @@
 #ifndef TEMP_READING_H
 #define TEMP_READING_H
 
-#include <string>
 #include "command.hpp"
+#include <string>
 
 class Sample
 {
-public:
+  public:
     std::string name;
     std::time_t timestamp;
     std::string value;
 
-    Sample(const std::string &name, std::time_t timestamp, const std::string &value);
+    Sample(const std::string& name, std::time_t timestamp,
+           const std::string& value);
     std::string to_json();
 };
 
 class Telemetry
 {
-public:
-    Telemetry(Command &command);
+  public:
+    Telemetry(Command& command);
+
     /**
      * @brief Retrieves the next telemetry data as a JSON string.
      *
