@@ -14,13 +14,16 @@ if(DEBUG)
     add_definitions(-DDEBUG)
 endif()
 
-find_package(Boost REQUIRED COMPONENTS asio)
+find_package(boost_asio CONFIG REQUIRED)
+find_package(boost_redis CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
 if(Boost_FOUND)
     file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
     add_executable(main ${SOURCES})
     
-    target_link_libraries(main PRIVATE Boost::asio)
-    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+    target_link_libraries(main PRIVATE 
+                        Boost::asio 
+                        Boost::redis 
+                        nlohmann_json::nlohmann_json)
 endif()
