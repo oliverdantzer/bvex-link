@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+// next line will give squiggly error because idk how to get linter to know what
+// nanopb is
+import "nanopb.proto";
+
+message Sample
+{
+    string metric_id = 1 [ (nanopb).max_length = 40 ];
+    float timestamp = 2; // s since last epoch
+    oneof value
+    {
+        int32 int_val = 3;
+        int64 long_val = 4;
+        float float_val = 5;
+        double double_val = 6;
+        bool bool_val = 7;
+        string string_val = 8 [ (nanopb).max_length = 40 ];
+    }
+}

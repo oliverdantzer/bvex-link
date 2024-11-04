@@ -222,6 +222,9 @@ controller-sim_SOURCE_DIR:STATIC=/home/oliver/dev/bvex-link/controller-sim
 //The directory containing a CMake configuration file for hiredis.
 hiredis_DIR:PATH=hiredis_DIR-NOTFOUND
 
+//The directory containing a CMake configuration file for nanopb.
+nanopb_DIR:PATH=nanopb_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

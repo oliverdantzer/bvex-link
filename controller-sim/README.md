@@ -1,10 +1,25 @@
-# Requirements
 
-- hiredis (C client for redis)
-  - `sudo apt install libhiredis-dev`
 
-# Running
+## Requirements
 
-- `cmake .`
-- `cmake --build .`
-- `./main`
+- `vcpkg`, `$VCPKG_ROOT` defined
+
+## Install dependencies
+
+- `vcpkg install`
+
+## Running
+
+- `cmake --preset=vcpkg`
+- `cmake --build build`
+- `./build/main`
+
+
+
+## Generating new nanopb headers
+- [Download nanopb binaries](https://jpa.kapsi.fi/nanopb/download/)
+- Extract to appropriate folder
+- I put mine in `~/devtools/`
+```bash
+$ ./generate_nanopb_headers ~/devtools/nanopb
+```
