@@ -1,11 +1,8 @@
-#include "async_send_socket.h"
-#include "protobuf.h"
-#include <hiredis/hiredis.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "send_telemetry.h"
 #include <time.h>
+#include <math.h>
 #include <unistd.h>
+
 
 // Function to generate a sine wave value
 double generate_sinusoid(double amplitude, double freq, double shift, double x)
@@ -13,19 +10,7 @@ double generate_sinusoid(double amplitude, double freq, double shift, double x)
     return amplitude * sin(freq * x + shift);
 }
 
-int main(int argc, char** argv)
-{
-    if(argc != 3) {
-        printf("Usage: %s target_name target_port\n", argv[0]);
-        return 1;
-    }
-    char* target_name = argv[1];
-    char* target_service = argv[2];
-    int socket_fd = make_socket(target_name, target_service);
-
-    send_sample_int32(socket_fd, "temp", 0.0, 0);
-    send_sample_int32(socket_fd, "hi", 0.0, 0);
-    return 0;
+void loop(int socket_fd) {
     while(1) {
         // Get the current time
         time_t t;
@@ -49,6 +34,4 @@ int main(int argc, char** argv)
         // Sleep 1 ms to mimic high sample rate
         sleep(0.001);
     }
-    close(socket_fd);
-    return 0;
 }

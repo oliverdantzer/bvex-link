@@ -1,9 +1,9 @@
-#include "protobuf.h"
-#include "common.h"
+#include "send_telemetry.h"
 #include "generated/nanopb/sample.pb.h"
 #include <pb_encode.h>
 #include <stdio.h>
 #include <string.h>
+#include <arpa/inet.h> // send()
 
 typedef enum {
     INT32_TYPE,
@@ -19,8 +19,6 @@ int send_sample(int socket_fd, char* metric_id, float timestamp, void* value,
                 ValueType type)
 {
     Sample message = Sample_init_zero;
-    pb_ostream_t output = pb_ostream_from_socket(socket_fd);
-
     strcpy(message.metric_id, metric_id);
     message.timestamp = timestamp;
 
@@ -50,12 +48,19 @@ int send_sample(int socket_fd, char* metric_id, float timestamp, void* value,
         strcpy(message.value.string_val, (char*)value);
         break;
     }
+
+    uint8_t buffer[128];
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
+    pb_encode(&stream, Sample_fields, &message);
+    send(socket_fd, buffer, stream.bytes_written, 0);
+
+
     /* Encode the request. It is written to the socket immediately
      * through our custom stream. */
-    if(!pb_encode_delimited(&output, Sample_fields, &message)) {
-        fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&output));
-        return 0;
-    }
+    // if(!pb_encode_delimited(&output, Sample_fields, &message)) {
+    //     fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&output));
+    //     return 0;
+    // }
 }
 
 void send_sample_int32(int socket_fd, char* metric_id, float timestamp,

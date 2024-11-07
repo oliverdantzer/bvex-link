@@ -1,7 +1,4 @@
-// protobuf.h
-
-#ifndef ENCODE_H
-#define ENCODE_H
+#pragma once
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -20,5 +17,3 @@ void send_sample_string(int socket_fd, char* metric_id, float timestamp,
                         char* value);
 void send_sample_bytes(int socket_fd, char* metric_id, float timestamp,
                        uint8_t* value);
-
-#endif // ENCODE_H
