@@ -32,7 +32,7 @@ int send_sample(int socket_fd, Sample message)
 
 void* send_sample_one_arg(void* arg) {
     send_sample_data_t* data = (send_sample_data_t*)arg;
-    send_sample(data->socket_fd, data->Sample);
+    send_sample(data->socket_fd, data->sample);
     free(data);  // Free the allocated data after sending
     return NULL;
 }
