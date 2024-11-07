@@ -28,7 +28,9 @@ file(GLOB LIB_SOURCES
 
 # Collect source files for the test executable
 file(GLOB TEST_SOURCES 
-    "tests/*.c")
+    "tests/*.c"
+    "tests/*.h"
+    )
 
 # Create the library target
 add_library(controller-sim-lib ${LIB_SOURCES})

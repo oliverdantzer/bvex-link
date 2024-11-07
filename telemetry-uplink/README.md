@@ -8,7 +8,9 @@
 
 - `vcpkg install`
 
-## Running
+## Building and running
+Requires ninja
+`apt install ninja-build`
 
 - `cmake --preset=vcpkg`
 - `cmake --build build`
