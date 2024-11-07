@@ -19,7 +19,7 @@ typedef enum {
 
 typedef struct {
     int socket_fd;
-    Sample sample
+    Sample sample;
 } send_sample_data_t;
 
 int send_sample(int socket_fd, Sample message)
@@ -30,7 +30,7 @@ int send_sample(int socket_fd, Sample message)
     send(socket_fd, buffer, stream.bytes_written, 0);
 }
 
-void send_sample_one_arg(void* arg) {
+void* send_sample_one_arg(void* arg) {
     send_sample_data_t* data = (send_sample_data_t*)arg;
     send_sample(data->socket_fd, data->Sample);
     free(data);  // Free the allocated data after sending
