@@ -1,4 +1,6 @@
 import socket
+import select
+import threading
 from generated.sample_pb2 import Sample
 
 # Define server address and port
@@ -12,18 +14,34 @@ sock.bind(server_address)
 
 print(f"UDP server listening on {server_address}")
 
-while True:
-    # Wait for a connection
-    data, address = sock.recvfrom(4096)
-
+def message_handler(data, addr):
     sample = Sample()
-    
-    print(f"Received {len(data)} bytes from {address}")
+    print(f"Received {len(data)} bytes from {addr}")
     print("data: ", repr(data))
-    sample.ParseFromString(data)
-    print("data: ", sample)
+    # sample.ParseFromString(data)
+    # print("Parsed data: ", sample)
 
-    # # Optionally, send a response back to the client
-    # if data:
-    #     sent = sock.sendto(data, address)
-    #     print(f"Sent {sent} bytes back to {address}")
+MAX_MESS_LEN = 1024
+stop_flag = threading.Event()
+
+def server_loop():
+    while not stop_flag.is_set():
+        try:
+            data, addr = sock.recvfrom(MAX_MESS_LEN)
+            threading.Thread(target=message_handler, args=(data, addr)).start()
+        except socket.error:
+            break
+
+server_thread = threading.Thread(target=server_loop)
+server_thread.start()
+
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    print("Shutting down server...")
+    stop_flag.set()
+    sock.shutdown(socket.SHUT_WR)
+    sock.close()
+    server_thread.join()
+    print("Server shut down.")
