@@ -25,4 +25,5 @@ class Command
     // std::vector<std::string> telecommands_;
     std::set<MetricId> metric_ids_;
     std::map<MetricId, boost::shared_ptr<SampleData>> latest_samples_;
+    std::map<MetricId, float> metric_shares_;
 };
