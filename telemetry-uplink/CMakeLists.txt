@@ -33,13 +33,13 @@ file(GLOB TEST_SOURCES
     )
 
 # Create the library target
-add_library(controller-sim-lib ${LIB_SOURCES})
+add_library(telemetry-uplink ${LIB_SOURCES})
 
 # Link nanopb to the library
-target_link_libraries(controller-sim-lib PRIVATE nanopb::protobuf-nanopb-static)
+target_link_libraries(telemetry-uplink PRIVATE nanopb::protobuf-nanopb-static)
 
 # Create the test executable target
 add_executable(test ${TEST_SOURCES})
 
 # Link libraries
-target_link_libraries(test PRIVATE controller-sim-lib nanopb::protobuf-nanopb-static m)
+target_link_libraries(test PRIVATE telemetry-uplink nanopb::protobuf-nanopb-static m)
