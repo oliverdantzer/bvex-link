@@ -1,27 +1,28 @@
-#ifndef COMMAND_H
-#define COMMAND_H
+#pragma once
 
+#include "sample.hpp"
 #include "telemetry.hpp"
+#include <boost/shared_ptr.hpp>
+#include <set>
+#include <string>
+#include <vector>
 
-struct Telecommand
-{
-    std::string id;
-    std::chrono::system_clock::time_point time; // seconds since last epoch
-    std::string name;
-    std::string value;
-};
+
 
 class Command
 {
-public:
-    Command(size_t bps);
-    void add_tc_json(const std::string &telecommands_json);
+  public:
+    Command(size_t bps, size_t max_packet_size_);
+    // void add_tc_json(const std::string& telecommands_json);
     size_t get_bps();
     size_t get_max_packet_size();
-private:
+    void add_sample(boost::shared_ptr<SampleData> sample);
+    boost::shared_ptr<SampleData> get_latest_sample(MetricId metric_id);
+
+  private:
     size_t bps_;
     size_t max_packet_size_;
-    std::vector<std::string> telecommands_;
+    // std::vector<std::string> telecommands_;
+    std::set<MetricId> metric_ids_;
+    std::map<MetricId, boost::shared_ptr<SampleData>> latest_samples_;
 };
-
-#endif COMMAND_H
