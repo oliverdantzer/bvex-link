@@ -1,5 +1,5 @@
 #include "send_telemetry.h"
-#include "generated/nanopb/sample.pb.h"
+#include "sample.pb.h"
 #include <pb_encode.h>
 #include <stdio.h>
 #include <string.h>
