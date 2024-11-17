@@ -7,7 +7,7 @@
 ### Requirements
 
 - `vcpkg`, `$VCPKG_ROOT` defined
-- Ninja : `apt install ninja-build`
+<!-- - Ninja : `apt install ninja-build` -->
 
 ### Steps
 

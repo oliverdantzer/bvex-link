@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.24)
 
 # Set the project name and version
 project(controller-sim VERSION 1.0 LANGUAGES C)
