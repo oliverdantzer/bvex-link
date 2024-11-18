@@ -1,5 +1,4 @@
-#ifndef RECV_SERVER_H
-#define RECV_SERVER_H
+#pragma once
 
 #include <boost/asio.hpp>
 #include <cstdint>
@@ -29,5 +28,3 @@ class RecvServer
     std::function<void(boost::shared_ptr<std::vector<uint8_t>>, size_t)>
         message_handler_;
 };
-
-#endif // RECV_SERVER_H
