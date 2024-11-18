@@ -6,6 +6,4 @@
 #include <cstdint>
 
 boost::shared_ptr<SampleData> decode_payload(
-    boost::shared_ptr<std::vector<uint8_t>> payload, size_t message_length);
-
-int hi(int hie);
+    boost::shared_ptr<std::vector<uint8_t>> payload, size_t payload_size);
