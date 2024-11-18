@@ -4,7 +4,7 @@
 
 RecvUplinkSampleServer::RecvUplinkSampleServer(
     boost::asio::io_service& io_service, Command& command, int port,
-    std::size_t buffer_size = 4096)
+    std::size_t buffer_size)
     : command_(command),
         recv_server_(io_service,
                      std::bind(&RecvUplinkSampleServer::handle_message, this,

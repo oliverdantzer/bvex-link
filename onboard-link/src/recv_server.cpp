@@ -11,7 +11,7 @@ RecvServer::RecvServer(
     boost::asio::io_service& io_service,
     std::function<void(boost::shared_ptr<std::vector<uint8_t>>, size_t)>
         message_handler,
-    int port, std::size_t buffer_size = 4096)
+    int port, std::size_t buffer_size)
     // initialize members
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
       buffer_size_(buffer_size),
