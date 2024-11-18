@@ -5,10 +5,16 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 
-boost::shared_ptr<std::string> get_message()
-{
-    return boost::shared_ptr<std::string>(new std::string("Hello"));
-}
+// Lets us use s and ms after literal numbers
+using namespace std::chrono_literals;
+
+constexpr std::chrono::milliseconds MAX_WAIT_TIME = 2000ms;
+constexpr std::chrono::milliseconds MIN_WAIT_TIME = 10ms;
+
+// boost::shared_ptr<std::string> get_message()
+// {
+//     return boost::shared_ptr<std::string>(new std::string("Hello"));
+// }
 
 SendServer::SendServer(boost::asio::io_service& io_service,
                        Telemetry& telemetry, Command& command,
@@ -17,31 +23,55 @@ SendServer::SendServer(boost::asio::io_service& io_service,
                        boost::asio::ip::port_type target_port)
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
       telemetry_(telemetry), remote_endpoint_(target_address, target_port),
-      schedule_send_timer_(io_service), command_(command)
+      schedule_send_timer_(io_service), backoff_timer_(io_service), command_(command),
+      current_wait_time_(MIN_WAIT_TIME)
 {
     SendServer::start_send();
 }
 
 void SendServer::start_send()
 {
-    std::string message = telemetry_.pop();
-    boost::shared_ptr<std::string> message_ptr =
-        boost::make_shared<std::string>(message);
-    // calls this.handle_send, giving
-    // it the shared_ptr to the message
-    // once the data is handed off to the OS
-    // networking stack for transmission
-    socket_.async_send_to(
-        boost::asio::buffer(*message_ptr), remote_endpoint_,
-        boost::bind(&SendServer::handle_send, this, message_ptr,
-                    boost::asio::placeholders::error,
-                    boost::asio::placeholders::bytes_transferred));
+    boost::shared_ptr<std::vector<uint8_t>> message = telemetry_.pop();
+    if(message != nullptr) {
+
+        current_wait_time_ = MIN_WAIT_TIME; // reset exponential backoff
+
+        // calls this.handle_send, giving
+        // it the shared_ptr to the message
+        // once the data is handed off to the OS
+        // networking stack for transmission
+        socket_.async_send_to(
+            boost::asio::buffer(*message), remote_endpoint_,
+            boost::bind(&SendServer::handle_send, this, message,
+                        boost::asio::placeholders::error,
+                        boost::asio::placeholders::bytes_transferred));
+    } else {
+        // If we don't have a message to send, back off for some time
+        // before trying again
+
+#ifdef DEBUG
+        std::cout << "Telemetry.pop returned nullptr, waiting "
+                  << current_wait_time_.count() << "ms" << std::endl;
+#endif
+
+        backoff_timer_.expires_after(current_wait_time_);
+        backoff_timer_.async_wait(
+            boost::bind(&SendServer::start_send, this));
+
+        // Exponentially increase how much we back off. Cap under max_wait_time_
+        if((current_wait_time_ * 2) < MAX_WAIT_TIME) {
+            current_wait_time_ *= 2;
+        } else {
+            current_wait_time_ = MAX_WAIT_TIME;
+        }
+    }
 }
 
 // Handles
-void SendServer::handle_send(boost::shared_ptr<std::string> /*message*/,
-                             const boost::system::error_code& error,
-                             std::size_t sent_size /*bytes_transferred*/)
+void SendServer::handle_send(
+    boost::shared_ptr<std::vector<uint8_t>> /*message*/,
+    const boost::system::error_code& error,
+    std::size_t sent_size /*bytes_transferred*/)
 {
     if(error) {
         std::cerr << "Error code" << error.to_string()

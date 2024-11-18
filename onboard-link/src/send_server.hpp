@@ -1,5 +1,4 @@
-#ifndef UDP_SEND_SERVER_H
-#define UDP_SEND_SERVER_H
+#pragma once
 
 #include "command.hpp"
 #include "telemetry.hpp"
@@ -7,8 +6,6 @@
 #include <string>
 
 using boost::asio::ip::udp;
-
-boost::shared_ptr<std::string> get_message();
 
 /*!
    Send loop:
@@ -59,10 +56,12 @@ class SendServer
   private:
     udp::socket socket_;
     Telemetry& telemetry_;
+    Command& command_;
     udp::endpoint remote_endpoint_;
     std::vector<char> recv_buffer_;
     boost::asio::steady_timer schedule_send_timer_;
-    Command& command_;
+    boost::asio::steady_timer backoff_timer_;
+    std::chrono::milliseconds current_wait_time_; /* time to wait in ms if telemetry.pop() gives no result*/
 
     /**
      * @brief Sends the next telemetry data packet async, then calls
@@ -85,7 +84,7 @@ class SendServer
      * @param error The error code resulting from the send operation.
      * @param sent_size The number of bytes sent.
      */
-    void handle_send(boost::shared_ptr<std::string> message,
+    void handle_send(boost::shared_ptr<std::vector<uint8_t>> message,
                      const boost::system::error_code& error,
                      std::size_t sent_size);
 
@@ -100,5 +99,3 @@ class SendServer
      */
     void schedule_send(std::size_t sent_size);
 };
-
-#endif // UDP_SEND_SERVER_H
