@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo apt-get install protobuf-compiler
+
+protoc --proto_path=. --cpp_out=src/decode_payload/pb_generated sample.proto
