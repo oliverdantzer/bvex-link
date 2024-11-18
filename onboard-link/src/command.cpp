@@ -18,3 +18,24 @@ boost::shared_ptr<SampleData> Command::get_latest_sample(MetricId metric_id)
 {
     return latest_samples_[metric_id];
 }
+
+float Command::get_metric_share(MetricId metric_id)
+{
+    return metric_shares_[metric_id];
+}
+
+size_t Command::get_bps() { return bps_; }
+
+const std::set<MetricId>& Command::get_metric_ids() const
+{
+    return metric_ids_;
+}
+
+// std::vector<MetricId> Command::get_metric_ids()
+// {
+//     std::vector<MetricId> metric_ids;
+//     for(auto const& metric_id : metric_ids_) {
+//         metric_ids.push_back(metric_id);
+//     }
+//     return metric_ids;
+// }
