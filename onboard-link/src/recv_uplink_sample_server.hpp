@@ -14,5 +14,5 @@ class RecvUplinkSampleServer
   private:
     void handle_message(boost::shared_ptr<std::vector<uint8_t>> message, size_t size);
     RecvServer recv_server_;
-    Command command_;
+    Command& command_;
 };
