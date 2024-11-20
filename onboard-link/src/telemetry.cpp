@@ -8,11 +8,8 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
-
-using json = nlohmann::json;
 
 Telemetry::Telemetry(Command& command)
     : command_(command), metric_token_limits_(), metric_token_counts_(),
