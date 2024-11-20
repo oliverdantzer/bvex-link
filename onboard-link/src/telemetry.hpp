@@ -4,9 +4,10 @@
 #include "sample.hpp"
 #include <boost/shared_ptr.hpp>
 #include <map>
+#include <memory>
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
 class Telemetry
 {
@@ -29,8 +30,18 @@ class Telemetry
     std::map<MetricId, int> metric_token_limits_;
     std::map<MetricId, int> metric_token_counts_;
     std::map<MetricId, boost::shared_ptr<SampleData>> metric_samples_;
-    unsigned int position_ptr;
-    std::set<MetricId>::iterator metric_ids_iter;
+    size_t sum_max_sizes_ = 0;
+
+    /**
+     * Copy of command's metric ids, updated after each full
+     * iteration through
+     */
+    std::unique_ptr<std::vector<MetricId>> current_metric_ids_;
+
+    /**
+     * Iterator over *current_metric_ids_
+     */
+    std::vector<MetricId>::iterator metric_iter_;
 
     /**
      * @brief Returns the number of tokens a metric needs to be sent
