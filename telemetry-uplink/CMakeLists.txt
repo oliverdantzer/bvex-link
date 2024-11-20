@@ -22,22 +22,24 @@ add_library(telemetry-uplink ${LIB_SOURCES})
 target_link_libraries(telemetry-uplink PRIVATE nanopb::protobuf-nanopb-static)
 target_include_directories(telemetry-uplink
     PUBLIC include
-    # PRIVATE src
 )
 
+option(TEST "Build test executable" OFF)
 
+if(TEST)
+    message(STATUS "Test mode is ON")
+    add_definitions(-DTEST)
 
-# # Collect source files for the test executable
-# file(GLOB TEST_SOURCES 
-#     "tests/*.c"
-#     )
+    # Collect source files for the test executable
+    file(GLOB TEST_SOURCES 
+        "tests/*.c"
+        )
 
-# # Create the test executable target
-# add_executable(test ${TEST_SOURCES})
+    # Create the test executable target
+    add_executable(test ${TEST_SOURCES})
 
-# # target_include_directories(test PRIVATE tests)
+    target_include_directories(test PRIVATE tests)
 
-
-
-# # Link libraries
-# target_link_libraries(test PRIVATE telemetry-uplink m)
+    # Link telemetry-uplink
+    target_link_libraries(test PRIVATE telemetry-uplink m)
+endif()
