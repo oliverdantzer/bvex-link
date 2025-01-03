@@ -18,10 +18,17 @@ find_package(boost_asio CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(nanopb CONFIG REQUIRED)
 
-aux_source_directory(src _srcDirFiles)
-aux_source_directory(src/decode_payload _decodeDirFiles)
-aux_source_directory(src/decode_payload/pb_generated _nanopbGenDirFiles)
-set(_srcFiles ${_srcDirFiles} ${_decodeDirFiles} ${_nanopbGenDirFiles})
+aux_source_directory(src _src)
+aux_source_directory(src/encode_downlink_telemetry _encDownlink)
+aux_source_directory(src/encode_downlink_telemetry/pb_generated _encDownlinkPbGen)
+aux_source_directory(src/decode_onboard_telemetry _decOnboard)
+aux_source_directory(src/decode_onboard_telemetry/pb_generated _decOnboardPbGen)
+set(_srcFiles
+    ${_src}
+    ${_encDownlink}
+    ${_encDownlink}
+    ${_decOnboard}
+    ${_decOnboardPbGen})
 
 # exclude these files
 list(REMOVE_ITEM _srcFiles
