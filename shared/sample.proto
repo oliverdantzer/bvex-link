@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package sample;
+
+import "segments.proto";
+
+message Primitive
+{
+    oneof value
+    {
+        int32 int_val = 1;
+        int64 long_val = 2;
+        float float_val = 3;
+        double double_val = 4;
+        bool bool_val = 5;
+        string string_val = 6;
+    }
+}
+
+message Sample
+{
+    string metric_id = 7;
+    string sample_id = 8;
+    float timestamp = 9; // s since last epoch
+    oneof data {
+        segments.SegmentsFrame segments_frame = 10;
+        Primitive primitive_value = 11;
+    }
+}
+
