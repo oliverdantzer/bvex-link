@@ -1,5 +1,5 @@
 #include "recv_uplink_sample_server.hpp"
-#include "decode_payload/decode_sample_pb.hpp"
+#include "decode_onboard_telemetry/decode_sample_pb.hpp"
 #include "recv_server.hpp"
 #include <iostream>
 

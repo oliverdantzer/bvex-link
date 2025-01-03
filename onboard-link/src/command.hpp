@@ -27,7 +27,9 @@ struct MetricInfo {
     // Amount of bps dedicated to metric telemetry data
     // Value in range [0-1]
     float share;
-    // Latest sample of this metric recieved
+    // Latest sample of this metric recieved.
+    // can be null if no sample has been recieved or if nullified after
+    // pop_latest_sample
     boost::shared_ptr<SampleData> latest_sample;
     // Sample id of latest sample recieved
     int sample_id;
