@@ -29,18 +29,28 @@ boost::shared_ptr<SampleData> decode_payload(
 
     std::string metric_id(sample.metric_id);
     float timestamp = sample.timestamp;
-    switch(sample.which_value) {
-    case Sample_int_val_tag:
-        return boost::make_shared<SampleData>(metric_id, timestamp,
-                                              sample.value.int_val);
-    case Sample_float_val_tag:
-        return boost::make_shared<SampleData>(metric_id, timestamp,
-                                              sample.value.float_val);
-    case Sample_double_val_tag:
-        return boost::make_shared<SampleData>(metric_id, timestamp,
-                                              sample.value.double_val);
+    struct SampleMetadata metadata = {metric_id, timestamp};
+    switch(sample.which_data) {
+    case Sample_primitive_tag:
+        switch(sample.data.primitive.which_value) {
+        case Primitive_int_val_tag:
+            return boost::make_shared<PrimitiveSample>(
+                metadata, sample.data.primitive.value.int_val);
+        case Primitive_float_val_tag:
+            return boost::make_shared<PrimitiveSample>(
+                metadata, sample.data.primitive.value.float_val);
+        case Primitive_double_val_tag:
+            return boost::make_shared<PrimitiveSample>(
+                metadata, sample.data.primitive.value.double_val);
+        default:
+            std::cerr << "Unknown/unimplemented value type" << std::endl;
+            return nullptr;
+        }
+    case Sample_file_tag:
+        return boost::make_shared<FileSample>(
+            metadata, sample.data.file.filepath, sample.data.file.extension);
     default:
-        std::cerr << "Unknown/unimplemented value type" << std::endl;
+        std::cerr << "Unknown/unimplemented data type" << std::endl;
         return nullptr;
     }
 }
