@@ -8,8 +8,9 @@
 // Lets us use s and ms after literal numbers
 using namespace std::chrono_literals;
 
-constexpr std::chrono::milliseconds MAX_WAIT_TIME = 2000ms;
-constexpr std::chrono::milliseconds MIN_WAIT_TIME = 10ms;
+constexpr std::chrono::milliseconds MAX_WAIT_TIME = 1000ms;
+constexpr std::chrono::milliseconds MIN_WAIT_TIME =
+    1ms; // Set wait to <= 0 to disable backoff
 
 // boost::shared_ptr<std::string> get_message()
 // {
@@ -23,8 +24,8 @@ SendServer::SendServer(boost::asio::io_service& io_service,
                        boost::asio::ip::port_type target_port)
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
       telemetry_(telemetry), remote_endpoint_(target_address, target_port),
-      schedule_send_timer_(io_service), backoff_timer_(io_service), command_(command),
-      current_wait_time_(MIN_WAIT_TIME)
+      schedule_send_timer_(io_service), backoff_timer_(io_service),
+      command_(command), current_wait_time_(MIN_WAIT_TIME)
 {
     SendServer::start_send();
 }
@@ -48,21 +49,30 @@ void SendServer::start_send()
     } else {
         // If we don't have a message to send, back off for some time
         // before trying again
-
+        if(command_.metric_exists("test")) {
+            std::cout << "test" << std::endl;
+            // command_.get_metric_info("test")
+            // std::cout << command_.g
+        }
+        // only back off if max wait is greater than 0
+        if(MAX_WAIT_TIME > 0ms) {
 #ifdef DEBUG
-        std::cout << "Telemetry.pop returned nullptr, waiting "
-                  << current_wait_time_.count() << "ms" << std::endl;
+            std::cout << "Telemetry.pop returned nullptr, waiting "
+                      << std::to_string(current_wait_time_.count()) << "ms"
+                      << std::endl;
 #endif
 
-        backoff_timer_.expires_after(current_wait_time_);
-        backoff_timer_.async_wait(
-            boost::bind(&SendServer::start_send, this));
+            backoff_timer_.expires_after(current_wait_time_);
+            backoff_timer_.async_wait(
+                boost::bind(&SendServer::start_send, this));
 
-        // Exponentially increase how much we back off. Cap under max_wait_time_
-        if((current_wait_time_ * 2) < MAX_WAIT_TIME) {
-            current_wait_time_ *= 2;
-        } else {
-            current_wait_time_ = MAX_WAIT_TIME;
+            // Exponentially increase how much we back off. Cap under
+            // max_wait_time_
+            if((current_wait_time_ * 2) < MAX_WAIT_TIME) {
+                current_wait_time_ *= 2;
+            } else {
+                current_wait_time_ = MAX_WAIT_TIME;
+            }
         }
     }
 }

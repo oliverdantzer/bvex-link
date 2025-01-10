@@ -42,6 +42,7 @@ void RecvServer::handle_recv(const boost::system::error_code& error,
 {
     // We will get error boost::asio::error::message_size
     // if the message is too big to fit in the buffer
+    std::cout << "Received " << bytes_recvd << " bytes" << std::endl;
     if(!error) {
         // char *received_data(recv_buffer_.data());
         // If we don't do a shared ptr, message might be destroyed
