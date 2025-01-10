@@ -6,6 +6,12 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
+PB_BIND(Primitive, Primitive, AUTO)
+
+
+PB_BIND(File, File, AUTO)
+
+
 PB_BIND(Sample, Sample, AUTO)
 
 

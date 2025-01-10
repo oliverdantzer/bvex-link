@@ -6,16 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef enum {
-    INT32_TYPE,
-    INT64_TYPE,
-    FLOAT_TYPE,
-    DOUBLE_TYPE,
-    BOOL_TYPE,
-    STRING_TYPE,
-    BYTES_TYPE
-} ValueType;
+#include <errno.h>
 
 typedef struct {
     int socket_fd;
@@ -26,8 +17,16 @@ int send_sample(int socket_fd, Sample message)
 {
     uint8_t buffer[128];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
-    pb_encode(&stream, Sample_fields, &message);
-    send(socket_fd, buffer, stream.bytes_written, 0);
+    if (!pb_encode(&stream, Sample_fields, &message)) {
+        fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
+        return -1;
+    }
+    ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
+    if (bytes_sent == -1) {
+        fprintf(stderr, "send failed: %s\n", strerror(errno));
+        return -1;
+    }
+    return 0;
 }
 
 void* send_sample_one_arg(void* arg)
@@ -40,11 +39,10 @@ void* send_sample_one_arg(void* arg)
 
 int send_sample_async(int socket_fd, Sample sample)
 {
-
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
-        return 1;
+        return -1;
     }
     temp_data->socket_fd = socket_fd;
     temp_data->sample = sample;
@@ -53,85 +51,92 @@ int send_sample_async(int socket_fd, Sample sample)
     if(rc != 0) {
         fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
         free(temp_data); // Free temp_data if thread creation fails
-        return 1;
+        -1;
     }
     pthread_detach(temp_thread); // Detach thread to let it run independently
-}
-
-Sample build_message(char* metric_id, float timestamp, void* value,
-                     ValueType type)
-{
-    Sample message = Sample_init_zero;
-    strcpy(message.metric_id, metric_id);
-    message.timestamp = timestamp;
-
-    switch(type) {
-    case INT32_TYPE:
-        message.which_value = Sample_int_val_tag;
-        message.value.int_val = *(int32_t*)value;
-        break;
-    case INT64_TYPE:
-        message.which_value = Sample_long_val_tag;
-        message.value.long_val = *(int64_t*)value;
-        break;
-    case FLOAT_TYPE:
-        message.which_value = Sample_float_val_tag;
-        message.value.float_val = *(float*)value;
-        break;
-    case DOUBLE_TYPE:
-        message.which_value = Sample_double_val_tag;
-        message.value.double_val = *(double*)value;
-        break;
-    case BOOL_TYPE:
-        message.which_value = Sample_bool_val_tag;
-        message.value.bool_val = *(bool*)value;
-        break;
-    case STRING_TYPE:
-        message.which_value = Sample_string_val_tag;
-        strcpy(message.value.string_val, (char*)value);
-        break;
-    }
-    return message;
+    return 0;
 }
 
 void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
                        int32_t value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, INT32_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_int_val_tag;
+    sample.data.primitive.value.int_val = *(int32_t*)value;
     send_sample_async(socket_fd, sample);
 }
 
 void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
                        int64_t value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, INT64_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_long_val_tag;
+    sample.data.primitive.value.long_val = value;
     send_sample_async(socket_fd, sample);
 }
 
 void send_sample_float(int socket_fd, char* metric_id, float timestamp,
                        float value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, FLOAT_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_float_val_tag;
+    sample.data.primitive.value.float_val = value;
     send_sample_async(socket_fd, sample);
 }
 
 void send_sample_double(int socket_fd, char* metric_id, float timestamp,
                         double value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, DOUBLE_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_double_val_tag;
+    sample.data.primitive.value.double_val = value;
     send_sample_async(socket_fd, sample);
 }
 
 void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
                       bool value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, BOOL_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_bool_val_tag;
+    sample.data.primitive.value.bool_val = value;
     send_sample_async(socket_fd, sample);
 }
 
 void send_sample_string(int socket_fd, char* metric_id, float timestamp,
                         char* value)
 {
-    Sample sample = build_message(metric_id, timestamp, &value, STRING_TYPE);
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_primitive_tag;
+    sample.data.primitive.which_value = Primitive_string_val_tag;
+    strcpy(sample.data.primitive.value.string_val, value);
+    send_sample_async(socket_fd, sample);
+}
+
+void send_sample_file(int socket_fd, char* metric_id, float timestamp,
+                      char* filepath, char* extension)
+{
+    Sample sample = Sample_init_zero;
+    strcpy(sample.metric_id, metric_id);
+    sample.timestamp = timestamp;
+    sample.which_data = Sample_file_tag;
+    strcpy(sample.data.file.filepath, filepath);
+    strcpy(sample.data.file.extension, extension);
     send_sample_async(socket_fd, sample);
 }

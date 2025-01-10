@@ -15,5 +15,5 @@ void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
                       bool value);
 void send_sample_string(int socket_fd, char* metric_id, float timestamp,
                         char* value);
-// void send_sample_bytes(int socket_fd, char* metric_id, float timestamp,
-//                        uint8_t* value);
+void send_sample_file(int socket_fd, char* metric_id, float timestamp,
+                       char* filepath, char* extension);
