@@ -26,17 +26,7 @@ void print_ai_connected(struct sockaddr* addr, int family)
     printf("Connected to %s:%d\n", ipstr, port);
 }
 
-// Makes UDP socket, connects to node:service, and returns socket file
-// descriptor
-// Kill with close(fd)
-// Does not bind to specific port, lets OS
-// choose.
-// uses connect() to set destination address, you can send to same
-// address with send()
-//
-// node is IP or hostname
-// service is port number or service name (e.g. "http")
-int make_async_connected_send_socket(char* node, char* service)
+int make_connected_send_socket(char* node, char* service)
 {
     // --- GET LINKED LIST servinfo OF addrinfo STRUCTS CONTAINING
     // --- ADDRESS INFORMATION FOR node:service ---
@@ -70,19 +60,6 @@ int make_async_connected_send_socket(char* node, char* service)
         // servinfo
         if(sockfd == -1) {
             perror("client: socket");
-            continue;
-        }
-
-        // set socket to non-blocking mode
-        int flags = fcntl(sockfd, F_GETFL, 0);
-        if(flags == -1) {
-            perror("fcntl F_GETFL");
-            close(sockfd);
-            continue;
-        }
-        if(fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
-            perror("fcntl F_SETFL O_NONBLOCK");
-            close(sockfd);
             continue;
         }
 
