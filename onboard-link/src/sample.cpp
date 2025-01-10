@@ -1,32 +1,26 @@
 #include "sample.hpp"
-#include <nlohmann/json.hpp>
+#include "encode_downlink_telemetry/encode_primitive.hpp"
+#include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
+#include <fstream>
+#include <iterator>
 
-using json = nlohmann::json;
-
-SampleData::SampleData(std::string metric_id, float timestamp,
-                       SampleValue value)
-    : metadata(SampleMetadata{metric_id, timestamp}), value(value)
+boost::shared_ptr<std::vector<uint8_t>> PrimitiveSample::data_serialized()
 {
-};
-
-std::string SampleData::to_json(int sample_id)
-{
-    json j;
-    j["metadata"]["metric_id"] = metadata.metric_id;
-    j["metadata"]["timestamp"] = metadata.timestamp;
-    j["metadata"]["sample_id"] = sample_id;
-
-    std::visit([&j](auto&& arg) { j["value"] = arg; }, value);
-
-    return j.dump();
+    return encode_primitive(this->value);
 }
 
-std::vector<uint8_t> SampleData::to_bytes(int sample_id) {
-    std::string json = to_json(sample_id);
-    std::vector<uint8_t> bytes(json.begin(), json.end());
-    return bytes;
-}
+boost::shared_ptr<std::vector<uint8_t>> FileSample::data_serialized()
+{
+    boost::shared_ptr<std::vector<uint8_t>> data =
+        boost::make_shared<std::vector<uint8_t>>();
+    std::ifstream file(this->file_path, std::ios::binary);
 
-size_t SampleData::get_size() {
-    return to_json(0).size();
+    if(file) {
+        file.unsetf(std::ios::skipws);
+        data->insert(data->begin(), std::istream_iterator<uint8_t>(file),
+                     std::istream_iterator<uint8_t>());
+    }
+
+    return data;
 }

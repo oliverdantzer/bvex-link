@@ -2,27 +2,54 @@
 
 #include <cstdint>
 #include <ctime>
+#include <optional>
 #include <string>
 #include <variant>
 #include <vector>
+#include "encode_downlink_telemetry/encode_primitive.hpp"
 
 typedef std::string MetricId;
 
 struct SampleMetadata {
-    MetricId metric_id; // Should be unique to each metric
-    double timestamp;   // Time since last epoch
+    MetricId metric_id;                   // Should be unique to each metric
+    double timestamp;                     // Time since last epoch
 };
 
-typedef std::variant<int32_t, int64_t, float, double, bool, std::string> SampleValue;
+
 
 class SampleData
 {
   public:
     const SampleMetadata metadata;
-    const SampleValue value;
-    SampleData(std::string metric_id, float timestamp,
-                       SampleValue value);
-    std::string to_json(int sample_id);
-    std::vector<uint8_t> to_bytes(int sample_id);
-    size_t get_size();
+    const std::string type;
+    SampleData(SampleMetadata metadata) : metadata(metadata) {}
+    virtual ~SampleData() = default;
+    virtual boost::shared_ptr<std::vector<uint8_t>> data_serialized() = 0;
+};
+
+class PrimitiveSample : public SampleData
+{
+  public:
+    const PrimitiveValue value;
+    const std::string type = "primitive";
+    PrimitiveSample(SampleMetadata metadata, PrimitiveValue value)
+        : SampleData(metadata), value(value)
+    {
+    }
+    boost::shared_ptr<std::vector<uint8_t>> data_serialized() override;
+};
+
+class FileSample : public SampleData
+{
+  public:
+    const std::string file_path;
+    const std::string file_extension;
+    const std::string type = "filedata";
+    FileSample(SampleMetadata metadata, std::string file_path,
+               std::string file_extension)
+        : SampleData(metadata), file_path(file_path),
+          file_extension(file_extension)
+    {
+    }
+    boost::shared_ptr<std::vector<uint8_t>> data_serialized() override;
 };
