@@ -24,9 +24,6 @@
     - You can now link `telemetry-uplink` to your targets
 
 ## Generating new nanopb headers
-- [Download nanopb binaries](https://jpa.kapsi.fi/nanopb/download/)
-- Extract to appropriate folder
-- I put mine in `~/devtools/`
 ```bash
-$ ./generate_nanopb_headers ~/devtools/nanopb
+./generate-nanopb-headers.sh -o ./src/generated/nanopb sample.proto
 ```
