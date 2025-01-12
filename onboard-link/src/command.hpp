@@ -1,22 +1,15 @@
 #pragma once
 
 #include "sample.hpp"
+#include "sample_transmitter.hpp"
 #include <boost/shared_ptr.hpp>
-#include <unordered_map>
+#include <cstdint>
+#include <memory>
 #include <optional>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
-
-/**
- * @brief Struct to hold data concerning a sample that is to be downlinked
- */
-struct SampleDownlinkData {
-    // Pointer to the sample's data.
-    boost::shared_ptr<SampleData> sample;
-    // Unique id of the sample (Unique in context of sample's metric)
-    int sample_id;
-};
 
 /**
  * @brief Struct to hold information about a metric.
@@ -31,16 +24,13 @@ struct MetricInfo {
     // can be null if no sample has been recieved or if nullified after
     // pop_latest_sample
     boost::shared_ptr<SampleData> latest_sample;
-    // Sample id of latest sample recieved
-    int sample_id;
-    // Max size in bytes of a sample from this metric
-    size_t max_sample_size;
+    std::unique_ptr<SampleTransmitter> sample_transmitter;
 };
 
 class Command
 {
   public:
-    Command(size_t bps, size_t max_packet_size_);
+    Command(size_t init_bps, size_t init_max_packet_size);
     // void add_tc_json(const std::string& telecommands_json);
 
     size_t get_bps();
@@ -51,17 +41,7 @@ class Command
      */
     void add_sample(boost::shared_ptr<SampleData> sample);
 
-    /**
-     * @brief Pop the latest sample data recieved for the given metric ID.
-     * 
-     * Removes sample from internal data structure before returning it.
-     * 
-     * @param metric_id ID of the metric.
-     * @return Optional containing SampleDownlinkData if available.
-     */
-    std::optional<SampleDownlinkData> pop_latest_sample(MetricId metric_id);
-
-    std::optional<MetricInfo> get_metric_info(MetricId metric_id);
+    boost::shared_ptr<std::vector<uint8_t>> get_sample_pkt(MetricId metric_id);
 
     size_t get_num_metrics();
 
@@ -72,11 +52,22 @@ class Command
     std::unique_ptr<std::vector<MetricId>> get_all_metric_ids();
 
     bool metric_exists(MetricId metric_id);
-    
-    size_t get_metric_max_sample_size(MetricId metric_id);
 
   private:
+    /**
+     * @brief Pop the latest sample data recieved for the given metric ID.
+     *
+     * Removes sample from internal data structure before returning it.
+     *
+     * @param metric_id ID of the metric.
+     * @return Optional containing SampleDownlinkData if available.
+     */
+    boost::shared_ptr<SampleData> pop_latest_sample(MetricId metric_id);
+
+    void uniform_distribute_shares();
+
     size_t bps_;
+    size_t max_packet_size_;
     // std::vector<std::string> telecommands_;
-    std::unordered_map<MetricId, MetricInfo> metrics_;
+    std::unordered_map<MetricId, std::unique_ptr<MetricInfo>> metrics_;
 };
