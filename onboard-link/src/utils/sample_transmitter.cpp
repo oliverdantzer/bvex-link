@@ -45,7 +45,7 @@ bool SampleTransmitter::set_new_sample()
     }
 }
 
-boost::shared_ptr<std::vector<uint8_t>> SampleTransmitter::pop()
+boost::shared_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
 {
     if(sample_chunker_ == nullptr || unacked_seqnums_.size() == 0) {
         // Get a new sample to downlink

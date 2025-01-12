@@ -14,7 +14,7 @@ class SampleTransmitter
         std::function<size_t()> get_max_pkt_size, MetricId metric_id);
 
     // Get the next payload to downlink
-    boost::shared_ptr<std::vector<uint8_t>> pop();
+    boost::shared_ptr<std::vector<uint8_t>> get_pkt();
 
     // Mark a sequence number as succesfully recieved
     void ack_seqnum(int seqnum, SampleId sample_id);
