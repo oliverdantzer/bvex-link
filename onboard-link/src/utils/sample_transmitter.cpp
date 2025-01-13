@@ -63,16 +63,19 @@ boost::shared_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
     Chunk chunk = sample_chunker_->get_chunk(seq_num);
     increment_itr();
     // TODO: SERIALIZE CHUNK AND RETURN
-    SegmentData segment_data = {.metadata = sample_metadata_,
-                        .num_segments = sample_chunker_->get_num_chunks(),
-                        .seqnum = seq_num,
-                        .data = chunk.data};
-    boost::shared_ptr<std::vector<uint8_t>> pkt = serialize_segment(segment_data);
+    SegmentData segment_data = {
+        .metadata = sample_metadata_,
+        .num_segments = sample_chunker_->get_num_chunks(),
+        .seqnum = seq_num,
+        .data = chunk.data};
+    boost::shared_ptr<std::vector<uint8_t>> pkt =
+        serialize_segment(segment_data);
 #ifdef DEBUG
-    if (pkt->size() > get_max_pkt_size_()) {
+    if(pkt->size() > get_max_pkt_size_()) {
         std::cerr << "Packet size exceeds maximum packet size" << std::endl;
         std::cerr << "Actual packet size: " << pkt->size() << std::endl;
-        std::cerr << "Maximum packet size: " << get_max_pkt_size_() << std::endl;
+        std::cerr << "Maximum packet size: " << get_max_pkt_size_()
+                  << std::endl;
     }
 #endif
     return pkt;
