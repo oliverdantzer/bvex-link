@@ -16,10 +16,10 @@ To use this, you must have vcpkg, have $VCPKG_ROOT defined then run `vcpkg insta
 
 Build onboard telemetry nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../telemetry-uplink -o ./src/decode_payload/pb_generated sample.proto
+./generate-nanopb-headers.sh -p ../telemetry-uplink -o ./src/decode_onboard_telemetry/pb_generated sample.proto
 ```
 
 Build downlink telemetry nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../shared -o ./src/encode_downlink_telemetry/pb_generated sample.proto segments.proto primitive-channels.proto
+./generate-nanopb-headers.sh -p ../shared -o ./src/encode_downlink_telemetry/pb_generated sample.proto
 ```
