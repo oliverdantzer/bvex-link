@@ -7,15 +7,6 @@
 #include <string>
 #include <vector>
 
-struct SegmentData {
-    SampleMetadata metadata;
-    std::optional<std::string> file_extension;
-    unsigned int sample_id;
-    unsigned int num_segments;
-    unsigned int seqnum;
-    boost::shared_ptr<std::vector<uint8_t>> data;
-};
-
 boost::shared_ptr<std::vector<uint8_t>> serialize_file_segment(
     SegmentData data, std::string extension)
 {
