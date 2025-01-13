@@ -15,22 +15,18 @@ class Telemetry
     Telemetry(Command& command);
 
     /**
-     * @brief Retrieves the next telemetry data as a JSON string.
+     * @brief Retrieves the next telemetry packet.
      *
-     * This function pops the next telemetry data from the internal queue
-     * and returns it as a JSON-formatted string. The max size of the
+     * The max size of the
      * data is limited to this.command_.get_max_packet_size()
      *
-     * @return std::string The next telemetry data in JSON format.
+     * @return ptr to raw bytes of sample frame packet.
      */
     boost::shared_ptr<std::vector<uint8_t>> pop();
 
   private:
     Command& command_;
-    std::map<MetricId, int> metric_token_limits_;
     std::map<MetricId, int> metric_token_counts_;
-    std::map<MetricId, boost::shared_ptr<SampleData>> metric_samples_;
-    size_t sum_max_sizes_ = 0;
 
     /**
      * Copy of command's metric ids, updated after each full
@@ -44,36 +40,19 @@ class Telemetry
     std::vector<MetricId>::iterator metric_iter_;
 
     /**
-     * @brief Returns the number of tokens a metric needs to be sent
+     * @brief Moves metric_iter_ to the next metric
+     * 
+     * Loops back to the beginning and refreshes metric ids if at the end
      *
-     * Calculates by taking (command.get_share(metric_id) * )
-     *
-     * @param metric_id The id of the metric
      */
-    unsigned int calc_token_threshold(MetricId metric_id);
+    void go_to_next_metric();
 
     /**
-     * @brief Moves position ptr to next metric
-     *
-     * Loops back to the beginning if at the end
-     *
-     * @note This is a helper function for go_to_next_state.
+     * @brief Gets a packet from the current metric
      */
-    void increment_position();
+    boost::shared_ptr<std::vector<uint8_t>> get_pkt_from_current_metric();
 
-    /**
-     * @brief Increments position and gives the metric at the new position a
-     * token
-     *
-     */
-    void go_to_next_state();
+    void refresh_metric_ids();
 
-    /**
-     * @brief Pops a sample from the current metric
-     *
-     *
-     *
-     * @throws x If the metrics does not have enough tokens to meet threshold
-     */
-    boost::shared_ptr<std::vector<uint8_t>> pop_current_metric();
+    std::string get_current_metric_id();
 };
