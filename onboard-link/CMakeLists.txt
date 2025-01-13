@@ -23,6 +23,8 @@ aux_source_directory(src/encode_downlink_telemetry _encDownlink)
 aux_source_directory(src/encode_downlink_telemetry/pb_generated _encDownlinkPbGen)
 aux_source_directory(src/decode_onboard_telemetry _decOnboard)
 aux_source_directory(src/decode_onboard_telemetry/pb_generated _decOnboardPbGen)
+aux_source_directory(src/server _server)
+aux_source_directory(src/utils _utils)
 set(_srcFiles
     ${_src}
     ${_encDownlink}
