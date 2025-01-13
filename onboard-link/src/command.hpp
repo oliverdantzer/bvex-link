@@ -19,7 +19,7 @@ struct MetricInfo {
     MetricId metric_id;
     // Amount of bps dedicated to metric telemetry data
     // Value in range [0-1]
-    float share;
+    unsigned int token_threshold;
     // Latest sample of this metric recieved.
     // can be null if no sample has been recieved or if nullified after
     // pop_latest_sample
@@ -45,13 +45,15 @@ class Command
 
     size_t get_num_metrics();
 
-    float get_metric_share(MetricId metric_id);
+    float get_metric_token_threshold(MetricId metric_id);
 
     void print_all_metric_ids();
 
     std::unique_ptr<std::vector<MetricId>> get_all_metric_ids();
 
     bool metric_exists(MetricId metric_id);
+
+    size_t get_max_packet_size();
 
   private:
     /**
@@ -63,8 +65,6 @@ class Command
      * @return Optional containing SampleDownlinkData if available.
      */
     boost::shared_ptr<SampleData> pop_latest_sample(MetricId metric_id);
-
-    void uniform_distribute_shares();
 
     size_t bps_;
     size_t max_packet_size_;
