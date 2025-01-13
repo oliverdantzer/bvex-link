@@ -28,8 +28,8 @@ class SampleTransmitter
 
   private:
     bool set_new_sample();
-    void SampleTransmitter::increment_itr();
-    unsigned int SampleTransmitter::get_itr_val();
+    void increment_itr();
+    unsigned int get_itr_val();
     SampleMetadata sample_metadata_;
     SampleId sample_id_;
     Chunker* sample_chunker_;
