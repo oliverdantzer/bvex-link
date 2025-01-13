@@ -1,6 +1,6 @@
 #include "command.hpp"
-#include "recv_uplink_sample_server.hpp"
-#include "send_server.hpp"
+#include "server/recv_uplink_sample_server.hpp"
+#include "server/send_server.hpp"
 #include "telemetry.hpp"
 #include <boost/asio.hpp>
 #include <iostream>

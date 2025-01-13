@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "command.hpp"
+#include "../command.hpp"
 
 using boost::asio::ip::udp;
 

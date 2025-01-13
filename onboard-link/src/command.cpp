@@ -2,6 +2,7 @@
 #include "boost/shared_ptr.hpp"
 #include "sample.hpp"
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <memory>
 

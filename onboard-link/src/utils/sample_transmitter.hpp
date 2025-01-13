@@ -1,6 +1,10 @@
 #include "../command.hpp"
 #include "chunker.hpp"
-#include "sample.hpp"
+#include "../sample.hpp"
+#include <cstdint>
+#include <functional>
+#include <set>
+#include <vector>
 #include <cstdint>
 
 typedef uint32_t SampleId;

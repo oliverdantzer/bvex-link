@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sample.hpp"
-#include "sample_transmitter.hpp"
+#include "utils/sample_transmitter.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
 #include <memory>

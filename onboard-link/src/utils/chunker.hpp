@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sample.hpp"
+#include "../sample.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
 #include <map>

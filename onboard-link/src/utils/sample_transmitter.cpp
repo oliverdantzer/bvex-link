@@ -2,6 +2,11 @@
 #include "chunker.hpp"
 #include "encode_downlink_telemetry/serialize_segment.hpp"
 #include <boost/iterator/counting_iterator.hpp>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <vector>
+
 
 SampleTransmitter::SampleTransmitter(
     std::function<boost::shared_ptr<SampleData>()> pop_latest_sample,

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "command.hpp"
+#include "../command.hpp"
 #include "recv_server.hpp"
 #include <boost/asio.hpp>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "command.hpp"
-#include "telemetry.hpp"
+#include "../command.hpp"
+#include "../telemetry.hpp"
 #include <boost/asio.hpp>
 #include <string>
 
