@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         }
         const int target_port = std::atoi(argv[4]);
 
-        Command command = Command(100, 100);
+        Command command = Command(100000, 100);
         Telemetry telemetry = Telemetry(command);
         boost::asio::io_service io_service;
         SendServer send_server(io_service, telemetry, command, send_port,
