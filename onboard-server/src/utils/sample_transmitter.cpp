@@ -1,13 +1,13 @@
 #include "sample_transmitter.hpp"
 #include "chunker.hpp"
-#include "encode_downlink_telemetry/serialize_segment.hpp"
+#include "encode_downlink_telemetry/encode_sample_frame.hpp"
+#include "encode_downlink_telemetry/size_constants.hpp"
 #include <boost/iterator/counting_iterator.hpp>
-#include <memory>
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <vector>
-
 
 SampleTransmitter::SampleTransmitter(
     std::function<std::unique_ptr<SampleData>()> pop_latest_sample,
@@ -31,8 +31,9 @@ bool SampleTransmitter::set_new_sample()
 
         uint32_t max_segment_size = get_max_pkt_size_() - overhead;
 
-        sample_chunker_ =
-            new Chunker(sample->data_serialized(), max_segment_size);
+        data_type_ = sample->type;
+
+        sample_chunker_ = new Chunker(sample->encode_data(), max_segment_size);
         unsigned int num_chunks = sample_chunker_->get_num_chunks();
 
         // set all seqnums to unacked
@@ -63,14 +64,14 @@ std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
     unsigned int seq_num = get_itr_val();
     Chunk chunk = sample_chunker_->get_chunk(seq_num);
     increment_itr();
-    // TODO: SERIALIZE CHUNK AND RETURN
-    SegmentData segment_data = {
-        .metadata = sample_metadata_,
-        .num_segments = sample_chunker_->get_num_chunks(),
-        .seqnum = seq_num,
-        .data = chunk.data};
+    SampleFrameData segment_data = {.metadata = sample_metadata_,
+                                    .data_type = data_type_,
+                                    .num_segments =
+                                        sample_chunker_->get_num_chunks(),
+                                    .seqnum = seq_num,
+                                    .data = std::move(chunk.data)};
     std::unique_ptr<std::vector<uint8_t>> pkt =
-        serialize_segment(segment_data);
+        encode_sample_frame(std::move(segment_data));
 #ifdef DEBUG
     if(pkt->size() > get_max_pkt_size_()) {
         std::cerr << "Packet size exceeds maximum packet size" << std::endl;

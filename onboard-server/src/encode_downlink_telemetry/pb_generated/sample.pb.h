@@ -20,11 +20,9 @@ typedef struct _SampleFrame {
     char metric_id[17];
     uint32_t sample_id;
     float timestamp; /* s since last epoch */
-    char data_type[17]; /* "filedata" or "primitive" */
+    char data_type[17]; /* "file" or "primitive" */
     bool has_segment;
     Segment segment;
-    bool has_extension;
-    char extension[17];
 } SampleFrame;
 
 
@@ -33,9 +31,9 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define SampleFrame_init_default                 {"", 0, 0, "", false, Segment_init_default, false, ""}
+#define SampleFrame_init_default                 {"", 0, 0, "", false, Segment_init_default}
 #define Segment_init_default                     {0, 0, {{NULL}, NULL}}
-#define SampleFrame_init_zero                    {"", 0, 0, "", false, Segment_init_zero, false, ""}
+#define SampleFrame_init_zero                    {"", 0, 0, "", false, Segment_init_zero}
 #define Segment_init_zero                        {0, 0, {{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
@@ -47,7 +45,6 @@ extern "C" {
 #define SampleFrame_timestamp_tag                3
 #define SampleFrame_data_type_tag                4
 #define SampleFrame_segment_tag                  5
-#define SampleFrame_extension_tag                6
 
 /* Struct field encoding specification for nanopb */
 #define SampleFrame_FIELDLIST(X, a) \
@@ -55,8 +52,7 @@ X(a, STATIC,   SINGULAR, STRING,   metric_id,         1) \
 X(a, STATIC,   SINGULAR, UINT32,   sample_id,         2) \
 X(a, STATIC,   SINGULAR, FLOAT,    timestamp,         3) \
 X(a, STATIC,   SINGULAR, STRING,   data_type,         4) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  segment,           5) \
-X(a, STATIC,   OPTIONAL, STRING,   extension,         6)
+X(a, STATIC,   OPTIONAL, MESSAGE,  segment,           5)
 #define SampleFrame_CALLBACK NULL
 #define SampleFrame_DEFAULT NULL
 #define SampleFrame_segment_MSGTYPE Segment

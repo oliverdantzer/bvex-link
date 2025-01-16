@@ -12,7 +12,6 @@
 struct SampleFrameData {
     SampleMetadata metadata;
     std::string data_type;
-    std::optional<std::string> file_extension;
     unsigned int sample_id;
     unsigned int num_segments;
     unsigned int seqnum;
@@ -20,3 +19,8 @@ struct SampleFrameData {
 };
 
 std::unique_ptr<std::vector<uint8_t>> encode_sample_frame(SampleFrameData data);
+
+size_t calculate_segment_encoding_size(size_t data_size)
+{
+    return SAMPLE_FRAME_OVERHEAD + data_size;
+}

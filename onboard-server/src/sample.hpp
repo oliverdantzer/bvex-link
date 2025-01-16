@@ -1,22 +1,20 @@
 #pragma once
 
+#include "encode_downlink_telemetry/encode_primitive.hpp"
 #include <cstdint>
 #include <ctime>
+#include <memory>
 #include <optional>
 #include <string>
 #include <variant>
 #include <vector>
-#include "encode_downlink_telemetry/encode_primitive.hpp"
-#include <memory>
 
 typedef std::string MetricId;
 
 struct SampleMetadata {
-    MetricId metric_id;                   // Should be unique to each metric
-    double timestamp;                     // Time since last epoch
+    MetricId metric_id; // Should be unique to each metric
+    double timestamp;   // Time since last epoch
 };
-
-
 
 class SampleData
 {
@@ -25,7 +23,7 @@ class SampleData
     const std::string type;
     SampleData(SampleMetadata metadata) : metadata(metadata) {}
     virtual ~SampleData() = default;
-    virtual std::unique_ptr<std::vector<uint8_t>> data_serialized() = 0;
+    virtual std::unique_ptr<std::vector<uint8_t>> encode_data() = 0;
 };
 
 class PrimitiveSample : public SampleData
@@ -37,7 +35,7 @@ class PrimitiveSample : public SampleData
         : SampleData(metadata), value(value)
     {
     }
-    std::unique_ptr<std::vector<uint8_t>> data_serialized() override;
+    std::unique_ptr<std::vector<uint8_t>> encode_data() override;
 };
 
 class FileSample : public SampleData
@@ -45,12 +43,13 @@ class FileSample : public SampleData
   public:
     const std::string file_path;
     const std::string file_extension;
-    const std::string type = "filedata";
+    const std::string type = "file";
     FileSample(SampleMetadata metadata, std::string file_path,
                std::string file_extension)
         : SampleData(metadata), file_path(file_path),
           file_extension(file_extension)
     {
     }
-    std::unique_ptr<std::vector<uint8_t>> data_serialized() override;
+
+    std::unique_ptr<std::vector<uint8_t>> encode_data() override;
 };

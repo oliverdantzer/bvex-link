@@ -1,13 +1,11 @@
 #include "../command.hpp"
-#include "chunker.hpp"
 #include "../sample.hpp"
+#include "chunker.hpp"
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <set>
 #include <vector>
-#include <cstdint>
-#include <memory>
-
 
 typedef uint32_t SampleId;
 
@@ -35,6 +33,8 @@ class SampleTransmitter
     SampleMetadata sample_metadata_;
     SampleId sample_id_;
     Chunker* sample_chunker_;
+    std::string data_type_;
+    std::optional<std::string> file_extension_;
     std::function<std::unique_ptr<SampleData>()> pop_latest_sample_;
     std::function<size_t()> get_max_pkt_size_;
     std::set<unsigned int> unacked_seqnums_;

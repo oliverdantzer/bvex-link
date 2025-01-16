@@ -7,4 +7,5 @@ constexpr size_t UDP_HEADER_OVERHEAD = 8;   // UDP header size
 
 // Protocol buffer overheads
 constexpr size_t SAMPLE_FRAME_OVERHEAD = 24; // Sample protobuf overhead
+constexpr size_t FILE_FRAME_OVERHEAD = 4; // Sample protobuf overhead
 constexpr size_t PRIMITIVE_FRAME_SIZE = 8;

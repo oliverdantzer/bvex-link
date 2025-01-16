@@ -7,9 +7,8 @@ message SampleFrame {
   uint32 sample_id = 2;
   float timestamp = 3; // s since last epoch
   string data_type = 4
-      [ (nanopb).max_length = 16 ]; // "filedata" or "primitive"
+      [ (nanopb).max_length = 16 ]; // "file" or "primitive"
   Segment segment = 5;
-  optional string extension = 6 [ (nanopb).max_length = 16 ];
 }
 
 message Segment {
