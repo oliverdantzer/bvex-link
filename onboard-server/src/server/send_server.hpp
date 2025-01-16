@@ -4,6 +4,7 @@
 #include "../telemetry.hpp"
 #include <boost/asio.hpp>
 #include <string>
+#include <memory>
 
 using boost::asio::ip::udp;
 
@@ -84,7 +85,7 @@ class SendServer
      * @param error The error code resulting from the send operation.
      * @param sent_size The number of bytes sent.
      */
-    void handle_send(boost::shared_ptr<std::vector<uint8_t>> message,
+    void handle_send(std::unique_ptr<std::vector<uint8_t>> message,
                      const boost::system::error_code& error,
                      std::size_t sent_size);
 

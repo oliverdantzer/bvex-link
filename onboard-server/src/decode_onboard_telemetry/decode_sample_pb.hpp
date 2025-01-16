@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../sample.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <vector>
 #include <cstdint>
 
-boost::shared_ptr<SampleData> decode_payload(
-    boost::shared_ptr<std::vector<uint8_t>> payload, size_t payload_size);
+std::unique_ptr<SampleData> decode_payload(
+    std::unique_ptr<std::vector<uint8_t>> payload, size_t payload_size);

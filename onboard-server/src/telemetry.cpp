@@ -1,13 +1,12 @@
 #include "telemetry.hpp"
 #include "command.hpp"
 #include "sample.hpp"
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
 #include <cmath>
 #include <cstdint>
 #include <ctime>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,7 +14,7 @@ Telemetry::Telemetry(Command& command)
     : command_(command), current_metric_ids_(command_.get_all_metric_ids()),
       metric_iter_(current_metric_ids_->begin()) {};
 
-boost::shared_ptr<std::vector<uint8_t>> Telemetry::pop()
+std::unique_ptr<std::vector<uint8_t>> Telemetry::pop()
 {
     if(current_metric_ids_->empty()) {
         refresh_metric_ids();

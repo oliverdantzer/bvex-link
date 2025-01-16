@@ -1,5 +1,4 @@
 #include "command.hpp"
-#include "boost/shared_ptr.hpp"
 #include "sample.hpp"
 #include <iostream>
 #include <memory>
@@ -8,18 +7,18 @@
 Command::Command(size_t init_bps, size_t init_max_packet_size)
     : bps_(init_bps), metrics_(), max_packet_size_(init_max_packet_size) {};
 
-void Command::add_sample(boost::shared_ptr<SampleData> sample)
+void Command::add_sample(std::unique_ptr<SampleData> sample)
 {
     // std::cout << "add_sample. obj memaddr: " << this << std::endl;
     if(metric_exists(sample->metadata.metric_id)) {
-        metrics_[sample->metadata.metric_id]->latest_sample = sample;
+        metrics_[sample->metadata.metric_id]->latest_sample = std::move(sample);
     } else {
         // Create metric_info, populate it with data from sample
         std::unique_ptr<MetricInfo> metric_info =
             std::make_unique<MetricInfo>();
         metric_info->metric_id = sample->metadata.metric_id;
         metric_info->token_threshold = 1;
-        metric_info->latest_sample = sample;
+        metric_info->latest_sample = std::move(sample);
         metric_info->sample_transmitter = std::make_unique<SampleTransmitter>(
             [this, metric_id = sample->metadata.metric_id]() {
                 return pop_latest_sample(metric_id);
@@ -31,13 +30,13 @@ void Command::add_sample(boost::shared_ptr<SampleData> sample)
         metrics_[sample->metadata.metric_id] = std::move(metric_info);
     }
 }
-boost::shared_ptr<SampleData> Command::pop_latest_sample(MetricId metric_id)
+std::unique_ptr<SampleData> Command::pop_latest_sample(MetricId metric_id)
 {
     // If metric exists and has sample
     if(metric_exists(metric_id) &&
        metrics_[metric_id]->latest_sample != nullptr) {
-        boost::shared_ptr<SampleData> sample =
-            metrics_[metric_id]->latest_sample;
+        std::unique_ptr<SampleData> sample =
+            std::move(metrics_[metric_id]->latest_sample);
         metrics_[metric_id]->latest_sample = nullptr;
         return sample;
 
@@ -50,7 +49,7 @@ boost::shared_ptr<SampleData> Command::pop_latest_sample(MetricId metric_id)
 
 size_t Command::get_max_packet_size() { return max_packet_size_; }
 
-boost::shared_ptr<std::vector<uint8_t>> Command::get_sample_pkt(
+std::unique_ptr<std::vector<uint8_t>> Command::get_sample_pkt(
     MetricId metric_id)
 {
     // If metric exists and has sample

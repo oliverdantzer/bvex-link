@@ -1,16 +1,15 @@
 #include "decode_sample_pb.hpp"
 #include "../sample.hpp"
 #include "pb_generated/sample.pb.h"
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <cstdint>
 #include <iostream>
 #include <pb_decode.h>
 #include <string>
 #include <vector>
 
-boost::shared_ptr<SampleData> decode_payload(
-    boost::shared_ptr<std::vector<uint8_t>> payload, const size_t payload_size)
+std::unique_ptr<SampleData> decode_payload(
+    std::unique_ptr<std::vector<uint8_t>> payload, const size_t payload_size)
 {
     Sample sample = Sample_init_zero;
     bool status;
@@ -34,20 +33,20 @@ boost::shared_ptr<SampleData> decode_payload(
     case Sample_primitive_tag:
         switch(sample.data.primitive.which_value) {
         case Primitive_int_val_tag:
-            return boost::make_shared<PrimitiveSample>(
+            return std::make_unique<PrimitiveSample>(
                 metadata, sample.data.primitive.value.int_val);
         case Primitive_float_val_tag:
-            return boost::make_shared<PrimitiveSample>(
+            return std::make_unique<PrimitiveSample>(
                 metadata, sample.data.primitive.value.float_val);
         case Primitive_double_val_tag:
-            return boost::make_shared<PrimitiveSample>(
+            return std::make_unique<PrimitiveSample>(
                 metadata, sample.data.primitive.value.double_val);
         default:
             std::cerr << "Unknown/unimplemented value type" << std::endl;
             return nullptr;
         }
     case Sample_file_tag:
-        return boost::make_shared<FileSample>(
+        return std::make_unique<FileSample>(
             metadata, sample.data.file.filepath, sample.data.file.extension);
     default:
         std::cerr << "Unknown/unimplemented data type" << std::endl;

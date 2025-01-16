@@ -7,6 +7,7 @@
 #include <variant>
 #include <vector>
 #include "encode_downlink_telemetry/encode_primitive.hpp"
+#include <memory>
 
 typedef std::string MetricId;
 
@@ -24,7 +25,7 @@ class SampleData
     const std::string type;
     SampleData(SampleMetadata metadata) : metadata(metadata) {}
     virtual ~SampleData() = default;
-    virtual boost::shared_ptr<std::vector<uint8_t>> data_serialized() = 0;
+    virtual std::unique_ptr<std::vector<uint8_t>> data_serialized() = 0;
 };
 
 class PrimitiveSample : public SampleData
@@ -36,7 +37,7 @@ class PrimitiveSample : public SampleData
         : SampleData(metadata), value(value)
     {
     }
-    boost::shared_ptr<std::vector<uint8_t>> data_serialized() override;
+    std::unique_ptr<std::vector<uint8_t>> data_serialized() override;
 };
 
 class FileSample : public SampleData
@@ -51,5 +52,5 @@ class FileSample : public SampleData
           file_extension(file_extension)
     {
     }
-    boost::shared_ptr<std::vector<uint8_t>> data_serialized() override;
+    std::unique_ptr<std::vector<uint8_t>> data_serialized() override;
 };

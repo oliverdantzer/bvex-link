@@ -2,7 +2,6 @@
 
 #include "sample.hpp"
 #include "utils/sample_transmitter.hpp"
-#include <boost/shared_ptr.hpp>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -23,7 +22,7 @@ struct MetricInfo {
     // Latest sample of this metric recieved.
     // can be null if no sample has been recieved or if nullified after
     // pop_latest_sample
-    boost::shared_ptr<SampleData> latest_sample;
+    std::unique_ptr<SampleData> latest_sample;
     std::unique_ptr<SampleTransmitter> sample_transmitter;
 };
 
@@ -39,9 +38,9 @@ class Command
      * @brief Adds a sample to the internal data structure.
      * @param sample Shared pointer to the sample data to be added.
      */
-    void add_sample(boost::shared_ptr<SampleData> sample);
+    void add_sample(std::unique_ptr<SampleData> sample);
 
-    boost::shared_ptr<std::vector<uint8_t>> get_sample_pkt(MetricId metric_id);
+    std::unique_ptr<std::vector<uint8_t>> get_sample_pkt(MetricId metric_id);
 
     size_t get_num_metrics();
 
@@ -64,7 +63,7 @@ class Command
      * @param metric_id ID of the metric.
      * @return Optional containing SampleDownlinkData if available.
      */
-    boost::shared_ptr<SampleData> pop_latest_sample(MetricId metric_id);
+    std::unique_ptr<SampleData> pop_latest_sample(MetricId metric_id);
 
     size_t bps_;
     size_t max_packet_size_;

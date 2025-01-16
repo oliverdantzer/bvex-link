@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../sample.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <cstdint>
 #include <map>
 #include <string>
@@ -13,7 +13,7 @@ typedef int SeqNum;
 struct Chunk {
     SeqNum seq_num; // Unique to each chunk for a given piece of data
     size_t offset;  // byte offset of the chunk in the data
-    boost::shared_ptr<std::vector<uint8_t>>
+    std::unique_ptr<std::vector<uint8_t>>
         data; // The data segment of the chunk
 };
 
@@ -21,7 +21,7 @@ struct Chunk {
 class Chunker
 {
   public:
-    Chunker(boost::shared_ptr<std::vector<uint8_t>> data,
+    Chunker(std::unique_ptr<std::vector<uint8_t>> data,
             size_t max_chunk_size);
 
     // get chunk by its unique sequence number
@@ -39,7 +39,7 @@ class Chunker
     size_t get_chunk_size(SeqNum seq_num);
 
     // the piece of data that we get the segments from
-    boost::shared_ptr<std::vector<uint8_t>> data_;
+    std::unique_ptr<std::vector<uint8_t>> data_;
 
     // the size of each chunk possibly excluding the last one
     size_t normal_chunk_size_;

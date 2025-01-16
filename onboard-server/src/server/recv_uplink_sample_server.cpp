@@ -2,6 +2,7 @@
 #include "../decode_onboard_telemetry/decode_sample_pb.hpp"
 #include "recv_server.hpp"
 #include <iostream>
+#include <memory>
 
 RecvUplinkSampleServer::RecvUplinkSampleServer(
     boost::asio::io_service& io_service, Command& command, int port,
@@ -13,8 +14,8 @@ RecvUplinkSampleServer::RecvUplinkSampleServer(
                    port, buffer_size) {};
 
 void RecvUplinkSampleServer::handle_message(
-    boost::shared_ptr<std::vector<uint8_t>> message, size_t size)
+    std::unique_ptr<std::vector<uint8_t>> message, size_t size)
 {
-    boost::shared_ptr<SampleData> sample = decode_payload(message, size);
-    command_.add_sample(sample);
+    std::unique_ptr<SampleData> sample = decode_payload(std::move(message), size);
+    command_.add_sample(std::move(sample));
 }

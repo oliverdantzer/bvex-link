@@ -1,7 +1,6 @@
 #include "recv_server.hpp"
 #include <boost/bind/bind.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <iostream>
 #include <string>
 
@@ -9,7 +8,7 @@ using boost::asio::ip::udp;
 
 RecvServer::RecvServer(
     boost::asio::io_service& io_service,
-    std::function<void(boost::shared_ptr<std::vector<uint8_t>>, size_t)>
+    std::function<void(std::unique_ptr<std::vector<uint8_t>>, size_t)>
         message_handler,
     int port, std::size_t buffer_size)
     // initialize members
@@ -45,12 +44,11 @@ void RecvServer::handle_recv(const boost::system::error_code& error,
     std::cout << "Received " << bytes_recvd << " bytes" << std::endl;
     if(!error) {
         // char *received_data(recv_buffer_.data());
-        // If we don't do a shared ptr, message might be destroyed
-        // before the async send is done
-        boost::shared_ptr<std::vector<uint8_t>> message =
-            boost::make_shared<std::vector<uint8_t>>(
+        // Must use unique ptr to give ownership to the caller
+        std::unique_ptr<std::vector<uint8_t>> message =
+            std::make_unique<std::vector<uint8_t>>(
                 recv_buffer_.begin(), recv_buffer_.begin() + bytes_recvd);
-        message_handler_(message, bytes_recvd);
+        message_handler_(std::move(message), bytes_recvd);
 
     } else {
         std::cerr << "Error code" << error.to_string()

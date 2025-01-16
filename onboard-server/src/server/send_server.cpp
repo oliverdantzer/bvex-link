@@ -1,9 +1,8 @@
 #include "send_server.hpp"
 
 #include <boost/bind/bind.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
 #include <iostream>
+#include <memory>
 
 // Lets us use s and ms after literal numbers
 using namespace std::chrono_literals;
@@ -12,9 +11,9 @@ constexpr std::chrono::milliseconds MAX_WAIT_TIME = 1000ms;
 constexpr std::chrono::milliseconds MIN_WAIT_TIME =
     1ms; // Set wait to <= 0 to disable backoff
 
-// boost::shared_ptr<std::string> get_message()
+// std::unique_ptr<std::string> get_message()
 // {
-//     return boost::shared_ptr<std::string>(new std::string("Hello"));
+//     return std::unique_ptr<std::string>(new std::string("Hello"));
 // }
 
 SendServer::SendServer(boost::asio::io_service& io_service,
@@ -32,7 +31,7 @@ SendServer::SendServer(boost::asio::io_service& io_service,
 
 void SendServer::start_send()
 {
-    boost::shared_ptr<std::vector<uint8_t>> message = telemetry_.pop();
+    std::unique_ptr<std::vector<uint8_t>> message = telemetry_.pop();
     if(message != nullptr) {
 
         current_wait_time_ = MIN_WAIT_TIME; // reset exponential backoff
@@ -43,7 +42,7 @@ void SendServer::start_send()
         // networking stack for transmission
         socket_.async_send_to(
             boost::asio::buffer(*message), remote_endpoint_,
-            boost::bind(&SendServer::handle_send, this, message,
+            boost::bind(&SendServer::handle_send, this, std::move(message),
                         boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
     } else {
@@ -79,7 +78,7 @@ void SendServer::start_send()
 
 // Handles
 void SendServer::handle_send(
-    boost::shared_ptr<std::vector<uint8_t>> /*message*/,
+    std::unique_ptr<std::vector<uint8_t>> /*message*/,
     const boost::system::error_code& error,
     std::size_t sent_size /*bytes_transferred*/)
 {

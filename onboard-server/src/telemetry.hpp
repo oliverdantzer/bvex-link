@@ -2,7 +2,6 @@
 
 #include "command.hpp"
 #include "sample.hpp"
-#include <boost/shared_ptr.hpp>
 #include <map>
 #include <memory>
 #include <set>
@@ -22,7 +21,7 @@ class Telemetry
      *
      * @return ptr to raw bytes of sample frame packet.
      */
-    boost::shared_ptr<std::vector<uint8_t>> pop();
+    std::unique_ptr<std::vector<uint8_t>> pop();
 
   private:
     Command& command_;
@@ -50,7 +49,7 @@ class Telemetry
     /**
      * @brief Gets a packet from the current metric
      */
-    boost::shared_ptr<std::vector<uint8_t>> get_pkt_from_current_metric();
+    std::unique_ptr<std::vector<uint8_t>> get_pkt_from_current_metric();
 
     void refresh_metric_ids();
 

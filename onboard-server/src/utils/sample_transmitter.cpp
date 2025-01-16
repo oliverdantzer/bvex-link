@@ -2,6 +2,7 @@
 #include "chunker.hpp"
 #include "encode_downlink_telemetry/serialize_segment.hpp"
 #include <boost/iterator/counting_iterator.hpp>
+#include <memory>
 #include <functional>
 #include <iostream>
 #include <iterator>
@@ -9,7 +10,7 @@
 
 
 SampleTransmitter::SampleTransmitter(
-    std::function<boost::shared_ptr<SampleData>()> pop_latest_sample,
+    std::function<std::unique_ptr<SampleData>()> pop_latest_sample,
     std::function<size_t()> get_max_pkt_size, MetricId metric_id)
     : pop_latest_sample_(pop_latest_sample), sample_metadata_({
                                                  .metric_id = metric_id,
@@ -19,7 +20,7 @@ SampleTransmitter::SampleTransmitter(
 
 bool SampleTransmitter::set_new_sample()
 {
-    boost::shared_ptr<SampleData> sample = pop_latest_sample_();
+    std::unique_ptr<SampleData> sample = pop_latest_sample_();
     if(sample == nullptr) {
         return false;
     } else {
@@ -50,7 +51,7 @@ bool SampleTransmitter::set_new_sample()
     }
 }
 
-boost::shared_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
+std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
 {
     if(sample_chunker_ == nullptr || unacked_seqnums_.size() == 0) {
         // Get a new sample to downlink
@@ -68,7 +69,7 @@ boost::shared_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
         .num_segments = sample_chunker_->get_num_chunks(),
         .seqnum = seq_num,
         .data = chunk.data};
-    boost::shared_ptr<std::vector<uint8_t>> pkt =
+    std::unique_ptr<std::vector<uint8_t>> pkt =
         serialize_segment(segment_data);
 #ifdef DEBUG
     if(pkt->size() > get_max_pkt_size_()) {
