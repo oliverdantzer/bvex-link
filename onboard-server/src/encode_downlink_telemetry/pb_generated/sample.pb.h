@@ -11,8 +11,8 @@
 
 /* Struct definitions */
 typedef struct _Segment {
-    uint32_t sequence_num;
     uint32_t num_segments;
+    uint32_t sequence_num;
     pb_callback_t data;
 } Segment;
 
@@ -21,10 +21,10 @@ typedef struct _SampleFrame {
     uint32_t sample_id;
     float timestamp; /* s since last epoch */
     char data_type[17]; /* "filedata" or "primitive" */
-    bool has_extension;
-    char extension[17];
     bool has_segment;
     Segment segment;
+    bool has_extension;
+    char extension[17];
 } SampleFrame;
 
 
@@ -33,38 +33,38 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define SampleFrame_init_default                 {"", 0, 0, "", false, "", false, Segment_init_default}
+#define SampleFrame_init_default                 {"", 0, 0, "", false, Segment_init_default, false, ""}
 #define Segment_init_default                     {0, 0, {{NULL}, NULL}}
-#define SampleFrame_init_zero                    {"", 0, 0, "", false, "", false, Segment_init_zero}
+#define SampleFrame_init_zero                    {"", 0, 0, "", false, Segment_init_zero, false, ""}
 #define Segment_init_zero                        {0, 0, {{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define Segment_sequence_num_tag                 1
-#define Segment_num_segments_tag                 2
-#define Segment_data_tag                         4
-#define SampleFrame_metric_id_tag                7
-#define SampleFrame_sample_id_tag                8
-#define SampleFrame_timestamp_tag                9
-#define SampleFrame_data_type_tag                12
-#define SampleFrame_extension_tag                13
-#define SampleFrame_segment_tag                  14
+#define Segment_num_segments_tag                 1
+#define Segment_sequence_num_tag                 2
+#define Segment_data_tag                         3
+#define SampleFrame_metric_id_tag                1
+#define SampleFrame_sample_id_tag                2
+#define SampleFrame_timestamp_tag                3
+#define SampleFrame_data_type_tag                4
+#define SampleFrame_segment_tag                  5
+#define SampleFrame_extension_tag                6
 
 /* Struct field encoding specification for nanopb */
 #define SampleFrame_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, STRING,   metric_id,         7) \
-X(a, STATIC,   SINGULAR, UINT32,   sample_id,         8) \
-X(a, STATIC,   SINGULAR, FLOAT,    timestamp,         9) \
-X(a, STATIC,   SINGULAR, STRING,   data_type,        12) \
-X(a, STATIC,   OPTIONAL, STRING,   extension,        13) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  segment,          14)
+X(a, STATIC,   SINGULAR, STRING,   metric_id,         1) \
+X(a, STATIC,   SINGULAR, UINT32,   sample_id,         2) \
+X(a, STATIC,   SINGULAR, FLOAT,    timestamp,         3) \
+X(a, STATIC,   SINGULAR, STRING,   data_type,         4) \
+X(a, STATIC,   OPTIONAL, MESSAGE,  segment,           5) \
+X(a, STATIC,   OPTIONAL, STRING,   extension,         6)
 #define SampleFrame_CALLBACK NULL
 #define SampleFrame_DEFAULT NULL
 #define SampleFrame_segment_MSGTYPE Segment
 
 #define Segment_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, UINT32,   sequence_num,      1) \
-X(a, STATIC,   SINGULAR, UINT32,   num_segments,      2) \
-X(a, CALLBACK, SINGULAR, BYTES,    data,              4)
+X(a, STATIC,   SINGULAR, UINT32,   num_segments,      1) \
+X(a, STATIC,   SINGULAR, UINT32,   sequence_num,      2) \
+X(a, CALLBACK, SINGULAR, BYTES,    data,              3)
 #define Segment_CALLBACK pb_default_field_callback
 #define Segment_DEFAULT NULL
 
