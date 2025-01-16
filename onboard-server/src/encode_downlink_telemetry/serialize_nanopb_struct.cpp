@@ -1,11 +1,12 @@
+#include "serialize_nanopb_struct.hpp"
 #include <cstdint>
+#include <memory>
 #include <pb_encode.h>
 #include <stdexcept>
 #include <vector>
-#include <memory>
 
 bool encode_bytes_nanopb_callback(pb_ostream_t* stream, const pb_field_t* field,
-                                void* const* arg)
+                                  void* const* arg)
 {
     const std::vector<pb_byte_t>* data =
         static_cast<const std::vector<pb_byte_t>*>(*arg);

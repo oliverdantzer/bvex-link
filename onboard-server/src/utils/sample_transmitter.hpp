@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../command.hpp"
 #include "../sample.hpp"
 #include "chunker.hpp"

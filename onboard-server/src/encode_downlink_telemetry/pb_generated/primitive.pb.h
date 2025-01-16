@@ -10,7 +10,7 @@
 #endif
 
 /* Struct definitions */
-typedef struct _Primitive {
+typedef struct _PrimitiveFrame {
     pb_size_t which_value;
     union {
         int32_t int_val;
@@ -20,7 +20,7 @@ typedef struct _Primitive {
         bool bool_val;
         char string_val[17];
     } value;
-} Primitive;
+} PrimitiveFrame;
 
 
 #ifdef __cplusplus
@@ -28,36 +28,36 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define Primitive_init_default                   {0, {0}}
-#define Primitive_init_zero                      {0, {0}}
+#define PrimitiveFrame_init_default              {0, {0}}
+#define PrimitiveFrame_init_zero                 {0, {0}}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define Primitive_int_val_tag                    1
-#define Primitive_long_val_tag                   2
-#define Primitive_float_val_tag                  3
-#define Primitive_double_val_tag                 4
-#define Primitive_bool_val_tag                   5
-#define Primitive_string_val_tag                 6
+#define PrimitiveFrame_int_val_tag               1
+#define PrimitiveFrame_long_val_tag              2
+#define PrimitiveFrame_float_val_tag             3
+#define PrimitiveFrame_double_val_tag            4
+#define PrimitiveFrame_bool_val_tag              5
+#define PrimitiveFrame_string_val_tag            6
 
 /* Struct field encoding specification for nanopb */
-#define Primitive_FIELDLIST(X, a) \
+#define PrimitiveFrame_FIELDLIST(X, a) \
 X(a, STATIC,   ONEOF,    INT32,    (value,int_val,value.int_val),   1) \
 X(a, STATIC,   ONEOF,    INT64,    (value,long_val,value.long_val),   2) \
 X(a, STATIC,   ONEOF,    FLOAT,    (value,float_val,value.float_val),   3) \
 X(a, STATIC,   ONEOF,    DOUBLE,   (value,double_val,value.double_val),   4) \
 X(a, STATIC,   ONEOF,    BOOL,     (value,bool_val,value.bool_val),   5) \
 X(a, STATIC,   ONEOF,    STRING,   (value,string_val,value.string_val),   6)
-#define Primitive_CALLBACK NULL
-#define Primitive_DEFAULT NULL
+#define PrimitiveFrame_CALLBACK NULL
+#define PrimitiveFrame_DEFAULT NULL
 
-extern const pb_msgdesc_t Primitive_msg;
+extern const pb_msgdesc_t PrimitiveFrame_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
-#define Primitive_fields &Primitive_msg
+#define PrimitiveFrame_fields &PrimitiveFrame_msg
 
 /* Maximum encoded size of messages (where known) */
-#define PRIMITIVE_PB_H_MAX_SIZE                  Primitive_size
-#define Primitive_size                           18
+#define PRIMITIVE_PB_H_MAX_SIZE                  PrimitiveFrame_size
+#define PrimitiveFrame_size                      18
 
 #ifdef __cplusplus
 } /* extern "C" */

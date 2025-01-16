@@ -10,10 +10,10 @@
 #endif
 
 /* Struct definitions */
-typedef struct _File {
+typedef struct _FileFrame {
     char extension[17];
     pb_callback_t data;
-} File;
+} FileFrame;
 
 
 #ifdef __cplusplus
@@ -21,27 +21,27 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define File_init_default                        {"", {{NULL}, NULL}}
-#define File_init_zero                           {"", {{NULL}, NULL}}
+#define FileFrame_init_default                   {"", {{NULL}, NULL}}
+#define FileFrame_init_zero                      {"", {{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define File_extension_tag                       2
-#define File_data_tag                            3
+#define FileFrame_extension_tag                  2
+#define FileFrame_data_tag                       3
 
 /* Struct field encoding specification for nanopb */
-#define File_FIELDLIST(X, a) \
+#define FileFrame_FIELDLIST(X, a) \
 X(a, STATIC,   SINGULAR, STRING,   extension,         2) \
 X(a, CALLBACK, SINGULAR, BYTES,    data,              3)
-#define File_CALLBACK pb_default_field_callback
-#define File_DEFAULT NULL
+#define FileFrame_CALLBACK pb_default_field_callback
+#define FileFrame_DEFAULT NULL
 
-extern const pb_msgdesc_t File_msg;
+extern const pb_msgdesc_t FileFrame_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
-#define File_fields &File_msg
+#define FileFrame_fields &FileFrame_msg
 
 /* Maximum encoded size of messages (where known) */
-/* File_size depends on runtime parameters */
+/* FileFrame_size depends on runtime parameters */
 
 #ifdef __cplusplus
 } /* extern "C" */

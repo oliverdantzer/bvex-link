@@ -31,7 +31,7 @@ SendServer::SendServer(boost::asio::io_service& io_service,
 
 void SendServer::start_send()
 {
-    std::unique_ptr<std::vector<uint8_t>> message = telemetry_.pop();
+    std::shared_ptr<std::vector<uint8_t>> message = telemetry_.pop();
     if(message != nullptr) {
 
         current_wait_time_ = MIN_WAIT_TIME; // reset exponential backoff
@@ -78,7 +78,7 @@ void SendServer::start_send()
 
 // Handles
 void SendServer::handle_send(
-    std::unique_ptr<std::vector<uint8_t>> /*message*/,
+    std::shared_ptr<std::vector<uint8_t>> /*message*/,
     const boost::system::error_code& error,
     std::size_t sent_size /*bytes_transferred*/)
 {

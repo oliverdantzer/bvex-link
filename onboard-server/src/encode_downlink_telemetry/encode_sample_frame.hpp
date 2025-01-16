@@ -2,12 +2,13 @@
 
 #include "../sample.hpp"
 #include "pb_generated/sample.pb.h"
+#include "size_constants.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
-#include <memory>
 
 struct SampleFrameData {
     SampleMetadata metadata;
@@ -20,7 +21,4 @@ struct SampleFrameData {
 
 std::unique_ptr<std::vector<uint8_t>> encode_sample_frame(SampleFrameData data);
 
-size_t calculate_segment_encoding_size(size_t data_size)
-{
-    return SAMPLE_FRAME_OVERHEAD + data_size;
-}
+size_t calculate_segment_encoding_size(size_t data_size);

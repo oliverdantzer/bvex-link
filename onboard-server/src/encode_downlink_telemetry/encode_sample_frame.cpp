@@ -22,6 +22,11 @@ std::unique_ptr<std::vector<uint8_t>> encode_sample_frame(SampleFrameData data)
     segment.data.arg = &data.data;
     sample_frame.segment = segment;
     sample_frame.has_segment = true;
-    return serialize_nanopb_struct(SampleFrame_fields, &sample_frame,
+    return serialize_nanopb_struct(&SampleFrame_msg, &sample_frame,
                                    SAMPLE_FRAME_OVERHEAD + data.data->size());
+}
+
+size_t calculate_segment_encoding_size(size_t data_size)
+{
+    return SAMPLE_FRAME_OVERHEAD + data_size;
 }

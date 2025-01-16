@@ -10,9 +10,9 @@
 std::unique_ptr<std::vector<uint8_t>> PrimitiveSample::encode_data()
 {
     return encode_primitive(value);
-}
+};
 
 std::unique_ptr<std::vector<uint8_t>> FileSample::encode_data()
 {
-    return encode_file(file_path, file_extension)
-}
+    return encode_file(file_path, file_extension);
+};

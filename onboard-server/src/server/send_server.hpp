@@ -3,8 +3,8 @@
 #include "../command.hpp"
 #include "../telemetry.hpp"
 #include <boost/asio.hpp>
-#include <string>
 #include <memory>
+#include <string>
 
 using boost::asio::ip::udp;
 
@@ -62,7 +62,9 @@ class SendServer
     std::vector<char> recv_buffer_;
     boost::asio::steady_timer schedule_send_timer_;
     boost::asio::steady_timer backoff_timer_;
-    std::chrono::milliseconds current_wait_time_; /* time to wait in ms if telemetry.pop() gives no result*/
+    std::chrono::milliseconds
+        current_wait_time_; /* time to wait in ms if telemetry.pop() gives no
+                               result*/
 
     /**
      * @brief Sends the next telemetry data packet async, then calls
@@ -85,7 +87,7 @@ class SendServer
      * @param error The error code resulting from the send operation.
      * @param sent_size The number of bytes sent.
      */
-    void handle_send(std::unique_ptr<std::vector<uint8_t>> message,
+    void handle_send(std::shared_ptr<std::vector<uint8_t>> message,
                      const boost::system::error_code& error,
                      std::size_t sent_size);
 

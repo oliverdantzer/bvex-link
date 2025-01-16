@@ -40,7 +40,7 @@ bool SampleTransmitter::set_new_sample()
         unacked_seqnums_.clear();
         std::copy(boost::counting_iterator<int>(0),
                   boost::counting_iterator<int>(num_chunks),
-                  std::back_inserter(unacked_seqnums_));
+                  std::inserter(unacked_seqnums_, unacked_seqnums_.end()));
 
         // set iterator to first unacked seqnum
         unacked_seqnums_itr_ = unacked_seqnums_.begin();

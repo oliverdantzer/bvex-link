@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
+class SampleTransmitter;
+
 /**
  * @brief Struct to hold information about a metric.
  */
