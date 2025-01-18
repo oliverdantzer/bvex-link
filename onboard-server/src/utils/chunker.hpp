@@ -1,28 +1,26 @@
 #pragma once
 
 #include "../sample.hpp"
-#include <memory>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-typedef int SeqNum;
+typedef unsigned int SeqNum;
 
 // Represents a segment of a greater piece of data
 struct Chunk {
     SeqNum seq_num; // Unique to each chunk for a given piece of data
     size_t offset;  // byte offset of the chunk in the data
-    std::unique_ptr<std::vector<uint8_t>>
-        data; // The data segment of the chunk
+    std::unique_ptr<std::vector<uint8_t>> data; // The data segment of the chunk
 };
 
 // Represents a piece of data that has been segmented
 class Chunker
 {
   public:
-    Chunker(std::unique_ptr<std::vector<uint8_t>> data,
-            size_t max_chunk_size);
+    Chunker(std::unique_ptr<std::vector<uint8_t>> data, size_t max_chunk_size);
 
     // get chunk by its unique sequence number
     // seq_num must be in the range [0, num_chunks)
