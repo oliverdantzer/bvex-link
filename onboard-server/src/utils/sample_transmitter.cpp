@@ -12,11 +12,12 @@
 SampleTransmitter::SampleTransmitter(
     std::function<std::unique_ptr<SampleData>()> pop_latest_sample,
     std::function<size_t()> get_max_pkt_size, MetricId metric_id)
-    : pop_latest_sample_(pop_latest_sample), sample_metadata_({
-                                                 .metric_id = metric_id,
-                                             }),
-      get_max_pkt_size_(get_max_pkt_size_), sample_chunker_(nullptr),
-      unacked_seqnums_() {};
+    : pop_latest_sample_(pop_latest_sample),
+      get_max_pkt_size_(get_max_pkt_size), sample_metadata_({
+                                               .metric_id = metric_id,
+                                               .timestamp = 0.0f,
+                                           }),
+      sample_chunker_(nullptr), unacked_seqnums_() {};
 
 bool SampleTransmitter::set_new_sample()
 {
@@ -26,10 +27,10 @@ bool SampleTransmitter::set_new_sample()
     } else {
         delete sample_chunker_;
 
-        uint32_t overhead =
+        size_t overhead =
             SAMPLE_FRAME_OVERHEAD + IPV4_HEADER_OVERHEAD + UDP_HEADER_OVERHEAD;
 
-        uint32_t max_segment_size = get_max_pkt_size_() - overhead;
+        size_t max_segment_size = get_max_pkt_size_() - overhead;
 
         data_type_ = sample->type;
 
@@ -66,6 +67,7 @@ std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
     increment_itr();
     SampleFrameData segment_data = {.metadata = sample_metadata_,
                                     .data_type = data_type_,
+                                    .sample_id = sample_id_,
                                     .num_segments =
                                         sample_chunker_->get_num_chunks(),
                                     .seqnum = seq_num,
@@ -83,8 +85,12 @@ std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
     return pkt;
 }
 
-void SampleTransmitter::ack_seqnum(int seqnum, SampleId sample_id)
+void SampleTransmitter::ack_seqnum(SeqNum seqnum, SampleId sample_id)
 {
+    if(sample_id != sample_id_) {
+        return;
+    }
+
     if(get_itr_val() == seqnum) {
         increment_itr();
     }

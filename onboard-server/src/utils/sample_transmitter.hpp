@@ -23,7 +23,7 @@ class SampleTransmitter
     std::unique_ptr<std::vector<uint8_t>> get_pkt();
 
     // Mark a sequence number as succesfully recieved
-    void ack_seqnum(int seqnum, SampleId sample_id);
+    void ack_seqnum(SeqNum seqnum, SampleId sample_id);
 
     // // Mark the sample as succesfully recieved
     // void signal_sample_recieved(SampleId sample_id);
@@ -32,13 +32,13 @@ class SampleTransmitter
     bool set_new_sample();
     void increment_itr();
     unsigned int get_itr_val();
+
+    std::function<std::unique_ptr<SampleData>()> pop_latest_sample_;
+    std::function<size_t()> get_max_pkt_size_;
     SampleMetadata sample_metadata_;
     SampleId sample_id_;
     Chunker* sample_chunker_;
-    std::string data_type_;
-    std::optional<std::string> file_extension_;
-    std::function<std::unique_ptr<SampleData>()> pop_latest_sample_;
-    std::function<size_t()> get_max_pkt_size_;
     std::set<unsigned int> unacked_seqnums_;
+    std::string data_type_;
     std::set<unsigned int>::iterator unacked_seqnums_itr_;
 };

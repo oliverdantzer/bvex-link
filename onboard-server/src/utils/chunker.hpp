@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-typedef unsigned int SeqNum;
+typedef uint32_t SeqNum;
 
 // Represents a segment of a greater piece of data
 struct Chunk {
