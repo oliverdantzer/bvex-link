@@ -15,8 +15,10 @@ int main(int argc, char* argv[])
                 << " <recv_port> <send_port> <target_address> <target_port>\n";
             return 1;
         }
-        const int recv_port = std::atoi(argv[1]);
-        const int send_port = std::atoi(argv[2]);
+        const boost::asio::ip::port_type recv_port =
+            static_cast<uint_least16_t>(std::atoi(argv[1]));
+        const boost::asio::ip::port_type send_port =
+            static_cast<uint_least16_t>(std::atoi(argv[2]));
         std::string target_address_str = argv[3];
         boost::asio::ip::address target_address;
         if(target_address_str == "localhost") {
@@ -25,7 +27,8 @@ int main(int argc, char* argv[])
         } else {
             target_address = boost::asio::ip::make_address(argv[3]);
         }
-        const int target_port = std::atoi(argv[4]);
+        const boost::asio::ip::port_type target_port =
+            static_cast<uint_least16_t>(std::atoi(argv[4]));
 
         Command command = Command(100000, 100);
         Telemetry telemetry = Telemetry(command);
