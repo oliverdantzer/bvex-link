@@ -1,21 +1,22 @@
 #include "decode_sample_pb.hpp"
 #include "../sample.hpp"
 #include "pb_generated/sample.pb.h"
-#include <memory>
 #include <cstdint>
 #include <iostream>
+#include <memory>
 #include <pb_decode.h>
 #include <string>
 #include <vector>
 
 std::unique_ptr<SampleData> decode_payload(
-    std::unique_ptr<std::vector<uint8_t>> payload, const size_t payload_size)
+    std::unique_ptr<std::vector<uint8_t>> payload)
 {
     Sample sample = Sample_init_zero;
     bool status;
 
     /* Create a stream that reads from the buffer. */
-    pb_istream_t stream = pb_istream_from_buffer(payload->data(), payload_size);
+    pb_istream_t stream =
+        pb_istream_from_buffer(payload->data(), payload->size());
 
     /* Now we are ready to decode the message. */
     status = pb_decode(&stream, Sample_fields, &sample);
@@ -46,8 +47,8 @@ std::unique_ptr<SampleData> decode_payload(
             return nullptr;
         }
     case Sample_file_tag:
-        return std::make_unique<FileSample>(
-            metadata, sample.data.file.filepath, sample.data.file.extension);
+        return std::make_unique<FileSample>(metadata, sample.data.file.filepath,
+                                            sample.data.file.extension);
     default:
         std::cerr << "Unknown/unimplemented data type" << std::endl;
         return nullptr;

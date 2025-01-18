@@ -9,12 +9,11 @@ class RecvUplinkSampleServer
 {
   public:
     RecvUplinkSampleServer(boost::asio::io_service& io_service,
-                           Command& command, boost::asio::ip::port_type port,
+                           boost::asio::ip::port_type port, Command& command,
                            std::size_t buffer_size = 4096);
 
   private:
-    void handle_message(std::unique_ptr<std::vector<uint8_t>> message,
-                        size_t size);
+    void handle_message(std::unique_ptr<std::vector<uint8_t>> message);
     RecvServer recv_server_;
     Command& command_;
 };

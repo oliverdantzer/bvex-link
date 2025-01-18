@@ -1,54 +1,61 @@
 #include "recv_server.hpp"
 #include <boost/bind/bind.hpp>
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <string>
 
 using boost::asio::ip::udp;
 
 RecvServer::RecvServer(
-    boost::asio::io_service& io_service,
-    std::function<void(std::unique_ptr<std::vector<uint8_t>>, size_t)>
-        message_handler,
-    boost::asio::ip::port_type port, std::size_t buffer_size)
-    // initialize members
+    boost::asio::io_service& io_service, boost::asio::ip::port_type port,
+    std::function<void(std::unique_ptr<std::vector<uint8_t>>)> message_handler,
+    std::size_t buffer_size)
     : socket_(io_service, udp::endpoint(udp::v4(), port)),
-      buffer_size_(buffer_size),
-      recv_buffer_(buffer_size), // initialize buffer with buffer_size bytes
-      message_handler_(message_handler)
+      message_handler_(message_handler), buffer_size_(buffer_size),
+      recv_buffer_(buffer_size) // initialize buffer with buffer_size bytes
 {
     start_recv();
 }
 
+/**
+ * async waits for incoming packets on socket_
+ * When a packet is received, it is written to recv_buffer and
+ * handle_recv is called
+ */
 void RecvServer::start_recv()
 {
-    // data is written into recv_buffer_, data length and error
-    // codes are passed to handle_receive
+    // remote_endpoint recieves the endpoint of the sender
+    // in async_receive_from. It is not used, but required to be passed
+    // into the async_receive_from method.
+    udp::endpoint remote_endpoint;
 
-    // remote_endpoint_ recieves the endpoint of the sender
-    // in async_receive_from
+    // function to call handle_recv, passing it error code and
+    // the number of bytes received
+    auto on_recv =
+        boost::bind(&handle_recv, this, boost::asio::placeholders::error,
+                    boost::asio::placeholders::bytes_transferred);
+
     socket_.async_receive_from(
-        boost::asio::buffer(&RecvServer::recv_buffer_[0],
-                            RecvServer::buffer_size_),
-        RecvServer::remote_endpoint_,
-        boost::bind(&RecvServer::handle_recv, this,
-                    boost::asio::placeholders::error,
-                    boost::asio::placeholders::bytes_transferred));
+        boost::asio::buffer(&recv_buffer_[0], buffer_size_), remote_endpoint,
+        on_recv);
 }
 
+/**
+ * passes bytes_received bytes of buffer to message_handler_
+ */
 void RecvServer::handle_recv(const boost::system::error_code& error,
-                             std::size_t bytes_recvd /*bytes_transferred*/)
+                             std::size_t bytes_received /*bytes_transferred*/)
 {
     // We will get error boost::asio::error::message_size
     // if the message is too big to fit in the buffer
-    std::cout << "Received " << bytes_recvd << " bytes" << std::endl;
+    std::cout << "Received " << bytes_received << " bytes" << std::endl;
     if(!error) {
         // char *received_data(recv_buffer_.data());
         // Must use unique ptr to give ownership to the caller
         std::unique_ptr<std::vector<uint8_t>> message =
             std::make_unique<std::vector<uint8_t>>(
-                recv_buffer_.begin(), recv_buffer_.begin() + bytes_recvd);
-        message_handler_(std::move(message), bytes_recvd);
+                recv_buffer_.begin(), recv_buffer_.begin() + bytes_received);
+        message_handler_(std::move(message));
 
     } else {
         std::cerr << "Error code" << error.to_string()

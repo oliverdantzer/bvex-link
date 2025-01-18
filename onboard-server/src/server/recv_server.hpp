@@ -1,8 +1,8 @@
 #pragma once
 
 #include <boost/asio.hpp>
-#include <memory>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "../command.hpp"
@@ -13,9 +13,10 @@ class RecvServer
 {
   public:
     RecvServer(boost::asio::io_service& io_service,
-               std::function<void(std::unique_ptr<std::vector<uint8_t>>, size_t)>
+               boost::asio::ip::port_type port,
+               std::function<void(std::unique_ptr<std::vector<uint8_t>>)>
                    message_handler,
-               boost::asio::ip::port_type port, std::size_t buffer_size = 4096);
+               std::size_t buffer_size = 4096);
 
   private:
     void start_recv();
@@ -23,9 +24,7 @@ class RecvServer
                      std::size_t bytes_recvd);
 
     udp::socket socket_;
-    udp::endpoint remote_endpoint_;
+    std::function<void(std::unique_ptr<std::vector<uint8_t>>)> message_handler_;
     std::size_t buffer_size_;
     std::vector<uint8_t> recv_buffer_;
-    std::function<void(std::unique_ptr<std::vector<uint8_t>>, size_t)>
-        message_handler_;
 };
