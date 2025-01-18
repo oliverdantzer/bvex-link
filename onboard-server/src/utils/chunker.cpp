@@ -8,12 +8,13 @@ Chunker::Chunker(std::unique_ptr<std::vector<uint8_t>> data,
                  size_t max_chunk_size)
     : data_(std::move(data)), normal_chunk_size_(max_chunk_size)
 {
-    num_chunks_ = (data_->size() + max_chunk_size - 1) / max_chunk_size;
+    num_chunks_ = static_cast<unsigned int>(
+        (data_->size() + max_chunk_size - 1) / max_chunk_size);
 }
 
 Chunk Chunker::get_chunk(SeqNum seq_num)
 {
-    if(seq_num < 0 || seq_num >= num_chunks_) {
+    if(seq_num >= num_chunks_) {
         throw std::out_of_range("Sequence number out of range");
     }
 
@@ -21,7 +22,7 @@ Chunk Chunker::get_chunk(SeqNum seq_num)
     size_t size = get_chunk_size(seq_num);
 
     auto chunk_data = std::make_unique<std::vector<uint8_t>>(
-            data_->begin() + offset, data_->begin() + offset + size);
+        data_->begin() + offset, data_->begin() + offset + size);
 
     return Chunk{seq_num, offset, std::move(chunk_data)};
 }
