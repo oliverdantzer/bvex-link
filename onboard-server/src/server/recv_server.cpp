@@ -32,7 +32,7 @@ void RecvServer::start_recv()
     // function to call handle_recv, passing it error code and
     // the number of bytes received
     auto on_recv =
-        boost::bind(&handle_recv, this, boost::asio::placeholders::error,
+        boost::bind(&RecvServer::handle_recv, this, boost::asio::placeholders::error,
                     boost::asio::placeholders::bytes_transferred);
 
     socket_.async_receive_from(
