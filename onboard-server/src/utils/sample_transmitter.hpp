@@ -37,7 +37,7 @@ class SampleTransmitter
     std::function<size_t()> get_max_pkt_size_;
     SampleMetadata sample_metadata_;
     SampleId sample_id_;
-    Chunker* sample_chunker_;
+    std::unique_ptr<Chunker> sample_chunker_;
     std::set<unsigned int> unacked_seqnums_;
     std::string data_type_;
     std::set<unsigned int>::iterator unacked_seqnums_itr_;

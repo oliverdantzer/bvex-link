@@ -25,8 +25,6 @@ bool SampleTransmitter::set_new_sample()
     if(sample == nullptr) {
         return false;
     } else {
-        delete sample_chunker_;
-
         size_t overhead =
             SAMPLE_FRAME_OVERHEAD + IPV4_HEADER_OVERHEAD + UDP_HEADER_OVERHEAD;
 
@@ -34,7 +32,7 @@ bool SampleTransmitter::set_new_sample()
 
         data_type_ = sample->type;
 
-        sample_chunker_ = new Chunker(sample->encode_data(), max_segment_size);
+        sample_chunker_ = std::make_unique<Chunker>(Chunker(sample->encode_data(), max_segment_size));
         unsigned int num_chunks = sample_chunker_->get_num_chunks();
 
         // set all seqnums to unacked
