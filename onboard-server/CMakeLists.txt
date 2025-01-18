@@ -31,7 +31,7 @@ set(SOURCES
     src/encode_downlink_telemetry/serialize_nanopb_struct.cpp
     src/sample.cpp
     src/server/recv_server.cpp
-    src/server/recv_uplink_sample_server.cpp
+    src/server/onboard_telemetry_recv_server.cpp
     src/server/send_server.cpp
     src/telemetry.cpp
     src/utils/chunker.cpp
