@@ -5,8 +5,8 @@
 #include <memory>
 
 RecvUplinkSampleServer::RecvUplinkSampleServer(
-    boost::asio::io_service& io_service, Command& command, int port,
-    std::size_t buffer_size)
+    boost::asio::io_service& io_service, Command& command,
+    boost::asio::ip::port_type port, std::size_t buffer_size)
     : command_(command),
       recv_server_(io_service,
                    std::bind(&RecvUplinkSampleServer::handle_message, this,
@@ -16,6 +16,7 @@ RecvUplinkSampleServer::RecvUplinkSampleServer(
 void RecvUplinkSampleServer::handle_message(
     std::unique_ptr<std::vector<uint8_t>> message, size_t size)
 {
-    std::unique_ptr<SampleData> sample = decode_payload(std::move(message), size);
+    std::unique_ptr<SampleData> sample =
+        decode_payload(std::move(message), size);
     command_.add_sample(std::move(sample));
 }

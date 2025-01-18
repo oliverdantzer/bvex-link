@@ -15,7 +15,7 @@ class RecvServer
     RecvServer(boost::asio::io_service& io_service,
                std::function<void(std::unique_ptr<std::vector<uint8_t>>, size_t)>
                    message_handler,
-               int port, std::size_t buffer_size = 4096);
+               boost::asio::ip::port_type port, std::size_t buffer_size = 4096);
 
   private:
     void start_recv();
