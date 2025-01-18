@@ -13,7 +13,7 @@ typedef std::string MetricId;
 
 struct SampleMetadata {
     MetricId metric_id; // Should be unique to each metric
-    double timestamp;   // Time since last epoch
+    float timestamp;   // Time since last epoch
 };
 
 class SampleData
