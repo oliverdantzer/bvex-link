@@ -3,6 +3,9 @@
 #include "sample.hpp"
 #include "utils/sample_transmitter.hpp"
 #include <cstdint>
+#include <functional>
+#include <iterator>
+#include <map>
 #include <memory>
 #include <optional>
 #include <set>
@@ -28,6 +31,36 @@ struct MetricInfo {
     std::unique_ptr<SampleTransmitter> sample_transmitter;
 };
 
+class MetricIterator
+{
+  public:
+    MetricIterator(std::function<std::map<MetricId, MetricInfo>::iterator()>
+                       get_begin_iterator,
+                   std::function<std::map<MetricId, MetricInfo>::iterator()>
+                       get_end_iterator)
+        : get_begin_iterator(get_begin_iterator),
+          get_end_iterator(get_end_iterator),
+          current_iterator_(get_begin_iterator())
+    {
+    }
+
+    void increment();
+
+    bool empty();
+
+    const std::string get_id();
+
+    unsigned int get_token_threshold();
+
+    std::unique_ptr<std::vector<uint8_t>> get_sample_pkt();
+
+  private:
+    std::function<std::map<MetricId, MetricInfo>::iterator()>
+        get_begin_iterator;
+    std::function<std::map<MetricId, MetricInfo>::iterator()> get_end_iterator;
+    std::map<MetricId, MetricInfo>::iterator current_iterator_;
+};
+
 class Command
 {
   public:
@@ -42,19 +75,19 @@ class Command
      */
     void add_sample(std::unique_ptr<SampleData> sample);
 
-    std::unique_ptr<std::vector<uint8_t>> get_sample_pkt(MetricId metric_id);
-
     size_t get_num_metrics();
 
-    float get_metric_token_threshold(MetricId metric_id);
-
     void print_all_metric_ids();
-
-    std::unique_ptr<std::vector<MetricId>> get_all_metric_ids();
 
     bool metric_exists(MetricId metric_id);
 
     size_t get_max_packet_size();
+
+    MetricIterator get_metric_iterator();
+
+    std::map<MetricId, MetricInfo>::iterator get_metrics_begin_iter();
+
+    std::map<MetricId, MetricInfo>::iterator get_metrics_end_iter();
 
   private:
     /**
@@ -70,5 +103,14 @@ class Command
     size_t bps_;
     size_t max_packet_size_;
     // std::vector<std::string> telecommands_;
-    std::unordered_map<MetricId, std::unique_ptr<MetricInfo>> metrics_;
+
+    /**
+     * @brief Stores metric_id:metric_info* pairs.
+     *
+     * std::map is used here because it can be iterated through in order,
+     * and added to without iterator invalidation.
+     *
+     * @see https://en.cppreference.com/w/cpp/container#Iterator_invalidation
+     */
+    std::map<MetricId, MetricInfo> metrics_;
 };
