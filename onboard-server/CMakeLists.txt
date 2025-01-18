@@ -15,7 +15,6 @@ if(DEBUG)
 endif()
 
 find_package(boost_asio CONFIG REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
 find_package(nanopb CONFIG REQUIRED)
 
 set(SOURCES
@@ -53,7 +52,6 @@ target_include_directories(main PRIVATE
 )
 
 target_link_libraries(main PRIVATE 
-                    Boost::asio 
-                    nlohmann_json::nlohmann_json
-                    nanopb::protobuf-nanopb-static
-                    )
+    Boost::asio 
+    nanopb::protobuf-nanopb-static
+    )
