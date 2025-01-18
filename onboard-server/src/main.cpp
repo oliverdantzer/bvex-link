@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         boost::asio::io_service io_service;
         SendServer send_server(io_service, telemetry, command, send_port,
                                target_address, target_port);
-        RecvUplinkSampleServer recv_server(io_service, recv_port, command);
+        OnboardTelemetryRecvServer recv_server(io_service, recv_port, command);
         io_service.run();
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
