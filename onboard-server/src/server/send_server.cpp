@@ -16,15 +16,11 @@ constexpr std::chrono::milliseconds MIN_WAIT_TIME =
 //     return std::unique_ptr<std::string>(new std::string("Hello"));
 // }
 
-SendServer::SendServer(boost::asio::io_service& io_service,
-                       Telemetry& telemetry, Command& command,
-                       boost::asio::ip::port_type port,
-                       boost::asio::ip::address target_address,
-                       boost::asio::ip::port_type target_port)
-    : socket_(io_service, udp::endpoint(udp::v4(), port)),
-      telemetry_(telemetry), remote_endpoint_(target_address, target_port),
-      schedule_send_timer_(io_service), backoff_timer_(io_service),
-      command_(command), current_wait_time_(MIN_WAIT_TIME)
+SendServer::SendServer(boost::asio::io_service& io_service, udp::socket& socket, udp::endpoint& target_endpoint,
+                       Telemetry& telemetry, Command& command)
+    : socket_(socket), target_endpoint_(target_endpoint), telemetry_(telemetry),
+      command_(command), schedule_send_timer_(io_service),
+      backoff_timer_(io_service), current_wait_time_(MIN_WAIT_TIME)
 {
     SendServer::start_send();
 }
@@ -41,7 +37,7 @@ void SendServer::start_send()
         // once the data is handed off to the OS
         // networking stack for transmission
         socket_.async_send_to(
-            boost::asio::buffer(*message), remote_endpoint_,
+            boost::asio::buffer(*message), target_endpoint_,
             boost::bind(&SendServer::handle_send, this, std::move(message),
                         boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
@@ -77,10 +73,9 @@ void SendServer::start_send()
 }
 
 // Handles
-void SendServer::handle_send(
-    std::shared_ptr<std::vector<uint8_t>> /*message*/,
-    const boost::system::error_code& error,
-    std::size_t sent_size /*bytes_transferred*/)
+void SendServer::handle_send(std::shared_ptr<std::vector<uint8_t>> /*message*/,
+                             const boost::system::error_code& error,
+                             std::size_t sent_size /*bytes_transferred*/)
 {
     if(error) {
         std::cerr << "Error code" << error.to_string()
@@ -105,7 +100,7 @@ void SendServer::schedule_send(std::size_t sent_size)
     auto interval = std::chrono::milliseconds(seconds_until_sent * 1000);
 #ifdef DEBUG
     std::cout << "Sent " << sent_size << " bytes to port "
-              << remote_endpoint_.port() << std::endl;
+              << target_endpoint_.port() << std::endl;
     std::cout << "Waiting " << std::to_string(interval.count())
               << "ms to send next packet" << std::endl;
 #endif

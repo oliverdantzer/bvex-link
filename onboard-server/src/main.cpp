@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+using boost::asio::ip::udp;
+
 int main(int argc, char* argv[])
 {
     try {
@@ -33,8 +35,10 @@ int main(int argc, char* argv[])
         Command command = Command(100000, 100);
         Telemetry telemetry = Telemetry(command);
         boost::asio::io_service io_service;
-        SendServer send_server(io_service, telemetry, command, send_port,
-                               target_address, target_port);
+        udp::socket socket(io_service, udp::endpoint(udp::v4(), send_port));
+        udp::endpoint target_endpoint(target_address, target_port);
+        SendServer send_server(io_service, socket, target_endpoint, telemetry,
+                               command);
         OnboardTelemetryRecvServer recv_server(io_service, recv_port, command);
         io_service.run();
     } catch(std::exception& e) {

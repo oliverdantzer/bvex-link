@@ -49,16 +49,15 @@ class SendServer
      * @param target_address The address to send to.
      * @param target_port The port to send to.
      */
-    SendServer(boost::asio::io_service& io_service, Telemetry& telemetry,
-               Command& command, boost::asio::ip::port_type source_port,
-               boost::asio::ip::address target_address,
-               boost::asio::ip::port_type target_port);
+    SendServer(boost::asio::io_service& io_service, udp::socket& socket,
+               udp::endpoint& target_endpoint, Telemetry& telemetry,
+               Command& command);
 
   private:
-    udp::socket socket_;
+    udp::socket& socket_;
+    udp::endpoint& target_endpoint_;
     Telemetry& telemetry_;
     Command& command_;
-    udp::endpoint remote_endpoint_;
     std::vector<char> recv_buffer_;
     boost::asio::steady_timer schedule_send_timer_;
     boost::asio::steady_timer backoff_timer_;
