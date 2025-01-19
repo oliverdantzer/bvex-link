@@ -8,6 +8,9 @@ Chunker::Chunker(std::unique_ptr<std::vector<uint8_t>> data,
                  size_t max_chunk_size)
     : data_(std::move(data)), normal_chunk_size_(max_chunk_size)
 {
+    if(data_->size() == 0) {
+        throw std::invalid_argument("Data cannot be empty");
+    }
     num_chunks_ = static_cast<unsigned int>(
         (data_->size() + max_chunk_size - 1) / max_chunk_size);
 }
