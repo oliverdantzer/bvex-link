@@ -38,7 +38,7 @@ void SendServer::start_send()
         // networking stack for transmission
         socket_.async_send_to(
             boost::asio::buffer(*message), target_endpoint_,
-            boost::bind(&SendServer::handle_send, this, std::move(message),
+            boost::bind(&SendServer::handle_send, this, message,
                         boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
     } else {
