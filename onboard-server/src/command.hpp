@@ -31,30 +31,26 @@ struct MetricInfo {
     std::unique_ptr<SampleTransmitter> sample_transmitter;
 };
 
+struct SampleInfo {
+    MetricId metric_id;
+    unsigned int token_threshold;
+    std::function<std::unique_ptr<std::vector<uint8_t>>()> get_pkt;
+};
+
 class MetricIterator
 {
   public:
     MetricIterator(std::function<std::map<MetricId, MetricInfo>::iterator()>
                        get_begin_iterator,
                    std::function<std::map<MetricId, MetricInfo>::iterator()>
-                       get_end_iterator)
-        : get_begin_iterator(get_begin_iterator),
-          get_end_iterator(get_end_iterator),
-          current_iterator_(get_begin_iterator())
-    {
-    }
+                       get_end_iterator);
 
-    void increment();
-
-    bool empty();
-
-    const std::string get_id();
-
-    unsigned int get_token_threshold();
-
-    std::unique_ptr<std::vector<uint8_t>> get_sample_pkt();
+    std::optional<SampleInfo> get_next_metric_sample();
 
   private:
+    bool metrics_empty();
+    bool is_iterator_valid();
+
     std::function<std::map<MetricId, MetricInfo>::iterator()>
         get_begin_iterator;
     std::function<std::map<MetricId, MetricInfo>::iterator()> get_end_iterator;
@@ -84,10 +80,6 @@ class Command
     size_t get_max_packet_size();
 
     MetricIterator get_metric_iterator();
-
-    std::map<MetricId, MetricInfo>::iterator get_metrics_begin_iter();
-
-    std::map<MetricId, MetricInfo>::iterator get_metrics_end_iter();
 
   private:
     /**
