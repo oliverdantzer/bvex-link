@@ -23,9 +23,11 @@ std::unique_ptr<std::vector<uint8_t>> encode_file(std::string file_path,
                          std::istream_iterator<uint8_t>(file),
                          std::istream_iterator<uint8_t>());
     }
-
+    ByteBuffer segment_data = {
+        .data = file_data.data(),
+        .size = file_data.size()};
     file_frame.data.funcs.encode = &encode_bytes_nanopb_callback;
-    file_frame.data.arg = &file_data;
+    file_frame.data.arg = &segment_data;
 
     return serialize_nanopb_struct(&FileFrame_msg, &file_frame,
                                    FILE_FRAME_OVERHEAD + file_data.size());

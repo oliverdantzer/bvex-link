@@ -5,6 +5,12 @@
 #include <pb_encode.h>
 #include <vector>
 
+// buffer s.t. [data, data + size) is a valid range
+struct ByteBuffer {
+    uint8_t* data;
+    size_t size;
+};
+
 bool encode_bytes_nanopb_callback(pb_ostream_t* stream, const pb_field_t* field,
                                   void* const* arg);
 
