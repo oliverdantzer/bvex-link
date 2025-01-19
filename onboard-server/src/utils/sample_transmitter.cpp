@@ -32,7 +32,8 @@ bool SampleTransmitter::set_new_sample()
 
         data_type_ = sample->type;
 
-        sample_chunker_ = std::make_unique<Chunker>(Chunker(sample->encode_data(), max_segment_size));
+        sample_chunker_ = std::make_unique<Chunker>(
+            Chunker(sample->encode_data(), max_segment_size));
         unsigned int num_chunks = sample_chunker_->get_num_chunks();
 
         // set all seqnums to unacked
@@ -97,10 +98,10 @@ void SampleTransmitter::ack_seqnum(SeqNum seqnum, SampleId sample_id)
 
 void SampleTransmitter::increment_itr()
 {
+    unacked_seqnums_itr_++;
     if(unacked_seqnums_itr_ == unacked_seqnums_.end()) {
         unacked_seqnums_itr_ = unacked_seqnums_.begin();
     }
-    unacked_seqnums_itr_++;
 }
 
 unsigned int SampleTransmitter::get_itr_val() { return *unacked_seqnums_itr_; }
