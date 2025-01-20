@@ -8,9 +8,9 @@ vcpkg
 cmake
 ninja-build
 
-To use this, you must have vcpkg, have $VCPKG_ROOT defined then run `vcpkg install`
+To use this, you must have vcpkg and have $VCPKG_ROOT defined
 
-`cmake --preset=default`
+`cmake --preset=debug`
 `cmake --build build`
 `./build/main`
 
