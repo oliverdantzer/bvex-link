@@ -16,7 +16,7 @@ SampleTransmitter::SampleTransmitter(
       get_max_pkt_size_(get_max_pkt_size), sample_metadata_({
                                                .metric_id = metric_id,
                                                .timestamp = 0.0f,
-                                           }),
+                                           }), sample_id_(0),
       sample_chunker_(nullptr), unacked_seqnums_() {};
 
 bool SampleTransmitter::set_new_sample()
@@ -31,6 +31,7 @@ bool SampleTransmitter::set_new_sample()
         size_t max_segment_size = get_max_pkt_size_() - overhead;
 
         data_type_ = sample->type;
+        sample_metadata_ = sample->metadata;
 
         sample_chunker_ = std::make_unique<Chunker>(
             Chunker(sample->encode_data(), max_segment_size));
