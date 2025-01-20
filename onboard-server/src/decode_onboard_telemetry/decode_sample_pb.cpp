@@ -29,7 +29,7 @@ std::unique_ptr<SampleData> decode_payload(
 
     std::string metric_id(sample.metric_id);
     float timestamp = sample.timestamp;
-    struct SampleMetadata metadata = {metric_id, timestamp};
+    SampleMetadata metadata = {.metric_id = metric_id, .timestamp = timestamp};
     switch(sample.which_data) {
     case Sample_primitive_tag:
         switch(sample.data.primitive.which_value) {
