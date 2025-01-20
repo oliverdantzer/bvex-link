@@ -25,9 +25,8 @@ std::unique_ptr<std::vector<uint8_t>> encode_sample_frame(
 
     size_t encoded_sample_frame_size =
         SAMPLE_FRAME_OVERHEAD + sample_frame_data.data->size();
-    ByteBuffer segment_data = {
-        .data = sample_frame_data.data->data(),
-        .size = sample_frame_data.data->size()};
+    ByteBuffer segment_data = {.data = sample_frame_data.data->data(),
+                               .size = sample_frame_data.data->size()};
     segment.data.arg = &segment_data;
     segment.data.funcs.encode = &encode_bytes_nanopb_callback;
     std::unique_ptr<std::vector<uint8_t>> data = serialize_nanopb_struct(

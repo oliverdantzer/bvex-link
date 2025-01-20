@@ -31,7 +31,6 @@ int main(int argc, char* argv[])
         }
         const boost::asio::ip::port_type target_port =
             static_cast<uint_least16_t>(std::atoi(argv[4]));
-
         Command command = Command(100000, 100);
         Telemetry telemetry = Telemetry(command);
         boost::asio::io_service io_service;
