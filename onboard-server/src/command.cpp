@@ -52,7 +52,14 @@ std::unique_ptr<SampleData> Command::pop_latest_sample(MetricId metric_id)
 
 size_t Command::get_max_packet_size() { return max_packet_size_; }
 
+void Command::set_max_packet_size(size_t max_packet_size)
+{
+    max_packet_size_ = max_packet_size;
+};
+
 size_t Command::get_bps() { return bps_; }
+
+void Command::set_bps(size_t bps) { bps_ = bps; }
 
 size_t Command::get_num_metrics() { return metrics_.size(); }
 

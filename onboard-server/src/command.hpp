@@ -65,6 +65,8 @@ class Command
 
     size_t get_bps();
 
+    void set_bps(size_t bps);
+
     /**
      * @brief Adds a sample to the internal data structure.
      * @param sample Shared pointer to the sample data to be added.
@@ -78,6 +80,8 @@ class Command
     bool metric_exists(MetricId metric_id);
 
     size_t get_max_packet_size();
+
+    void set_max_packet_size(size_t max_packet_size);
 
     MetricIterator get_metric_iterator();
 

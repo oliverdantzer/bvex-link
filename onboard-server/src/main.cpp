@@ -1,6 +1,7 @@
 #include "command.hpp"
 #include "server/onboard_telemetry_recv_server.hpp"
 #include "server/send_server.hpp"
+#include "server/telecommand_recv_server.hpp"
 #include "telemetry.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
@@ -11,16 +12,14 @@ using boost::asio::ip::udp;
 int main(int argc, char* argv[])
 {
     try {
-        if(argc != 5) {
-            std::cerr
-                << "Usage: " << argv[0]
-                << " <recv_port> <send_port> <target_address> <target_port>\n";
+        if(argc != 3) {
+            std::cerr << "Usage: " << argv[0]
+                      << "<target_address> <target_port>\n";
             return 1;
         }
-        const boost::asio::ip::port_type recv_port =
-            static_cast<uint_least16_t>(std::atoi(argv[1]));
-        const boost::asio::ip::port_type send_port =
-            static_cast<uint_least16_t>(std::atoi(argv[2]));
+        const boost::asio::ip::port_type onboard_telemetry_recv_port = 3000;
+        const boost::asio::ip::port_type telecommand_recv_port = 3001;
+        const boost::asio::ip::port_type send_port = 3002;
         std::string target_address_str = argv[3];
         boost::asio::ip::address target_address;
         if(target_address_str == "localhost") {
@@ -38,7 +37,10 @@ int main(int argc, char* argv[])
         udp::endpoint target_endpoint(target_address, target_port);
         SendServer send_server(io_service, socket, target_endpoint, telemetry,
                                command);
-        OnboardTelemetryRecvServer recv_server(io_service, recv_port, command);
+        OnboardTelemetryRecvServer recv_server(
+            io_service, onboard_telemetry_recv_port, command);
+        TelecommandRecvServer recv_server(io_service, telecommand_recv_port,
+                                          command);
         io_service.run();
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
