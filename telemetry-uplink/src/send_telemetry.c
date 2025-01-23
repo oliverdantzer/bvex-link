@@ -65,7 +65,7 @@ void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = Primitive_int_val_tag;
-    sample.data.primitive.value.int_val = *(int32_t*)value;
+    sample.data.primitive.value.int_val = value;
     send_sample_async(socket_fd, sample);
 }
 

@@ -87,6 +87,19 @@ int make_connected_send_socket(char* node, char* service)
         fprintf(stderr, "client: failed to connect\n");
         return 2;
     }
+#ifdef TEST_SOCK_PORT
+    send(sockfd, "hello", 5, 0);
+
+    struct sockaddr_in local_addr;
+    socklen_t addr_len = sizeof(local_addr);
+    if(getsockname(sockfd, (struct sockaddr*)&local_addr, &addr_len) == -1) {
+        perror("getsockname");
+        close(sockfd);
+        return 3;
+    }
+    printf("socket file descriptor: %d\n", sockfd);
+    printf("Local port: %d\n", ntohs(local_addr.sin_port));
+#endif
 
     // now a socket description exists. If it is not bound to a specific port
     // using bind() before its first send() or sendto() call, then the OS will

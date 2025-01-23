@@ -4,6 +4,17 @@ syntax = "proto3";
 // definitions
 import "nanopb.proto";
 
+message Sample
+{
+    string metric_id = 1 [ (nanopb).max_length = 40 ];
+    float timestamp = 2; // s since last epoch
+    oneof data
+    {
+        Primitive primitive = 3;
+        File file = 4;
+    }
+}
+
 message Primitive {
     oneof value
     {
@@ -17,17 +28,6 @@ message Primitive {
 }
 
 message File {
-    string filepath = 7 [ (nanopb).max_length = 60 ];
-    string extension = 8 [ (nanopb).max_length = 10 ];
-}
-
-message Sample
-{
-    string metric_id = 9 [ (nanopb).max_length = 40 ];
-    float timestamp = 10; // s since last epoch
-    oneof data
-    {
-        Primitive primitive = 11;
-        File file = 12;
-    }
+    string filepath = 1 [ (nanopb).max_length = 60 ];
+    string extension = 2 [ (nanopb).max_length = 10 ];
 }

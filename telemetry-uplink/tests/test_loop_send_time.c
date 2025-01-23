@@ -3,11 +3,11 @@
 #include <math.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <pthread.h>
 #include <stdlib.h>
-#include "test_loop.h"
+#include "common.h"
+#include "test_loop_send_time.h"
 
-void test_pthread(int socket_fd, bool on) {
+void test_loop_send_time(int socket_fd, bool on) {
     const int n = 1000;
     double last_n_times[n];
     int i = 0;
