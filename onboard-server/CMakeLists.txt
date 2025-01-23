@@ -16,6 +16,7 @@ endif()
 
 find_package(boost_asio CONFIG REQUIRED)
 find_package(nanopb CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 set(SOURCES
     src/main.cpp
@@ -25,10 +26,6 @@ set(SOURCES
     src/encode_downlink_telemetry/encode_file.cpp
     src/encode_downlink_telemetry/encode_primitive.cpp
     src/encode_downlink_telemetry/encode_sample_frame.cpp
-    src/encode_downlink_telemetry/pb_generated/file.pb.c
-    src/encode_downlink_telemetry/pb_generated/primitive.pb.c
-    src/encode_downlink_telemetry/pb_generated/sample.pb.c
-    src/encode_downlink_telemetry/serialize_nanopb_struct.cpp
     src/sample.cpp
     src/server/recv_server.cpp
     src/server/onboard_telemetry_recv_server.cpp
@@ -46,7 +43,6 @@ target_include_directories(main PRIVATE
     src/decode_onboard_telemetry
     src/decode_onboard_telemetry/pb_generated
     src/encode_downlink_telemetry
-    src/encode_downlink_telemetry/pb_generated
     src/server
     src/utils
 )
@@ -54,4 +50,5 @@ target_include_directories(main PRIVATE
 target_link_libraries(main PRIVATE 
     Boost::asio 
     nanopb::protobuf-nanopb-static
+    nlohmann_json::nlohmann_json
     )
