@@ -129,6 +129,7 @@ void send_sample_string(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
+// ensure filepath length does not exceed 100
 void send_sample_file(int socket_fd, char* metric_id, float timestamp,
                       char* filepath, char* extension)
 {
