@@ -3,6 +3,7 @@
 #include "test_loop_send_time.h"
 #include "test_n_samples.h"
 #include "test_one.h"
+#include "test_file.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,6 +30,16 @@ int main(int argc, char** argv)
     char* target_service = argv[2];
     char* test_name = argv[3];
     int socket_fd = make_connected_send_socket(target_name, target_service);
+    struct timespec start_time;
+    clock_gettime(CLOCK_MONOTONIC,
+                    &start_time); // Get start time with nanosecond precision
+
+    // Convert timespec to a float representing the time in seconds
+    float start_time_in_seconds =
+        start_time.tv_sec + (start_time.tv_nsec / 1e9);
+
+    printf("Start time: %f\n", start_time_in_seconds);
+
     if(strcmp(test_name, "test_spam") == 0) {
         if(argc != 5) {
             printf("Usage for test_spam: %s target_name target_port test_spam "
@@ -39,19 +50,11 @@ int main(int argc, char** argv)
         int times = atoi(argv[4]);
         n_samples(times, socket_fd);
     } else if(strcmp(test_name, "test_one") == 0) {
-        struct timespec start_time;
-        clock_gettime(CLOCK_MONOTONIC,
-                      &start_time); // Get start time with nanosecond precision
-
-        // Convert timespec to a float representing the time in seconds
-        float start_time_in_seconds =
-            start_time.tv_sec + (start_time.tv_nsec / 1e9);
-
-        printf("Start time: %f\n", start_time_in_seconds);
-
         test_one(socket_fd, start_time_in_seconds);
     } else if(strcmp(test_name, "test_loop") == 0) {
         primitive_telemetry_loop(socket_fd);
+    } else if(strcmp(test_name, "test_file") == 0) {
+        test_file(socket_fd, start_time_in_seconds);
     } else {
         printf("Unknown test name: %s\n", test_name);
     }
