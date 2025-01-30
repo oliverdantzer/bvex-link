@@ -103,6 +103,9 @@ $(function(){initNavTree('request_8h.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">request.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>API to request telemetry data from the onboard server.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;generated/nanopb/request.pb.h&quot;</code><br />
 <code>#include &quot;generated/nanopb/response.pb.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -110,7 +113,7 @@ Include dependency graph for request.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="request_8h__incl.png" border="0" usemap="#ainclude_2request_8h" alt=""/></div>
 <map name="ainclude_2request_8h" id="ainclude_2request_8h">
-<area shape="rect" title=" " alt="" coords="177,5,312,31"/>
+<area shape="rect" title="API to request telemetry data from the onboard server." alt="" coords="177,5,312,31"/>
 <area shape="rect" href="request_8pb_8h_source.html" title=" " alt="" coords="5,79,231,104"/>
 <area shape="poly" title=" " alt="" coords="226,33,152,74,149,69,223,28"/>
 <area shape="rect" href="response_8pb_8h_source.html" title=" " alt="" coords="254,79,489,104"/>
@@ -177,7 +180,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:acb8d051bfdca133fd18c2c6f5f63b9f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a double value sample from the metric id of reqr from the server reqr.socket_fd is connected to. This function is blocking and will wait for the send operation to complete and for the response to be received.  <br /></td></tr>
 <tr class="separator:acb8d051bfdca133fd18c2c6f5f63b9f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>API to request telemetry data from the onboard server. </p>
+<p>Example usage: </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae4b46cc52c0d5e020c15488f7664a3cd" name="ae4b46cc52c0d5e020c15488f7664a3cd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae4b46cc52c0d5e020c15488f7664a3cd">&#9670;&#160;</a></span>make_requester()</h2>
 
@@ -221,7 +227,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use altitudeRequester</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_ae4b46cc52c0d5e020c15488f7664a3cd"><div class="ttname"><a href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a></div><div class="ttdeci">Requester make_requester(char *metric_id, char *node, char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div><div class="ttdef"><b>Definition</b> request.c:12</div></div>
-<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request.h:18</div></div>
+<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request.h:24</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -255,7 +261,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_acb8d051bfdca133fd18c2c6f5f63b9f0"><div class="ttname"><a href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:117</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request.h:116</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request.h:122</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -289,7 +295,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_abeb6d36ec80a5add84b7d1b066218f35"><div class="ttname"><a href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a></div><div class="ttdeci">RequestIntResult request_int(Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:98</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request.h:62</div></div>
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request.h:68</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -323,7 +329,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_a370be4bcdf9e0de3dd8aa4b3505f7546"><div class="ttname"><a href="#a370be4bcdf9e0de3dd8aa4b3505f7546">request_string</a></div><div class="ttdeci">RequestStringResult request_string(Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:138</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request.h:89</div></div>
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request.h:95</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
