@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file */
+
 #define GETADDRINFO_ERROR 2
 
 /**

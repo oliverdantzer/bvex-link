@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file */
+
 #include <stdbool.h>
 #include <stdint.h>
 

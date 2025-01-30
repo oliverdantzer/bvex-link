@@ -1,5 +1,7 @@
 #pragma once
 
+/** @file */
+
 #include "generated/nanopb/request.pb.h"
 #include "generated/nanopb/response.pb.h"
 
