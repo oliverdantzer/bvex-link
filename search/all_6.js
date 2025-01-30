@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['make_5fconnected_5fsend_5fsocket_0',['make_connected_send_socket',['../socket_8h.html#a41fd5a4c2643fcf87e9ca1aae9ee6186',1,'socket.c']]],
-  ['make_5frequester_1',['make_requester',['../request_8h.html#ae4b46cc52c0d5e020c15488f7664a3cd',1,'request.c']]],
-  ['makerequesterargs_2',['MakeRequesterArgs',['../structMakeRequesterArgs.html',1,'']]]
+  ['features_0',['Features',['../md_doxygen-awesome-css_2README.html#autotoc_md31',1,'']]],
+  ['formatting_20tables_1',['Formatting Tables',['../md_doxygen-awesome-css_2docs_2tricks.html#tricks-tables',1,'']]],
+  ['fragment_20copy_20button_2',['Fragment Copy Button',['../md_doxygen-awesome-css_2docs_2extensions.html#extension-copy-button',1,'']]],
+  ['full_20width_3',['Full Width',['../md_doxygen-awesome-css_2docs_2tricks.html#autotoc_md21',1,'']]],
+  ['function_5ftemplate_5ftest_4',['function_template_test',['../classMyLibrary_1_1SubclassExample.html#ad2432fe3b060789f6f7052c515d515f4',1,'MyLibrary::SubclassExample']]],
+  ['further_20installation_20instructions_5',['Further installation instructions',['../md_doxygen-awesome-css_2README.html#autotoc_md38',1,'']]]
 ];

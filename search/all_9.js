@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['send_5fsample_5fdata_5ft_0',['send_sample_data_t',['../structsend__sample__data__t.html',1,'']]],
-  ['send_5ftelemetry_2eh_1',['send_telemetry.h',['../send__telemetry_8h.html',1,'']]],
-  ['socket_2eh_2',['socket.h',['../socket_8h.html',1,'']]],
-  ['steps_3',['Steps',['../md_README.html#autotoc_md2',1,'']]]
+  ['installation_0',['Installation',['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md7',1,'Installation'],['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md9',1,'Installation'],['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md11',1,'Installation'],['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md13',1,'Installation'],['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md15',1,'Installation'],['../md_doxygen-awesome-css_2docs_2extensions.html#autotoc_md17',1,'Installation'],['../md_doxygen-awesome-css_2README.html#autotoc_md33',1,'Installation']]],
+  ['installation_20instructions_1',['Further installation instructions',['../md_doxygen-awesome-css_2README.html#autotoc_md38',1,'']]],
+  ['instructions_2',['Further installation instructions',['../md_doxygen-awesome-css_2README.html#autotoc_md38',1,'']]],
+  ['interactive_20toc_3',['Interactive TOC',['../md_doxygen-awesome-css_2docs_2extensions.html#extension-toc',1,'']]]
 ];

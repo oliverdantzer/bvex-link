@@ -19,6 +19,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,20 +100,20 @@ $(function(){initNavTree('md_README.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">Building</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md41"></a></p>
+<h2><a class="anchor" id="autotoc_md42"></a>
 Requirements</h2>
 <ul>
 <li><code>vcpkg</code>, <code>$VCPKG_ROOT</code> defined</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Steps</h2>
 <ul>
 <li><code>vcpkg install</code></li>
 <li><code>cmake --preset=vcpkg</code></li>
 <li><code>cmake --build build</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Consuming <code>telemetry-uplink</code> library</h1>
 <ul>
 <li>Requires transitive dependency <code>nanopb</code></li>
@@ -123,7 +124,7 @@ Consuming <code>telemetry-uplink</code> library</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Generating new nanopb headers</h1>
 <p>Fails for some reason: </p><div class="fragment"><div class="line">../shared/generate-nanopb-headers.sh --output-dir=./src/generated/nanopb sample.proto request.proto response.proto</div>
 </div><!-- fragment --><p> Works: </p><div class="fragment"><div class="line">~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/generated/nanopb sample.proto request.proto response.proto</div>

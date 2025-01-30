@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['consuming_20tt_20telemetry_20uplink_20tt_20library_0',['Consuming &lt;tt&gt;telemetry-uplink&lt;/tt&gt; library',['../md_README.html#autotoc_md3',1,'']]]
+  ['block_0',['Code block',['../classMyLibrary_1_1Example.html#autotoc_md27',1,'']]],
+  ['browser_20support_1',['Browser support',['../md_doxygen-awesome-css_2README.html#autotoc_md39',1,'']]],
+  ['bug_20list_2',['Bug List',['../bug.html',1,'']]],
+  ['building_3',['Building',['../md_README.html',1,'']]],
+  ['button_4',['Fragment Copy Button',['../md_doxygen-awesome-css_2docs_2extensions.html#extension-copy-button',1,'']]]
 ];
