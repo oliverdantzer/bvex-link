@@ -9,20 +9,9 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {
-    int socket_fd;
-    char* metric_id;
-} Requester;
-
-typedef struct {
-    char* metric_id;
-    char* node;
-    char* service;
-} MakeRequesterArgs;
-
-Requester make_requester(MakeRequesterArgs args)
+Requester make_requester(char* metric_id, char* node, char* service)
 {
-    int sock = make_connected_send_socket(args.node, args.service);
+    int sock = make_connected_send_socket(node, service);
     if(sock < 0) {
         fprintf(stderr, "Socket creation failed\n");
         return (Requester){.socket_fd = -1, .metric_id = NULL};
@@ -30,15 +19,15 @@ Requester make_requester(MakeRequesterArgs args)
 
     Requester reqr;
     reqr.socket_fd = sock;
-    reqr.metric_id = args.metric_id;
+    reqr.metric_id = metric_id;
     return reqr;
 }
 
-int send_request(int socket_fd, Request message)
+int send_request(int socket_fd, Request* message)
 {
     uint8_t buffer[REQUEST_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
-    if(!pb_encode(&stream, Request_fields, &message)) {
+    if(!pb_encode(&stream, Request_fields, message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
         return ERR_ENCODING_FAILED;
     }
@@ -50,7 +39,7 @@ int send_request(int socket_fd, Request message)
     return 0;
 }
 
-int recv_response(int socket_fd, Response response)
+int recv_response(int socket_fd, Response* response)
 {
     char recv_buffer[RESPONSE_PB_H_MAX_SIZE];
     ssize_t bytes_received =
@@ -69,7 +58,7 @@ int recv_response(int socket_fd, Response response)
     pb_istream_t stream = pb_istream_from_buffer(recv_buffer, bytes_received);
 
     /* Now we are ready to decode the message. */
-    status = pb_decode(&stream, Response_fields, &response);
+    status = pb_decode(&stream, Response_fields, response);
 
     /* Check for errors... */
     if(!status) {
@@ -84,19 +73,20 @@ typedef struct {
     Response response;
 } RequestResult;
 
-RequestResult request(Requester reqr)
+RequestResult request(Requester* reqr)
 {
     RequestResult result;
 
     Request request = Request_init_zero;
-    strcpy(request.metric_id, reqr.metric_id);
-    int send_err = send_request(reqr.socket_fd, request);
+    strcpy(request.metric_id, reqr->metric_id);
+    int send_err = send_request(reqr->socket_fd, &request);
     if(send_err) {
         result.err = send_err;
         return result;
     }
+
     Response response = Response_init_zero;
-    int recv_err = recv_response(reqr.socket_fd, response);
+    int recv_err = recv_response(reqr->socket_fd, &response);
     if(recv_err) {
         result.err = recv_err;
         return result;
@@ -105,12 +95,7 @@ RequestResult request(Requester reqr)
     return result;
 }
 
-typedef struct {
-    int err;
-    int value;
-} RequestIntResult;
-
-RequestIntResult request_int(Requester reqr)
+RequestIntResult request_int(Requester* reqr)
 {
     RequestIntResult result;
 
@@ -126,5 +111,47 @@ RequestIntResult request_int(Requester reqr)
     }
 
     result.value = request_result.response.primitive.value.int_val;
+    return result;
+}
+
+RequestDoubleResult request_double(Requester* reqr)
+{
+    RequestDoubleResult result;
+
+    RequestResult request_result = request(reqr);
+    if(request_result.err) {
+        result.err = request_result.err;
+        return result;
+    }
+
+    if(request_result.response.primitive.which_value !=
+       Primitive_double_val_tag) {
+        fprintf(stderr, "Invalid response type\n");
+        result.err = ERR_INVALID_RESPONSE_TYPE;
+        return result;
+    }
+
+    result.value = request_result.response.primitive.value.double_val;
+    return result;
+}
+
+RequestStringResult request_string(Requester* reqr)
+{
+    RequestStringResult result;
+
+    RequestResult request_result = request(reqr);
+    if(request_result.err) {
+        result.err = request_result.err;
+        return result;
+    }
+
+    if(request_result.response.primitive.which_value !=
+       Primitive_string_val_tag) {
+        fprintf(stderr, "Invalid response type\n");
+        result.err = ERR_INVALID_RESPONSE_TYPE;
+        return result;
+    }
+
+    result.value = strdup(request_result.response.primitive.value.string_val);
     return result;
 }
