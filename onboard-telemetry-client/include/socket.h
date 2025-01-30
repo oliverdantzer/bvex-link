@@ -13,7 +13,7 @@
  * same address with send().
  *
  * @param node IP address or hostname.
- * @param service Port number or service name (e.g., "http").
+ * @param service Port number or service name (e.g., "1234" or "http").
  * @return Socket file descriptor on success, or -1 on error.
  *
  * @note To close the socket, use close(fd), where fd is the socket's file

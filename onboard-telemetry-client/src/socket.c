@@ -8,6 +8,7 @@
 #include <sys/socket.h> // socket, connect
 #include <unistd.h>     // close
 
+#ifdef TEST_SOCK_PORT
 void print_ai_connected(struct sockaddr* addr, int family)
 {
     char ipstr[INET6_ADDRSTRLEN];
@@ -25,6 +26,7 @@ void print_ai_connected(struct sockaddr* addr, int family)
     inet_ntop(family, ip_addr, ipstr, sizeof ipstr);
     printf("Connected to %s:%d\n", ipstr, port);
 }
+#endif
 
 int make_connected_send_socket(char* node, char* service)
 {
@@ -71,8 +73,9 @@ int make_connected_send_socket(char* node, char* service)
             perror("client: connect");
             continue;
         }
-
+#ifdef TEST_SOCK_PORT
         print_ai_connected(p->ai_addr, p->ai_family);
+#endif
 
         // if we get here, we must have connected successfully, so stop looping
         // through servinfo
