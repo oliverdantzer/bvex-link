@@ -1,6 +1,12 @@
 #pragma once
 
-/** @file */
+/** @file
+ *  @brief API to request telemetry data from the onboard server.
+ *
+ *  Example usage:
+ *  @example example_usage.c
+ */
+
 
 #include "generated/nanopb/request.pb.h"
 #include "generated/nanopb/response.pb.h"
