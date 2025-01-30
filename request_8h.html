@@ -168,7 +168,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae4b46cc52c0d5e020c15488f7664a3cd" id="r_ae4b46cc52c0d5e020c15488f7664a3cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequester.html">Requester</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a> (char *metric_id, char *node, char *service)</td></tr>
-<tr class="memdesc:ae4b46cc52c0d5e020c15488f7664a3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from. Threading multiple requests to the same <a class="el" href="structRequester.html" title="Structure to hold requester information.">Requester</a> is not recommended.  <br /></td></tr>
+<tr class="memdesc:ae4b46cc52c0d5e020c15488f7664a3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from.  <br /></td></tr>
 <tr class="separator:ae4b46cc52c0d5e020c15488f7664a3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeb6d36ec80a5add84b7d1b066218f35" id="r_abeb6d36ec80a5add84b7d1b066218f35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestIntResult.html">RequestIntResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a> (<a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
 <tr class="memdesc:abeb6d36ec80a5add84b7d1b066218f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends requests an integer value sample from the metrid id of reqr from the server reqr.socket_fd is connected to.  <br /></td></tr>
@@ -208,7 +208,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from. Threading multiple requests to the same <a class="el" href="structRequester.html" title="Structure to hold requester information.">Requester</a> is not recommended. </p>
+<p>Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">metric_id</td><td>The metric ID to request. </td></tr>
@@ -227,8 +227,9 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use altitudeRequester</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_ae4b46cc52c0d5e020c15488f7664a3cd"><div class="ttname"><a href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a></div><div class="ttdeci">Requester make_requester(char *metric_id, char *node, char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div><div class="ttdef"><b>Definition</b> request.c:12</div></div>
-<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request.h:24</div></div>
-</div><!-- fragment --> 
+<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request.h:23</div></div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Threading multiple requests to the same <a class="el" href="structRequester.html" title="Structure to hold requester information.">Requester</a> is not recommended. </dd></dl>
+
 </div>
 </div>
 <a id="acb8d051bfdca133fd18c2c6f5f63b9f0" name="acb8d051bfdca133fd18c2c6f5f63b9f0"></a>
@@ -261,7 +262,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_acb8d051bfdca133fd18c2c6f5f63b9f0"><div class="ttname"><a href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:117</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request.h:122</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request.h:121</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -295,7 +296,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_abeb6d36ec80a5add84b7d1b066218f35"><div class="ttname"><a href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a></div><div class="ttdeci">RequestIntResult request_int(Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:98</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request.h:68</div></div>
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request.h:67</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -329,7 +330,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest_8h_html_a370be4bcdf9e0de3dd8aa4b3505f7546"><div class="ttname"><a href="#a370be4bcdf9e0de3dd8aa4b3505f7546">request_string</a></div><div class="ttdeci">RequestStringResult request_string(Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div><div class="ttdef"><b>Definition</b> request.c:138</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request.h:95</div></div>
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request.h:94</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
