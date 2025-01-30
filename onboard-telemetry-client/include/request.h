@@ -7,7 +7,6 @@
  *  @example example_usage.c
  */
 
-
 #include "generated/nanopb/request.pb.h"
 #include "generated/nanopb/response.pb.h"
 
@@ -37,8 +36,7 @@ typedef struct {
 
 /**
  * @brief Creates a requester. Used by functions like request_int to
- * specify endpoint and metric ID to request a value from. Threading multiple
- * requests to the same Requester is not recommended.
+ * specify endpoint and metric ID to request a value from.
  *
  * @param metric_id The metric ID to request.
  * @param node The node to connect to.
@@ -59,6 +57,7 @@ typedef struct {
  *    // use altitudeRequester
  * }
  * ```
+ * @note Threading multiple requests to the same Requester is not recommended.
  */
 Requester make_requester(char* metric_id, char* node, char* service);
 
