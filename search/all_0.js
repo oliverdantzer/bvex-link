@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['_5ffile_0',['_File',['../struct__File.html',1,'']]],
-  ['_5fprimitive_1',['_Primitive',['../struct__Primitive.html',1,'']]],
-  ['_5frequest_2',['_Request',['../struct__Request.html',1,'']]],
-  ['_5fresponse_3',['_Response',['../struct__Response.html',1,'']]],
-  ['_5fsample_4',['_Sample',['../struct__Sample.html',1,'']]]
+  ['make_5fconnected_5fsend_5fsocket_0',['make_connected_send_socket',['../socket_8h.html#a41fd5a4c2643fcf87e9ca1aae9ee6186',1,'socket.h']]],
+  ['make_5frequester_1',['make_requester',['../request_8h.html#ae4b46cc52c0d5e020c15488f7664a3cd',1,'request.h']]],
+  ['makerequesterargs_2',['MakeRequesterArgs',['../structMakeRequesterArgs.html',1,'']]]
 ];
