@@ -4,7 +4,6 @@
 #include "size_constants.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
-#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -18,6 +17,6 @@ struct SampleFrameData {
     std::unique_ptr<std::vector<uint8_t>> data;
 };
 
-std::unique_ptr<std::vector<uint8_t>> encode_sample_frame(SampleFrameData sample_frame_data);
+std::vector<uint8_t> encode_sample_frame(SampleFrameData sample_frame_data);
 
 size_t calculate_segment_encoding_size(size_t data_size);

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <cstdint>
 #include <variant>
 #include <vector>
+#include <string>
 
 // primitive values supported to be encoded
 typedef std::variant<int32_t, int64_t, float, double, bool, std::string>
@@ -17,4 +17,4 @@ typedef std::variant<int32_t, int64_t, float, double, bool, std::string>
  * @param value The PrimitiveValue to encode.
  * @return A shared pointer to a vector of uint8_t containing the encoded message.
  */
-std::unique_ptr<std::vector<uint8_t>> encode_primitive(const PrimitiveValue value);
+std::vector<uint8_t> encode_primitive(const PrimitiveValue value);

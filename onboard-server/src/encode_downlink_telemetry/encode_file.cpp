@@ -4,13 +4,12 @@
 #include <cstdint>
 #include <fstream>
 #include <iterator>
-#include <memory>
 #include <vector>
 #include <string>
 
 using json = nlohmann::json;
 
-std::unique_ptr<std::vector<uint8_t>> encode_file(std::string file_path,
+std::vector<uint8_t> encode_file(std::string file_path,
                                                   std::string extension)
 {
     json file_frame;
@@ -27,5 +26,5 @@ std::unique_ptr<std::vector<uint8_t>> encode_file(std::string file_path,
     }
     file_frame["data"] = file_data;
     std::string file_frame_string = file_frame.dump();
-    return std::make_unique<std::vector<uint8_t>>(file_frame_string.begin(), file_frame_string.end());
+    return std::vector<uint8_t>(file_frame_string.begin(), file_frame_string.end());
 }
