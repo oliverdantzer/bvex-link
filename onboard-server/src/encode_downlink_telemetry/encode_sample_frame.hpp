@@ -17,6 +17,6 @@ struct SampleFrameData {
     std::unique_ptr<std::vector<uint8_t>> data;
 };
 
-std::vector<uint8_t> encode_sample_frame(SampleFrameData sample_frame_data);
+std::vector<uint8_t> encode_sample_frame(const SampleFrameData& sample_frame_data);
 
 size_t calculate_segment_encoding_size(size_t data_size);

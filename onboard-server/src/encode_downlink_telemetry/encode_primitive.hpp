@@ -17,4 +17,4 @@ typedef std::variant<int32_t, int64_t, float, double, bool, std::string>
  * @param value The PrimitiveValue to encode.
  * @return A shared pointer to a vector of uint8_t containing the encoded message.
  */
-std::vector<uint8_t> encode_primitive(const PrimitiveValue value);
+std::vector<uint8_t> encode_primitive(const PrimitiveValue& value);

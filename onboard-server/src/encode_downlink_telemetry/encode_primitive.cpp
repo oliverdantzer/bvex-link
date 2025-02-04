@@ -9,7 +9,7 @@
 using json = nlohmann::json;
 
 std::vector<uint8_t> encode_primitive(
-    const PrimitiveValue value)
+    const PrimitiveValue& value)
 {
     json primitive_frame;
     std::visit(

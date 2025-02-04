@@ -1,16 +1,16 @@
-#include <nlohmann/json.hpp>
-#include "size_constants.hpp"
 #include "encode_file.hpp"
+#include "size_constants.hpp"
 #include <cstdint>
 #include <fstream>
 #include <iterator>
-#include <vector>
+#include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 
 using json = nlohmann::json;
 
-std::vector<uint8_t> encode_file(std::string file_path,
-                                                  std::string extension)
+std::vector<uint8_t> encode_file(const std::string& file_path,
+                                 const std::string& extension)
 {
     json file_frame;
     file_frame["extension"] = extension;
@@ -26,5 +26,6 @@ std::vector<uint8_t> encode_file(std::string file_path,
     }
     file_frame["data"] = file_data;
     std::string file_frame_string = file_frame.dump();
-    return std::vector<uint8_t>(file_frame_string.begin(), file_frame_string.end());
+    return std::vector<uint8_t>(file_frame_string.begin(),
+                                file_frame_string.end());
 }

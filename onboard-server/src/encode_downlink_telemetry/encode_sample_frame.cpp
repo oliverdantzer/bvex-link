@@ -9,7 +9,7 @@
 using json = nlohmann::json;
 
 std::vector<uint8_t> encode_sample_frame(
-    SampleFrameData sample_frame_data)
+    const SampleFrameData& sample_frame_data)
 {
     json sample_frame;
     sample_frame["metric_id"] = sample_frame_data.metadata.metric_id;

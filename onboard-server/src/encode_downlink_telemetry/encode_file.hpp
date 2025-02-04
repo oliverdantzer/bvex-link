@@ -3,5 +3,5 @@
 #include <cstdint>
 #include <vector>
 
-std::vector<uint8_t> encode_file(std::string file_path,
-                                                  std::string extension);
+std::vector<uint8_t> encode_file(const std::string& file_path,
+                                 const std::string& extension);
