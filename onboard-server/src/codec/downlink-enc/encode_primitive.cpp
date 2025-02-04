@@ -1,5 +1,4 @@
 #include "encode_primitive.hpp"
-#include "size_constants.hpp"
 #include <cstdint>
 #include <nlohmann/json.hpp>
 #include <string>

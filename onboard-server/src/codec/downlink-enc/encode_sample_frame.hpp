@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../sample.hpp"
-#include "size_constants.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
 #include <optional>

@@ -1,5 +1,4 @@
 #include "encode_file.hpp"
-#include "size_constants.hpp"
 #include <cstdint>
 #include <fstream>
 #include <iterator>

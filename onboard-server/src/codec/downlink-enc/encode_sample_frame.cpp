@@ -1,5 +1,4 @@
 #include <nlohmann/json.hpp>
-#include "size_constants.hpp"
 #include "encode_sample_frame.hpp"
 #include <cstdint>
 #include <pb_encode.h>
