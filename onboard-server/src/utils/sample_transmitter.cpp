@@ -53,13 +53,13 @@ bool SampleTransmitter::set_new_sample()
     }
 }
 
-std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
+std::optional<std::vector<uint8_t>> SampleTransmitter::get_pkt()
 {
     if(sample_chunker_ == nullptr || unacked_seqnums_.size() == 0) {
         // Get a new sample to downlink
         bool got_new_sample = set_new_sample();
         if(!got_new_sample) {
-            return nullptr;
+            return std::nullopt;
         }
     }
     unsigned int seq_num = get_itr_val();
@@ -72,7 +72,7 @@ std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
                                         sample_chunker_->get_num_chunks(),
                                     .seqnum = seq_num,
                                     .data = std::move(chunk.data)};
-    std::unique_ptr<std::vector<uint8_t>> pkt =
+    std::vector<uint8_t> pkt =
         encode_sample_frame(std::move(segment_data));
 #ifdef DEBUG
     if(pkt->size() > get_max_pkt_size_()) {
@@ -84,8 +84,8 @@ std::unique_ptr<std::vector<uint8_t>> SampleTransmitter::get_pkt()
 #endif
     return pkt;
 }
-
-void SampleTransmitter::ack_seqnum(SeqNum seqnum, SampleId sample_id)
+void SampleTransmitter::handle_ack(
+    const std::vector<uint32_t>& seqnums, SampleId sample_id)
 {
     if(sample_id != sample_id_) {
         return;

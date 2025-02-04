@@ -20,10 +20,11 @@ class SampleTransmitter
         std::function<size_t()> get_max_pkt_size, MetricId metric_id);
 
     // Get the next payload to downlink
-    std::unique_ptr<std::vector<uint8_t>> get_pkt();
+    std::optional<std::vector<uint8_t>> get_pkt();
 
     // Mark a sequence number as succesfully recieved
-    void ack_seqnum(SeqNum seqnum, SampleId sample_id);
+    void handle_ack(const std::vector<SeqNum>& seqnums,
+                    SampleId sample_id);
 
     // // Mark the sample as succesfully recieved
     // void signal_sample_recieved(SampleId sample_id);
