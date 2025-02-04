@@ -23,7 +23,7 @@ typedef struct _Primitive {
 } Primitive;
 
 typedef struct _File {
-    char filepath[61];
+    char filepath[101];
     char extension[11];
 } File;
 
@@ -101,10 +101,10 @@ extern const pb_msgdesc_t File_msg;
 #define File_fields &File_msg
 
 /* Maximum encoded size of messages (where known) */
-#define File_size                                74
+#define File_size                                114
 #define Primitive_size                           62
 #define SAMPLE_PB_H_MAX_SIZE                     Sample_size
-#define Sample_size                              123
+#define Sample_size                              163
 
 #ifdef __cplusplus
 } /* extern "C" */
