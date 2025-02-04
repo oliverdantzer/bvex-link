@@ -16,7 +16,7 @@ class SampleTransmitter
 {
   public:
     SampleTransmitter(
-        std::function<std::unique_ptr<SampleData>()> pop_latest_sample,
+        std::function<std::unique_ptr<SampleData>()> get_new_sample,
         std::function<size_t()> get_max_pkt_size, MetricId metric_id);
 
     // Get the next payload to downlink
@@ -34,7 +34,7 @@ class SampleTransmitter
     void increment_itr();
     unsigned int get_itr_val();
 
-    std::function<std::unique_ptr<SampleData>()> pop_latest_sample_;
+    std::function<std::unique_ptr<SampleData>()> get_new_sample_;
     std::function<size_t()> get_max_pkt_size_;
     SampleMetadata sample_metadata_;
     SampleId sample_id_;

@@ -10,18 +10,18 @@
 #include <vector>
 
 SampleTransmitter::SampleTransmitter(
-    std::function<std::unique_ptr<SampleData>()> pop_latest_sample,
+    std::function<std::unique_ptr<SampleData>()> pop_new_sample,
     std::function<size_t()> get_max_pkt_size, MetricId metric_id)
-    : pop_latest_sample_(pop_latest_sample),
-      get_max_pkt_size_(get_max_pkt_size), sample_metadata_({
-                                               .metric_id = metric_id,
-                                               .timestamp = 0.0f,
-                                           }), sample_id_(0),
-      sample_chunker_(nullptr), unacked_seqnums_() {};
+    : get_new_sample_(pop_new_sample), get_max_pkt_size_(get_max_pkt_size),
+      sample_metadata_({
+          .metric_id = metric_id,
+          .timestamp = 0.0f,
+      }),
+      sample_id_(0), sample_chunker_(nullptr), unacked_seqnums_() {};
 
 bool SampleTransmitter::set_new_sample()
 {
-    std::unique_ptr<SampleData> sample = pop_latest_sample_();
+    std::unique_ptr<SampleData> sample = get_new_sample_();
     if(sample == nullptr) {
         return false;
     } else {
@@ -90,11 +90,18 @@ void SampleTransmitter::handle_ack(
     if(sample_id != sample_id_) {
         return;
     }
-
-    if(get_itr_val() == seqnum) {
-        increment_itr();
+    // TODO: Reposition itr dynamically as erasing
+    // so we dont go back to start every erasure
+    int num_erased = 0;
+    for(auto seqnum : seqnums) {
+        if(unacked_seqnums_.find(seqnum) != unacked_seqnums_.end()) {
+            unacked_seqnums_.erase(seqnum);
+            num_erased++;
+        }
     }
-    unacked_seqnums_.erase(seqnum);
+    if(num_erased > 0) {
+        unacked_seqnums_itr_ = unacked_seqnums_.begin();
+    }
 }
 
 void SampleTransmitter::increment_itr()
