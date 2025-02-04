@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+// returning ptr to SampleData is necessary here because
+// it allows us to use polymorphism and return classes
+// derived from the abstract class SampleData
 std::unique_ptr<SampleData> decode_payload(
     std::unique_ptr<std::vector<uint8_t>> payload)
 {
