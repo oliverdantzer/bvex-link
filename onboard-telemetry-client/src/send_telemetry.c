@@ -1,12 +1,12 @@
 #include "send_telemetry.h"
 #include "generated/nanopb/sample.pb.h"
 #include <arpa/inet.h> // send()
+#include <errno.h>
 #include <pb_encode.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 typedef struct {
     int socket_fd;
@@ -17,12 +17,12 @@ int send_sample(int socket_fd, Sample message)
 {
     uint8_t buffer[128];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
-    if (!pb_encode(&stream, Sample_fields, &message)) {
+    if(!pb_encode(&stream, Sample_fields, &message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
         return -1;
     }
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
-    if (bytes_sent == -1) {
+    if(bytes_sent == -1) {
         fprintf(stderr, "send failed: %s\n", strerror(errno));
         return -1;
     }
@@ -64,7 +64,7 @@ void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_int_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_int_val_tag;
     sample.data.primitive.value.int_val = value;
     send_sample_async(socket_fd, sample);
 }
@@ -76,7 +76,7 @@ void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_long_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_long_val_tag;
     sample.data.primitive.value.long_val = value;
     send_sample_async(socket_fd, sample);
 }
@@ -88,7 +88,7 @@ void send_sample_float(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_float_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_float_val_tag;
     sample.data.primitive.value.float_val = value;
     send_sample_async(socket_fd, sample);
 }
@@ -100,7 +100,7 @@ void send_sample_double(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_double_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_double_val_tag;
     sample.data.primitive.value.double_val = value;
     send_sample_async(socket_fd, sample);
 }
@@ -112,7 +112,7 @@ void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_bool_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_bool_val_tag;
     sample.data.primitive.value.bool_val = value;
     send_sample_async(socket_fd, sample);
 }
@@ -124,7 +124,7 @@ void send_sample_string(int socket_fd, char* metric_id, float timestamp,
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
-    sample.data.primitive.which_value = Primitive_string_val_tag;
+    sample.data.primitive.which_value = primitive_Primitive_string_val_tag;
     strcpy(sample.data.primitive.value.string_val, value);
     send_sample_async(socket_fd, sample);
 }

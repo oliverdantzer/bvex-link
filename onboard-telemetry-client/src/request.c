@@ -104,7 +104,7 @@ RequestIntResult request_int(Requester* reqr)
         result.err = request_result.err;
     }
 
-    if(request_result.response.primitive.which_value != Primitive_int_val_tag) {
+    if(request_result.response.primitive.which_value != primitive_Primitive_int_val_tag) {
         fprintf(stderr, "Invalid response type\n");
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;
@@ -125,7 +125,7 @@ RequestDoubleResult request_double(Requester* reqr)
     }
 
     if(request_result.response.primitive.which_value !=
-       Primitive_double_val_tag) {
+       primitive_Primitive_double_val_tag) {
         fprintf(stderr, "Invalid response type\n");
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;
@@ -146,7 +146,7 @@ RequestStringResult request_string(Requester* reqr)
     }
 
     if(request_result.response.primitive.which_value !=
-       Primitive_string_val_tag) {
+       primitive_Primitive_string_val_tag) {
         fprintf(stderr, "Invalid response type\n");
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;

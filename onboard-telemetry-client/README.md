@@ -24,11 +24,9 @@
     - You can now link `telemetry-uplink` to your targets
 
 ## Generating new nanopb headers
-Fails for some reason:
 ```bash
-../shared/generate-nanopb-headers.sh --output-dir=./src/generated/nanopb sample.proto request.proto response.proto
+pip install protobuf grpcio-tools
 ```
-Works:
 ```bash
-~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/generated/nanopb sample.proto request.proto response.proto
+~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/generated/nanopb primitive.proto sample.proto request.proto response.proto
 ```
