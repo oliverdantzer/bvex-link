@@ -13,7 +13,8 @@ RequestServer::RequestServer(udp::socket& listen_socket,
         get_latest_sample_response)
     : socket_(listen_socket),
       requester_endpoint_(),
-      get_latest_sample_response_(get_latest_sample_response)
+      get_latest_sample_response_(get_latest_sample_response),
+      recv_buffer_(REQUEST_PB_H_MAX_SIZE)
 {
     start_recv();
 }

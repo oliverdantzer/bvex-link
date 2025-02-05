@@ -48,7 +48,7 @@ class RequestServer
     udp::endpoint requester_endpoint_;
     std::function<std::optional<std::vector<uint8_t>>(std::string metric_id)>
         get_latest_sample_response_;
-    std::vector<char> recv_buffer_;
+    std::vector<uint8_t> recv_buffer_;
 
     /**
      * @brief Async await incoming packets, specifying the data to be read to
