@@ -1,8 +1,9 @@
 syntax = "proto3";
 
-// next line will give squiggly error because idk how to get linter to know nanopb
-// definitions
+// next line will give squiggly error because idk how to get linter to know
+// nanopb definitions
 import "nanopb.proto";
+import "primitive.proto";
 
 message Sample
 {
@@ -10,24 +11,13 @@ message Sample
     float timestamp = 2; // s since last epoch
     oneof data
     {
-        Primitive primitive = 3;
+        primitive.Primitive primitive = 3;
         File file = 4;
     }
 }
 
-message Primitive {
-    oneof value
-    {
-        int32 int_val = 1;
-        int64 long_val = 2;
-        float float_val = 3;
-        double double_val = 4;
-        bool bool_val = 5;
-        string string_val = 6 [ (nanopb).max_length = 60 ];
-    }
-}
-
-message File {
+message File
+{
     string filepath = 1 [ (nanopb).max_length = 100 ];
     string extension = 2 [ (nanopb).max_length = 10 ];
 }
