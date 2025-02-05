@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     try {
         if(argc != 3) {
             std::cerr << "Usage: " << argv[0]
-                      << "<target_address> <target_port>\n";
+                      << " <target_address> <target_port>\n";
             return 1;
         }
 
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
             onboard_telemetry_listen_socket, command);
 
         udp::socket telecommand_listen_socket(
-            io_service, udp::endpoint(udp::v4(), send_port));
+            io_service, udp::endpoint(udp::v4(), telecommand_recv_port));
         // enable SO_REUSEADDR to fix address already in use after crash
         telecommand_listen_socket.set_option(
             boost::asio::socket_base::reuse_address(true));
