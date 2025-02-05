@@ -18,10 +18,10 @@ TODO: build headers with cmake instead of manual
 
 Build onboard telemetry nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../telemetry-uplink -o ./src/decode_onboard_telemetry/pb_generated sample.proto
+~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/codec/onboard-tm/pb_generated --proto-path=../onboard-telemetry-client primitive.proto sample.proto
 ```
 
-Build downlink telemetry nanopb headers:
+Build requests nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../shared -o ./src/encode_downlink_telemetry/pb_generated sample.proto primitive.proto file.proto
+~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/codec/requests/pb_generated --proto-path=../onboard-telemetry-client primitive.proto request.proto response.proto
 ```

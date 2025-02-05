@@ -18,17 +18,80 @@ find_package(boost_asio CONFIG REQUIRED)
 find_package(nanopb CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
+# CODEC LIB
+add_library(codec_lib INTERFACE)
+target_include_directories(codec_lib INTERFACE src/codec)
+
+add_library(codec ALIAS codec_lib)
+
+
+# REQUEST / RESPONSE LIB
+add_library(requests_lib
+    src/codec/requests/request.cpp
+    src/codec/requests/response.cpp
+    src/codec/requests/pb_generated/primitive.pb.c
+    src/codec/requests/pb_generated/request.pb.c
+    src/codec/requests/pb_generated/response.pb.c
+)
+target_include_directories(requests_lib 
+    PRIVATE src/codec
+    PUBLIC
+        src/codec/requests
+        src/codec/requests/pb_generated
+)
+target_link_libraries(requests_lib
+    PRIVATE nanopb::protobuf-nanopb-static
+)
+
+
+
+# ONBOARD TELEMETRY DECODING LIB
+add_library(onboard_telemetry_lib
+    src/codec/onboard-tm/decode.cpp
+    src/codec/onboard-tm/pb_generated/primitive.pb.c
+    src/codec/onboard-tm/pb_generated/sample.pb.c
+)
+target_include_directories(onboard_telemetry_lib 
+    PRIVATE
+        src/codec/onboard-tm/pb_generated
+        src/codec
+    PUBLIC src/codec/onboard-tm
+)
+target_link_libraries(onboard_telemetry_lib
+    PRIVATE nanopb::protobuf-nanopb-static
+)
+
+
+# DOWNLINK ENCODING LIB
+add_library(downlink_lib
+    src/codec/downlink-tm-enc/file.cpp
+    src/codec/downlink-tm-enc/primitive.cpp
+    src/codec/downlink-tm-enc/sample_frame.cpp
+)
+target_include_directories(downlink_lib 
+    PRIVATE src/codec
+    PUBLIC src/codec/downlink-tm-enc
+)
+target_link_libraries(downlink_lib
+    PRIVATE nlohmann_json::nlohmann_json
+)
+
+
+
+# ALIASES
+add_library(codec::requests ALIAS requests_lib)
+add_library(codec::downlink-tm-enc ALIAS onboard_telemetry_lib)
+add_library(codec::onboard-tm ALIAS downlink_lib)
+
+
 set(SOURCES
     src/main.cpp
     src/command.cpp
-    src/decode_onboard_telemetry/decode_sample_pb.cpp
-    src/decode_onboard_telemetry/pb_generated/sample.pb.c
-    src/encode_downlink_telemetry/encode_file.cpp
-    src/encode_downlink_telemetry/encode_primitive.cpp
-    src/encode_downlink_telemetry/encode_sample_frame.cpp
     src/sample.cpp
     src/server/recv_server.cpp
+    src/server/request_server.cpp
     src/server/onboard_telemetry_recv_server.cpp
+    src/server/telecommand_recv_server.cpp
     src/server/send_server.cpp
     src/telemetry.cpp
     src/utils/chunker.cpp
@@ -40,15 +103,19 @@ add_executable(main ${SOURCES} ${HEADERS})
 
 target_include_directories(main PRIVATE
     src
-    src/decode_onboard_telemetry
-    src/decode_onboard_telemetry/pb_generated
-    src/encode_downlink_telemetry
     src/server
     src/utils
 )
 
 target_link_libraries(main PRIVATE 
-    Boost::asio 
-    nanopb::protobuf-nanopb-static
+    Boost::asio
     nlohmann_json::nlohmann_json
-    )
+    codec::requests
+    codec::onboard-tm
+    codec::downlink-tm-enc
+    codec
+
+    # transitive dep from codec::requests and
+    # codec::downlink-tm-enc
+    nanopb::protobuf-nanopb-static
+)
