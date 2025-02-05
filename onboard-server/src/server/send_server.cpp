@@ -1,8 +1,11 @@
 #include "send_server.hpp"
 
+#include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
+#include <cstdint>
 #include <iostream>
 #include <memory>
+#include <vector>
 
 // Lets us use s and ms after literal numbers
 using namespace std::chrono_literals;
@@ -16,8 +19,9 @@ constexpr std::chrono::milliseconds MIN_WAIT_TIME =
 //     return std::unique_ptr<std::string>(new std::string("Hello"));
 // }
 
-SendServer::SendServer(boost::asio::io_service& io_service, udp::socket& socket, udp::endpoint& target_endpoint,
-                       Telemetry& telemetry, Command& command)
+SendServer::SendServer(boost::asio::io_service& io_service, udp::socket& socket,
+                       udp::endpoint& target_endpoint, Telemetry& telemetry,
+                       Command& command)
     : socket_(socket), target_endpoint_(target_endpoint), telemetry_(telemetry),
       command_(command), schedule_send_timer_(io_service),
       backoff_timer_(io_service), current_wait_time_(MIN_WAIT_TIME)
@@ -27,9 +31,9 @@ SendServer::SendServer(boost::asio::io_service& io_service, udp::socket& socket,
 
 void SendServer::start_send()
 {
-    std::shared_ptr<std::vector<uint8_t>> message = telemetry_.pop();
-    if(message != nullptr) {
-
+    std::optional<std::vector<uint8_t>> message = telemetry_.pop();
+    if(message) {
+        auto message_ptr = std::make_shared<std::vector<uint8_t>>(*message);
         current_wait_time_ = MIN_WAIT_TIME; // reset exponential backoff
 
         // calls this.handle_send, giving
@@ -37,8 +41,8 @@ void SendServer::start_send()
         // once the data is handed off to the OS
         // networking stack for transmission
         socket_.async_send_to(
-            boost::asio::buffer(*message), target_endpoint_,
-            boost::bind(&SendServer::handle_send, this, message,
+            boost::asio::buffer(*message_ptr), target_endpoint_,
+            boost::bind(&SendServer::handle_send, this, message_ptr,
                         boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
     } else {
@@ -52,9 +56,9 @@ void SendServer::start_send()
         // only back off if max wait is greater than 0
         if(MAX_WAIT_TIME > 0ms) {
 #ifdef DEBUG
-            std::cout << "Telemetry.pop returned nullptr, waiting "
-                      << std::to_string(current_wait_time_.count()) << "ms"
-                      << std::endl;
+            // std::cout << "Telemetry.pop returned nullptr, waiting "
+            //           << std::to_string(current_wait_time_.count()) << "ms"
+            //           << std::endl;
 #endif
 
             backoff_timer_.expires_after(current_wait_time_);
