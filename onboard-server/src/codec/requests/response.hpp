@@ -2,8 +2,7 @@
 #include "pb_encode.h"
 #include <cstdint>
 #include <vector>
-#include "../sample.hpp"
-#include "../encode_downlink_telemetry/encode_primitive.hpp"
+#include "../primitive.hpp"
 
 std::vector<uint8_t> encode_response(const Response& response);
 

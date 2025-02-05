@@ -1,8 +1,7 @@
-#include "../encode_downlink_telemetry/encode_primitive.hpp"
-#include "../sample.hpp"
 #include "pb_encode.h"
 #include "pb_generated/response.pb.h"
 #include <cassert>
+#include "../primitive.hpp"
 #include <cstdint>
 #include <iostream>
 #include <optional>

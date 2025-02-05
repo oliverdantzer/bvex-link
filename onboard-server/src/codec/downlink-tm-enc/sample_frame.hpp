@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../sample.hpp"
 #include <boost/shared_ptr.hpp>
 #include <cstdint>
 #include <optional>
@@ -8,7 +7,8 @@
 #include <vector>
 
 struct SampleFrameData {
-    SampleMetadata metadata;
+    std::string metric_id;
+    float timestamp;
     std::string data_type;
     unsigned int sample_id;
     unsigned int num_segments;
@@ -17,5 +17,3 @@ struct SampleFrameData {
 };
 
 std::vector<uint8_t> encode_sample_frame(const SampleFrameData& sample_frame_data);
-
-size_t calculate_segment_encoding_size(size_t data_size);
