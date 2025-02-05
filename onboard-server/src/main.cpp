@@ -1,8 +1,8 @@
 #include "command.hpp"
 #include "server/onboard_telemetry_recv_server.hpp"
+#include "server/request_server.hpp"
 #include "server/send_server.hpp"
 #include "server/telecommand_recv_server.hpp"
-#include "server/request_server.hpp"
 #include "telemetry.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
@@ -18,9 +18,7 @@ int main(int argc, char* argv[])
                       << "<target_address> <target_port>\n";
             return 1;
         }
-        const boost::asio::ip::port_type onboard_telemetry_recv_port = 3000;
-        const boost::asio::ip::port_type telecommand_recv_port = 3001;
-        const boost::asio::ip::port_type send_port = 3002;
+
         std::string target_address_str = argv[1];
         boost::asio::ip::address target_address;
         if(target_address_str == "localhost") {
@@ -31,8 +29,15 @@ int main(int argc, char* argv[])
         }
         const boost::asio::ip::port_type target_port =
             static_cast<uint_least16_t>(std::atoi(argv[2]));
+
+        const boost::asio::ip::port_type onboard_telemetry_recv_port = 3000;
+        const boost::asio::ip::port_type telecommand_recv_port = 3001;
+        const boost::asio::ip::port_type send_port = 3002;
+        const boost::asio::ip::port_type requests_port = 3003;
+
         if(target_port == onboard_telemetry_recv_port ||
-           target_port == telecommand_recv_port || target_port == send_port) {
+           target_port == telecommand_recv_port || target_port == send_port ||
+           requests_port == send_port) {
             std::cerr << "Target port cannot be the same as any of the server "
                          "ports\n";
             return 1;
@@ -40,21 +45,39 @@ int main(int argc, char* argv[])
         Command command = Command(100000, 100);
         Telemetry telemetry = Telemetry(command);
         boost::asio::io_service io_service;
-        
+
+        udp::socket onboard_telemetry_listen_socket(
+            io_service, udp::endpoint(udp::v4(), onboard_telemetry_recv_port));
+        // enable SO_REUSEADDR to fix address already in use after crash
+        onboard_telemetry_listen_socket.set_option(
+            boost::asio::socket_base::reuse_address(true));
         OnboardTelemetryRecvServer onboard_telemetry_recv_server(
-            io_service, onboard_telemetry_recv_port, command);
+            onboard_telemetry_listen_socket, command);
 
-        TelecommandRecvServer telecommand_recv_server(
-            io_service, telecommand_recv_port, command);
+        udp::socket telecommand_listen_socket(
+            io_service, udp::endpoint(udp::v4(), send_port));
+        // enable SO_REUSEADDR to fix address already in use after crash
+        telecommand_listen_socket.set_option(
+            boost::asio::socket_base::reuse_address(true));
+        TelecommandRecvServer telecommand_recv_server(telecommand_listen_socket,
+                                                      command);
 
+        udp::socket requests_socket(io_service,
+                                    udp::endpoint(udp::v4(), requests_port));
+        // enable SO_REUSEADDR to fix address already in use after crash
+        requests_socket.set_option(
+            boost::asio::socket_base::reuse_address(true));
         RequestServer request_server(
-            io_service, telecommand_recv_port, 
-            std::bind(&Command::get_latest_sample_response, &command, std::placeholders::_1));
+            requests_socket, std::bind(&Command::get_latest_sample_response,
+                                       &command, std::placeholders::_1));
 
-        udp::socket socket(io_service, udp::endpoint(udp::v4(), send_port));
+        udp::socket send_socket(io_service,
+                                udp::endpoint(udp::v4(), send_port));
+        // enable SO_REUSEADDR to fix address already in use after crash
+        send_socket.set_option(boost::asio::socket_base::reuse_address(true));
         udp::endpoint target_endpoint(target_address, target_port);
-        SendServer send_server(io_service, socket, target_endpoint, telemetry,
-                               command);
+        SendServer send_server(io_service, send_socket, target_endpoint,
+                               telemetry, command);
         io_service.run();
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;

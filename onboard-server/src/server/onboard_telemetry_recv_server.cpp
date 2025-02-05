@@ -5,9 +5,8 @@
 #include <memory>
 
 OnboardTelemetryRecvServer::OnboardTelemetryRecvServer(
-    boost::asio::io_service& io_service, boost::asio::ip::port_type port,
-    Command& command, std::size_t buffer_size)
-    : recv_server_(io_service, port,
+    udp::socket& listen_socket, Command& command, std::size_t buffer_size)
+    : recv_server_(listen_socket,
                    std::bind(&OnboardTelemetryRecvServer::handle_message, this,
                              std::placeholders::_1),
                    buffer_size),

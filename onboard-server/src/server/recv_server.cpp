@@ -7,10 +7,10 @@
 using boost::asio::ip::udp;
 
 RecvServer::RecvServer(
-    boost::asio::io_service& io_service, boost::asio::ip::port_type port,
+    udp::socket& listen_socket,
     std::function<void(std::unique_ptr<std::vector<uint8_t>>)> message_handler,
     std::size_t buffer_size)
-    : socket_(io_service, udp::endpoint(udp::v4(), port)),
+    : socket_(listen_socket),
       message_handler_(message_handler), buffer_size_(buffer_size),
       recv_buffer_(buffer_size) // initialize buffer with buffer_size bytes
 {

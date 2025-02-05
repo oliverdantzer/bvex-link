@@ -6,10 +6,10 @@
 
 using json = nlohmann::json;
 
-TelecommandRecvServer::TelecommandRecvServer(
-    boost::asio::io_service& io_service, boost::asio::ip::port_type port,
-    Command& command, std::size_t buffer_size)
-    : recv_server_(io_service, port,
+TelecommandRecvServer::TelecommandRecvServer(udp::socket& listen_socket,
+                                             Command& command,
+                                             std::size_t buffer_size)
+    : recv_server_(listen_socket,
                    std::bind(&TelecommandRecvServer::handle_message, this,
                              std::placeholders::_1),
                    buffer_size),

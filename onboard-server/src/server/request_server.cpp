@@ -8,11 +8,10 @@
 
 using boost::asio::ip::udp;
 
-RequestServer::RequestServer(
-    boost::asio::io_service& io_service, boost::asio::ip::port_type port,
+RequestServer::RequestServer(udp::socket& listen_socket,
     std::function<std::optional<std::vector<uint8_t>>(std::string metric_id)>
         get_latest_sample_response)
-    : socket_(io_service, udp::endpoint(udp::v4(), port)),
+    : socket_(listen_socket),
       requester_endpoint_(),
       get_latest_sample_response_(get_latest_sample_response)
 {

@@ -38,14 +38,13 @@ class RequestServer
      * @param port The port to recv and send from.
      * @param command The command object to get the bps from.
      */
-    RequestServer(boost::asio::io_service& io_service,
-                  boost::asio::ip::port_type port,
+    RequestServer(udp::socket& listen_socket,
                   std::function<std::optional<std::vector<uint8_t>>(
                       std::string metric_id)>
                       get_latest_sample_response);
 
   private:
-    udp::socket socket_;
+    udp::socket& socket_;
     udp::endpoint requester_endpoint_;
     std::function<std::optional<std::vector<uint8_t>>(std::string metric_id)>
         get_latest_sample_response_;
