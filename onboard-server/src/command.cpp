@@ -25,28 +25,45 @@ void Command::add_sample(std::unique_ptr<SampleData> sample)
             .metric_id = metric_id,
             .token_threshold = 1,
             .latest_sample = std::move(sample),
+            .latest_downlinked = false,
             .sample_transmitter = std::make_unique<SampleTransmitter>(
-                [this, metric_id]() { return pop_latest_sample(metric_id); },
+                [this, metric_id]() { return get_new_sample(metric_id); },
                 [this]() { return get_max_packet_size(); }, metric_id)};
 
         // add metric_id:metric_info to map
         metrics_.insert(std::make_pair(metric_id, std::move(metric_info)));
     }
 }
-std::unique_ptr<SampleData> Command::pop_latest_sample(MetricId metric_id)
+
+std::shared_ptr<SampleData> Command::get_new_sample(MetricId metric_id)
 {
     // If metric exists and has sample
-    if(metric_exists(metric_id) &&
-       metrics_[metric_id].latest_sample != nullptr) {
-        std::unique_ptr<SampleData> sample =
-            std::move(metrics_[metric_id].latest_sample);
-        metrics_[metric_id].latest_sample = nullptr;
-        return sample;
-
+    if(metric_exists(metric_id) && !metrics_[metric_id].latest_downlinked) {
+        return metrics_[metric_id].latest_sample;
     } else {
         // return nullptr to signify invalid metric or
         // no new sample
         return nullptr;
+    }
+}
+
+std::optional<std::vector<uint8_t>> Command::get_latest_sample_response(
+    MetricId metric_id)
+{
+    if(metric_exists(metric_id)) {
+        return metrics_[metric_id].latest_sample->encode_response();
+    } else {
+        return std::nullopt;
+    }
+}
+
+void Command::handle_ack(Ack ack)
+{
+    if(metric_exists(ack.metric_id)) {
+        metrics_[ack.metric_id].sample_transmitter->handle_ack(ack.seqnums,
+                                                               ack.sample_id);
+    } else {
+        std::cerr << "Metric not found: " << ack.metric_id << std::endl;
     }
 }
 
@@ -96,12 +113,12 @@ std::optional<SampleInfo> MetricIterator::get_next_metric_sample()
     }
 
     auto return_iter = current_iterator_;
-    auto get_pkt = [return_iter]() -> std::unique_ptr<std::vector<uint8_t>> {
+    auto get_pkt = [return_iter]() -> std::optional<std::vector<uint8_t>> {
         if(return_iter->second.sample_transmitter != nullptr) {
             return return_iter->second.sample_transmitter->get_pkt();
         } else {
-            // return nullptr to signify no new sample
-            return nullptr;
+            // signify no new sample
+            return std::nullopt;
         }
     };
 
