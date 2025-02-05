@@ -7,6 +7,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <optional>
 
 class Telemetry
 {
@@ -21,7 +22,7 @@ class Telemetry
      *
      * @return ptr to raw bytes of sample frame packet.
      */
-    std::unique_ptr<std::vector<uint8_t>> pop(unsigned int retry_depth = 0);
+    std::optional<std::vector<uint8_t>> pop(unsigned int retry_depth = 0);
 
   private:
     Command& command_;

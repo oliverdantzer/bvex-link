@@ -13,11 +13,11 @@
 Telemetry::Telemetry(Command& command)
     : command_(command), metric_iter_(command.get_metric_iterator()) {};
 
-std::unique_ptr<std::vector<uint8_t>> Telemetry::pop(unsigned int retry_depth)
+std::optional<std::vector<uint8_t>> Telemetry::pop(unsigned int retry_depth)
 {
     std::optional<SampleInfo> sample = metric_iter_.get_next_metric_sample();
     if (!sample.has_value()) {
-        return nullptr;
+        return std::nullopt;
     }
 
     std::string metric_id = sample->metric_id;
@@ -34,7 +34,7 @@ std::unique_ptr<std::vector<uint8_t>> Telemetry::pop(unsigned int retry_depth)
     metric_token_counts_[metric_id]++;
     if(tokens >= threshold) {
         auto payload = sample->get_pkt();
-        if(payload != nullptr) {
+        if(payload) {
             tokens = 0;
             return payload;
         }
@@ -43,6 +43,6 @@ std::unique_ptr<std::vector<uint8_t>> Telemetry::pop(unsigned int retry_depth)
     if(retry_depth < command_.get_num_metrics()) {
         return pop(retry_depth + 1);
     } else {
-        return nullptr;
+        return std::nullopt;
     }
 };
