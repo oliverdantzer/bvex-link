@@ -20,7 +20,7 @@ struct Chunk {
 class Chunker
 {
   public:
-    Chunker(std::unique_ptr<std::vector<uint8_t>> data, size_t max_chunk_size);
+    Chunker(std::vector<uint8_t>&& data, size_t max_chunk_size);
 
     // get chunk by its unique sequence number
     // seq_num must be in the range [0, num_chunks)
@@ -37,7 +37,7 @@ class Chunker
     size_t get_chunk_size(SeqNum seq_num);
 
     // the piece of data that we get the segments from
-    std::unique_ptr<std::vector<uint8_t>> data_;
+    std::vector<uint8_t> data_;
 
     // the size of each chunk possibly excluding the last one
     size_t normal_chunk_size_;
