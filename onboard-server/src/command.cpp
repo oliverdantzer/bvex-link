@@ -20,7 +20,7 @@ void Command::add_sample(std::unique_ptr<SampleData> sample)
     std::string metric_id = sample->metadata.metric_id;
 #ifdef DEBUG_ADD_SAMPLE
     std::cout << "New sample for metric id: \"" << metric_id
-                << "\". Timestamp: " << sample->metadata.timestamp << std::endl;
+              << "\". Timestamp: " << sample->metadata.timestamp << std::endl;
 #endif
     if(metric_exists(metric_id)) {
         MetricInfo* metric_info = &metrics_[metric_id];
@@ -29,10 +29,10 @@ void Command::add_sample(std::unique_ptr<SampleData> sample)
     } else {
 #ifdef DEBUG_ADD_SAMPLE
         std::cout << "New metric id \"" << metric_id
-                  << "\". Timestamp: " << sample->metadata.timestamp << std::endl;
+                  << "\". Timestamp: " << sample->metadata.timestamp
+                  << std::endl;
 #endif
         // Create metric_info, populate it with data from sample
-        std::string metric_id = metric_id;
         MetricInfo metric_info{
             .metric_id = metric_id,
             .token_threshold = 1,
@@ -43,7 +43,7 @@ void Command::add_sample(std::unique_ptr<SampleData> sample)
                 [this]() { return get_max_packet_size(); }, metric_id)};
 
         // add metric_id:metric_info to map
-        metrics_.insert(std::make_pair(metric_id, std::move(metric_info)));
+        metrics_.emplace(metric_id, std::move(metric_info));
     }
 }
 
@@ -63,8 +63,24 @@ std::optional<std::vector<uint8_t>> Command::get_latest_sample_response(
     MetricId metric_id)
 {
     if(metric_exists(metric_id)) {
+#ifdef DEBUG_GET_LATEST_SAMPLE_RESPONSE
+        std::cout << "metric id found." << std::endl;
+#endif
         return metrics_[metric_id].latest_sample->encode_response();
     } else {
+#ifdef DEBUG_GET_LATEST_SAMPLE_RESPONSE
+        std::cout << "metric id not found: \"" << metric_id << "\"."
+                  << std::endl;
+        if(!metrics_.empty()) {
+            std::cout << "current metric ids: " << std::endl;
+            for(auto const& pair : metrics_) {
+                std::cout << "\"" << pair.first << "\"\n" << std::endl;
+            }
+            std::cout << "\n" << std::endl;
+        } else {
+            std::cout << "metrics_ empty" << std::endl;
+        }
+#endif
         return std::nullopt;
     }
 }

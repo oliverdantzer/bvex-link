@@ -64,7 +64,14 @@ void RequestServer::handle_recv(const boost::system::error_code& error,
                                          recv_buffer_.begin() + bytes_received);
         std::optional<Request> request = decode_request(request_enc);
         if(request) {
+#ifdef DEBUG_RECV_REQUEST
+            std::cout << "Decoded request succesfully" << std::endl;
+            std::cout << "Request metric id: \"" << request->metric_id << "\""
+                      << std::endl;
+#endif
             handle_request(*request);
+        } else {
+            std::cout << "Decoding request failed." << std::endl;
         }
     }
     // recurse
