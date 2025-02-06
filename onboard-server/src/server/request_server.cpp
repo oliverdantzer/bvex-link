@@ -1,6 +1,7 @@
 #include "request_server.hpp"
 #include <boost/bind/bind.hpp>
 #include <codec/requests/request.hpp>
+#include <codec/requests/response.hpp>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -17,7 +18,7 @@ RequestServer::RequestServer(
       recv_buffer_(REQUEST_PB_H_MAX_SIZE)
 {
 #ifdef DEBUG_RECV_REQUEST
-    if (!socket_.is_open()) {
+    if(!socket_.is_open()) {
         std::cerr << "Socket is not open, cannot start receiving." << std::endl;
         return;
     }
@@ -78,20 +79,29 @@ void RequestServer::handle_recv(const boost::system::error_code& error,
     start_recv();
 }
 
+std::vector<uint8_t> RequestServer::get_metric_response(
+    const std::string& metric_id)
+{
+    std::optional<std::vector<uint8_t>> response =
+        get_latest_sample_response_(metric_id);
+    if(response) {
+        return *response;
+    } else {
+        return encode_failure_response(metric_id);
+    }
+}
+
 void RequestServer::handle_request(Request& request)
 {
-    std::optional<std::vector<uint8_t>> response_enc =
-        get_latest_sample_response_(request.metric_id);
-    if(response_enc) {
-        auto response_enc_ptr =
-            std::make_shared<std::vector<uint8_t>>(*response_enc);
-        auto handle_completion_callback =
-            boost::bind(&RequestServer::handle_sent, this, response_enc_ptr,
-                        boost::asio::placeholders::error,
-                        boost::asio::placeholders::bytes_transferred);
-        socket_.async_send_to(boost::asio::buffer(*response_enc_ptr),
-                              requester_endpoint_, handle_completion_callback);
-    }
+    auto response_ptr = std::make_shared<std::vector<uint8_t>>(
+        get_metric_response(request.metric_id));
+    auto handle_completion_callback =
+        boost::bind(&RequestServer::handle_sent, this, response_ptr,
+                    boost::asio::placeholders::error,
+                    boost::asio::placeholders::bytes_transferred);
+    socket_.async_send_to(boost::asio::buffer(*response_ptr),
+                          requester_endpoint_, handle_completion_callback);
+    start_recv(); // recurse
 }
 
 void RequestServer::handle_sent(

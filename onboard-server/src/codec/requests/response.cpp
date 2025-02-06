@@ -39,5 +39,10 @@ std::vector<uint8_t> encode_primitive_response(const std::string& metric_id,
         },
         value);
 
+std::vector<uint8_t> encode_failure_response(const std::string& metric_id)
+{
+    Response response = Response_init_zero;
+    strcpy(response.metric_id, metric_id.c_str());
+    response.has_primitive = false;
     return encode_response(response);
 }

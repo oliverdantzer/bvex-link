@@ -28,6 +28,5 @@ std::vector<uint8_t> FileSample::encode_data()
 
 std::vector<uint8_t> FileSample::encode_response()
 {
-    std::cerr << "FileSample::encode_response not implemented" << std::endl;
-    return std::vector<uint8_t>();
+    return encode_failure_response(metadata.metric_id);
 };

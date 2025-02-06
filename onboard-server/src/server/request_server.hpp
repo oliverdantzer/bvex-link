@@ -2,8 +2,8 @@
 
 #include "../command.hpp"
 #include "../telemetry.hpp"
-#include <codec/requests/request.hpp>
 #include <boost/asio.hpp>
+#include <codec/requests/request.hpp>
 #include <functional>
 #include <memory>
 #include <string>
@@ -70,9 +70,10 @@ class RequestServer
     void handle_recv(const boost::system::error_code& error,
                      std::size_t bytes_recvd);
 
+    std::vector<uint8_t> get_metric_response(const std::string& metric_id);
     void handle_request(Request& request);
 
     void handle_sent(std::shared_ptr<std::vector<uint8_t>> response_enc,
-                                const boost::system::error_code& error,
-                                std::size_t bytes_transferred);
+                     const boost::system::error_code& error,
+                     std::size_t bytes_transferred);
 };
