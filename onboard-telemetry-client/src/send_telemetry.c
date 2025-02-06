@@ -15,14 +15,15 @@ typedef struct {
 
 int send_sample(int socket_fd, Sample message)
 {
-    uint8_t buffer[128];
+    uint8_t buffer[512];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Sample_fields, &message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
         return -1;
     }
+
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
-    if(bytes_sent == -1) {
+    if(bytes_sent < 0) {
         fprintf(stderr, "send failed: %s\n", strerror(errno));
         return -1;
     }
@@ -39,6 +40,7 @@ void* send_sample_one_arg(void* arg)
 
 int send_sample_async(int socket_fd, Sample sample)
 {
+    printf("sample.which_data: %d\n", sample.which_data);
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
@@ -51,7 +53,7 @@ int send_sample_async(int socket_fd, Sample sample)
     if(rc != 0) {
         fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
         free(temp_data); // Free temp_data if thread creation fails
-        -1;
+        return -1;
     }
     pthread_detach(temp_thread); // Detach thread to let it run independently
     return 0;
