@@ -40,7 +40,6 @@ void* send_sample_one_arg(void* arg)
 
 int send_sample_async(int socket_fd, Sample sample)
 {
-    printf("sample.which_data: %d\n", sample.which_data);
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
