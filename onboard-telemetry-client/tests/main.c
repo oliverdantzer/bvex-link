@@ -1,9 +1,10 @@
 #include "socket.h"
+#include "test_file.h"
 #include "test_loop.h"
 #include "test_loop_send_time.h"
 #include "test_n_samples.h"
 #include "test_one.h"
-#include "test_file.h"
+#include "test_request.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,10 +30,9 @@ int main(int argc, char** argv)
     char* target_name = argv[1];
     char* target_service = argv[2];
     char* test_name = argv[3];
-    int socket_fd = make_connected_send_socket(target_name, target_service);
     struct timespec start_time;
     clock_gettime(CLOCK_MONOTONIC,
-                    &start_time); // Get start time with nanosecond precision
+                  &start_time); // Get start time with nanosecond precision
 
     // Convert timespec to a float representing the time in seconds
     float start_time_in_seconds =
@@ -48,16 +48,41 @@ int main(int argc, char** argv)
             return 1;
         }
         int times = atoi(argv[4]);
+        int socket_fd = make_connected_send_socket(target_name, target_service);
         n_samples(times, socket_fd);
-    } else if(strcmp(test_name, "test_one") == 0) {
-        test_one(socket_fd, start_time_in_seconds);
+        close(socket_fd);
+    } else if(strcmp(test_name, "sample") == 0) {
+        char* type = argv[4];
+        if(strcmp(type, "float") == 0) {
+            float value = strtof(argv[5], NULL);
+            int socket_fd =
+                make_connected_send_socket(target_name, target_service);
+            test_one_float(socket_fd, start_time_in_seconds, value);
+            close(socket_fd);
+        } else if(strcmp(type, "string") == 0) {
+            char* value = argv[5];
+            int socket_fd =
+                make_connected_send_socket(target_name, target_service);
+            test_one_string(socket_fd, start_time_in_seconds, value);
+            close(socket_fd);
+        }
+    } else if(strcmp(test_name, "request") == 0) {
+        char* type = argv[4];
+        if(strcmp(type, "float") == 0) {
+            test_request_float("test");
+        } else if(strcmp(type, "string") == 0) {
+            test_request_string("test");
+        }
     } else if(strcmp(test_name, "test_loop") == 0) {
+        int socket_fd = make_connected_send_socket(target_name, target_service);
         primitive_telemetry_loop(socket_fd);
+        close(socket_fd);
     } else if(strcmp(test_name, "test_file") == 0) {
+        int socket_fd = make_connected_send_socket(target_name, target_service);
         test_file(socket_fd, start_time_in_seconds);
+        close(socket_fd);
     } else {
         printf("Unknown test name: %s\n", test_name);
     }
-    close(socket_fd);
     return 0;
 }
