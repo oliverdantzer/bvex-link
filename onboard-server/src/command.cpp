@@ -16,11 +16,23 @@ void Command::add_sample(std::unique_ptr<SampleData> sample)
     if(sample == nullptr) {
         throw std::invalid_argument("SampleData cannot be null");
     }
-    if(metric_exists(sample->metadata.metric_id)) {
-        metrics_[sample->metadata.metric_id].latest_sample = std::move(sample);
+
+    std::string metric_id = sample->metadata.metric_id;
+#ifdef DEBUG_ADD_SAMPLE
+    std::cout << "New sample for metric id: \"" << metric_id
+                << "\". Timestamp: " << sample->metadata.timestamp << std::endl;
+#endif
+    if(metric_exists(metric_id)) {
+        MetricInfo* metric_info = &metrics_[metric_id];
+        metric_info->latest_sample = std::move(sample);
+        metric_info->latest_downlinked = false;
     } else {
+#ifdef DEBUG_ADD_SAMPLE
+        std::cout << "New metric id \"" << metric_id
+                  << "\". Timestamp: " << sample->metadata.timestamp << std::endl;
+#endif
         // Create metric_info, populate it with data from sample
-        std::string metric_id = sample->metadata.metric_id;
+        std::string metric_id = metric_id;
         MetricInfo metric_info{
             .metric_id = metric_id,
             .token_threshold = 1,
