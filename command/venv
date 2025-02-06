@@ -1,5 +1,0 @@
-cd "$(dirname "${BASH_SOURCE[0]}")"
-source ./bin/activate
-pip install -r "./requirements.txt"
-export PYTHONPATH=$(pwd)  # should be vbex directory
-echo "PYTHONPATH=$PYTHONPATH"

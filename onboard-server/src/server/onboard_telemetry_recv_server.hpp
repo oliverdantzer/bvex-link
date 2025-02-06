@@ -8,9 +8,7 @@
 class OnboardTelemetryRecvServer
 {
   public:
-    OnboardTelemetryRecvServer(boost::asio::io_service& io_service,
-                               boost::asio::ip::port_type port,
-                               Command& command,
+    OnboardTelemetryRecvServer(udp::socket& listen_socket, Command& command,
                                std::size_t buffer_size = 4096);
 
   private:

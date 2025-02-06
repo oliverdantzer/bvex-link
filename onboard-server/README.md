@@ -8,9 +8,9 @@ vcpkg
 cmake
 ninja-build
 
-To use this, you must have vcpkg, have $VCPKG_ROOT defined then run `vcpkg install`
+To use this, you must have vcpkg and have $VCPKG_ROOT defined
 
-`cmake --preset=default`
+`cmake --preset=debug`
 `cmake --build build`
 `./build/main`
 
@@ -18,10 +18,10 @@ TODO: build headers with cmake instead of manual
 
 Build onboard telemetry nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../telemetry-uplink -o ./src/decode_onboard_telemetry/pb_generated sample.proto
+~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/codec/onboard-tm/pb_generated --proto-path=../onboard-telemetry-client primitive.proto sample.proto
 ```
 
-Build downlink telemetry nanopb headers:
+Build requests nanopb headers:
 ```bash
-./generate-nanopb-headers.sh -p ../shared -o ./src/encode_downlink_telemetry/pb_generated sample.proto primitive.proto file.proto
+~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/codec/requests/pb_generated --proto-path=../onboard-telemetry-client primitive.proto request.proto response.proto
 ```

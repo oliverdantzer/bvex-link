@@ -1,55 +1,158 @@
+import asyncio
+import json
 import socket
-import logging
+from dataclasses import dataclass
+from typing import Any, Callable
+import threading
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+import queue
+from cli import CLI
+from sample_data import Ack, Sample, SampleMetadata, Segment, SegmentMetadata
+from sample_receiver import SampleReceiver
 
 
-class Server:
-    def __init__(self, server_address: tuple[str, int], target_address: tuple[str, int]):
-        self.server_address = server_address
-        self.target_address = target_address
+class RecvServer(asyncio.DatagramProtocol):
+    remote_addr: Any = None
+    handle_sample: Callable[[Sample], None]
+    set_remote_addr: Callable[[Any], None]
 
-        # Create a UDP socket
+    def __init__(
+        self,
+        handle_sample: Callable[[Sample], None],
+        set_remote_addr: Callable[[Any], None],
+    ):
+        super().__init__()
+        self.handle_sample = handle_sample
+        self.set_remote_addr = set_remote_addr
+
+    def connection_made(self, transport):
+        self.transport = transport
+
+    def datagram_received(self, data, addr):
+        if self.remote_addr != addr:
+            if self.remote_addr is None:
+                self.remote_addr = addr
+                self.set_remote_addr(addr)
+            else:
+                print("Warning: datagram recieved from multiple hosts, discarding")
+                return
+        sample_json = json.loads(data.decode())
+        # print(sample_json)
+        segment_metadata = SegmentMetadata(
+            sample_json["segment"]["seqnum"], sample_json["segment"]["num_segments"]
+        )
+        sample_metadata = SampleMetadata(
+            sample_json["metric_id"],
+            sample_json["sample_id"],
+            sample_json["timestamp"],
+            sample_json["data_type"],
+        )
+        segment = Segment(segment_metadata, bytes(sample_json["segment"]["data"]))
+        sample = Sample(sample_metadata, segment)
+        self.handle_sample(sample)
+
+
+@dataclass
+class SetBps:
+    bps: int
+
+
+@dataclass
+class SetMaxPacketSize:
+    max_pkt_size: int
+
+
+Telecommand = SetBps | SetMaxPacketSize
+
+
+class SendServer:
+    remote_addr: tuple[str, int] | None = None
+    get_ack: Callable[[], Ack]
+    sock: socket.socket
+    bits_per_second: int = 100
+    remote_addr_set: asyncio.Event = asyncio.Event()
+    command_queue: queue.Queue[Telecommand] = queue.Queue()
+
+    def __init__(self, get_ack: Callable[[], Ack]):
+        self.get_ack = get_ack
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.setblocking(False)  # Don't wait until recieve data
-        self.sock.bind(self.server_address)
-        logger.info(f"Server initialized")
-        logger.info(
-            f"UDP socket opened at udp://{self.server_address[0]}:{self.server_address[1]}")
-        logger.info(
-            f"Target: udp://{self.target_address[0]}:{self.target_address[1]}")
-        self.recieved_ip = None
 
-        self.retransmit_seq_nums_by_sample_id: set[str] = set()
+    def set_remote_addr(self, addr: tuple[str, int]):
+        # TODO: Change send and receive addr on server
+        # to be same so I dont have to do this workaround
+        self.remote_addr = ('127.0.0.1', 3001)
+        self.remote_addr_set.set()
+    
+    def set_bps(self, bps: int):
+        self.command_queue.put(SetBps(bps))
+    
+    def set_max_pkt_size(self, pkt_size: int):
+        self.command_queue.put(SetMaxPacketSize(pkt_size))
 
-    def __del__(self):
-        self.sock.close()
-        logger.info("Socket closed")
+    async def send_loop(self) -> None:
+        print("Starting send loop")
+        await self.remote_addr_set.wait()
+        # print("remote addr received: ", self.remote_addr)
+        loop = asyncio.get_running_loop()
+        while True:
+            obj: Any = {}
+            if not self.command_queue.empty():
+                command = self.command_queue.get()
+                if isinstance(command, SetBps):
+                    obj["set_bps"] = {}
+                    obj["set_bps"]["bps"] = command.bps
+                elif isinstance(command, SetMaxPacketSize):
+                    obj["set_max_pkt_size"] = {}
+                    obj["set_max_pkt_size"]["max_pkt_size"] = command.max_pkt_size
+                else:
+                    raise ValueError("Invalid command")
+                json_string = json.dumps(obj)
+            else:
+                ack = self.get_ack()
+                obj["ack"] = {}
+                obj["ack"]["metric_id"] = ack.metric_id
+                obj["ack"]["sample_id"] = ack.sample_id
+                obj["ack"]["seqnums"] = ack.seqnums
+            json_string = json.dumps(obj)
+            # print("sending packet: ", json_string)
+            data = json_string.encode()
+            assert data
+            if self.remote_addr:
+                # self.sock.sendto(data, self.remote_addr)
+                await loop.sock_sendto(self.sock, data, self.remote_addr)
+            time_to_send = len(data) / self.bits_per_second
+            # Adjust the sleep time as needed
+            await asyncio.sleep(time_to_send)
 
-    def send_packet(self, data: bytes):
-        """Send a packet to sol."""
-        print("Sending packet", data.decode("utf-8"))
-        self.sock.sendto(data, self.target_address)
 
-    def pop_recieve_buffer(self) -> bytes | None:
-        try:
-            data, address = self.sock.recvfrom(4096)
+async def run_server():
+    print("Starting UDP server")
 
-            if address != self.recieved_ip:
-                self.recieved_ip = address
-                logger.info(f"Receiving data from {address}")
-            if len(data) == 0:
-                return None
-            return data
-        except BlockingIOError:
-            return None
-        except ConnectionResetError as e:
-            print(e)
-            return None
+    receiver = SampleReceiver()
 
-    def receive_telemetry(self):
-        data = self.pop_recieve_buffer()
-        if data:
-            print(data.decode())
+    send_server = SendServer(receiver.get_ack)
+
+    # Bind to localhost on UDP port 3000
+    loop = asyncio.get_running_loop()
+    transport, _ = await loop.create_datagram_endpoint(
+        lambda: RecvServer(receiver.handle_sample, send_server.set_remote_addr),
+        local_addr=("127.0.0.1", 3004),
+    )
+
+    # Schedule the send_loop to run concurrently
+    send_task = asyncio.create_task(send_server.send_loop())
+
+    cli = CLI(send_server.set_bps, send_server.set_max_pkt_size)
+    cli_thread = threading.Thread(target=cli.run)
+    cli_thread.start()
+
+    try:
+        await asyncio.sleep(3600)  # Run for 1 hour
+    finally:
+        transport.close()
+        send_task.cancel()
+        await send_task
+
+
+if __name__ == "__main__":
+    asyncio.run(run_server())
