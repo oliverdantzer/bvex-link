@@ -133,5 +133,10 @@ endif()
 
 option(DEBUG_REQUEST_RECEPTION "Log sample reception pipeline" OFF)
 if(DEBUG_REQUEST_RECEPTION)
-    target_compile_definitions(main PRIVATE DEBUG_RECV_REQUEST)
+    target_compile_definitions(
+        main
+        PRIVATE
+            DEBUG_RECV_REQUEST
+            DEBUG_GET_LATEST_SAMPLE_RESPONSE
+    )
 endif()

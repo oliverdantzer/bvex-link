@@ -1,4 +1,4 @@
-#include "socket.h"
+#include "send_telemetry.h"
 #include <arpa/inet.h>  // htons, inet_addr
 #include <fcntl.h>      // fcntl
 #include <netdb.h>      // addrinfo, getaddrinfo
@@ -28,7 +28,7 @@ void print_ai_connected(struct sockaddr* addr, int family)
 }
 #endif
 
-int make_connected_send_socket(char* node, char* service)
+int connected_udp_socket(char* node, char* service)
 {
     // --- GET LINKED LIST servinfo OF addrinfo STRUCTS CONTAINING
     // --- ADDRESS INFORMATION FOR node:service ---

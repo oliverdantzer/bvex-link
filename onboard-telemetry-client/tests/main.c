@@ -1,4 +1,4 @@
-#include "socket.h"
+#include "send_telemetry.h"
 #include "test_file.h"
 #include "test_loop.h"
 #include "test_loop_send_time.h"
@@ -11,14 +11,15 @@
 #include <time.h>
 #include <unistd.h>
 
+#define SAMPLE_SERVER_ADDR "localhost"
+#define SAMPLE_SERVER_PORT "3000"
+
 int main(int argc, char** argv)
 {
-    if(argc < 4) {
+    if(argc < 2) {
         printf(
             "Usage: %s target_name target_port test_name [additional_args]\n",
             argv[0]);
-        printf("  target_name: The name or IP address of the target.\n");
-        printf("  target_port: The port number of the target service.\n");
         printf("  test_name: The name of the test to run (test_spam, test_one, "
                "test_loop).\n");
         printf("  additional_args: Additional arguments required by specific "
@@ -27,9 +28,6 @@ int main(int argc, char** argv)
                "the number of times to send.\n");
         return 1;
     }
-    char* target_name = argv[1];
-    char* target_service = argv[2];
-    char* test_name = argv[3];
     struct timespec start_time;
     clock_gettime(CLOCK_MONOTONIC,
                   &start_time); // Get start time with nanosecond precision
@@ -40,6 +38,7 @@ int main(int argc, char** argv)
 
     printf("Start time: %f\n", start_time_in_seconds);
 
+    char* test_name = argv[1];
     if(strcmp(test_name, "test_spam") == 0) {
         if(argc != 5) {
             printf("Usage for test_spam: %s target_name target_port test_spam "
@@ -47,38 +46,41 @@ int main(int argc, char** argv)
                    argv[0]);
             return 1;
         }
-        int times = atoi(argv[4]);
-        int socket_fd = make_connected_send_socket(target_name, target_service);
+        int times = atoi(argv[2]);
+        int socket_fd =
+            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
         n_samples(times, socket_fd);
         close(socket_fd);
     } else if(strcmp(test_name, "sample") == 0) {
-        char* type = argv[4];
+        char* type = argv[2];
         if(strcmp(type, "float") == 0) {
-            float value = strtof(argv[5], NULL);
+            float value = strtof(argv[3], NULL);
             int socket_fd =
-                make_connected_send_socket(target_name, target_service);
+                connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
             test_one_float(socket_fd, start_time_in_seconds, value);
             close(socket_fd);
         } else if(strcmp(type, "string") == 0) {
-            char* value = argv[5];
+            char* value = argv[3];
             int socket_fd =
-                make_connected_send_socket(target_name, target_service);
+                connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
             test_one_string(socket_fd, start_time_in_seconds, value);
             close(socket_fd);
         }
     } else if(strcmp(test_name, "request") == 0) {
-        char* type = argv[4];
+        char* type = argv[2];
         if(strcmp(type, "float") == 0) {
             test_request_float("test");
         } else if(strcmp(type, "string") == 0) {
             test_request_string("test");
         }
     } else if(strcmp(test_name, "test_loop") == 0) {
-        int socket_fd = make_connected_send_socket(target_name, target_service);
+        int socket_fd =
+            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
         primitive_telemetry_loop(socket_fd);
         close(socket_fd);
     } else if(strcmp(test_name, "test_file") == 0) {
-        int socket_fd = make_connected_send_socket(target_name, target_service);
+        int socket_fd =
+            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
         test_file(socket_fd, start_time_in_seconds);
         close(socket_fd);
     } else {
