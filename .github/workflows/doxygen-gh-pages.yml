@@ -5,7 +5,7 @@ name: Doxygen GitHub Pages Deploy Action
 on:
   push:
     branches:
-      - json-telemetry
+      - main
 
 permissions:
   contents: write
