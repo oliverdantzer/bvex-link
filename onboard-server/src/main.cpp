@@ -37,7 +37,9 @@ int main(int argc, char* argv[])
         const boost::asio::ip::port_type onboard_telemetry_recv_port = 3000;
         const boost::asio::ip::port_type telecommand_recv_port = 3001;
         const boost::asio::ip::port_type send_port = 3002;
-        const boost::asio::ip::port_type requests_port = 3003;
+        const boost::asio::ip::port_type requests_port =
+            static_cast<boost::asio::ip::port_type>(
+                std::stoi(REQUEST_SERVER_PORT));
 
         if(target_port == onboard_telemetry_recv_port ||
            target_port == telecommand_recv_port || target_port == send_port ||
@@ -51,20 +53,13 @@ int main(int argc, char* argv[])
         boost::asio::io_service io_service;
 
         udp::socket onboard_telemetry_listen_socket(
-            io_service, udp::endpoint(udp::v4(), onboard_telemetry_recv_port));
+            io_service, udp::endpoint(udp::v4(),
+            onboard_telemetry_recv_port));
         // enable SO_REUSEADDR to fix address already in use after crash
         onboard_telemetry_listen_socket.set_option(
             boost::asio::socket_base::reuse_address(true));
         OnboardTelemetryRecvServer onboard_telemetry_recv_server(
             onboard_telemetry_listen_socket, command);
-
-        udp::socket telecommand_listen_socket(
-            io_service, udp::endpoint(udp::v4(), telecommand_recv_port));
-        // enable SO_REUSEADDR to fix address already in use after crash
-        telecommand_listen_socket.set_option(
-            boost::asio::socket_base::reuse_address(true));
-        TelecommandRecvServer telecommand_recv_server(telecommand_listen_socket,
-                                                      command);
 
         udp::socket requests_socket(io_service,
                                     udp::endpoint(udp::v4(), requests_port));
@@ -75,6 +70,15 @@ int main(int argc, char* argv[])
             requests_socket, std::bind(&Command::get_latest_sample_response,
                                        &command, std::placeholders::_1));
 
+        udp::socket telecommand_listen_socket(
+            io_service, udp::endpoint(udp::v4(), telecommand_recv_port));
+        // enable SO_REUSEADDR to fix address already in use after crash
+        telecommand_listen_socket.set_option(
+            boost::asio::socket_base::reuse_address(true));
+        TelecommandRecvServer
+        telecommand_recv_server(telecommand_listen_socket,
+                                                      command);
+
         udp::socket send_socket(io_service,
                                 udp::endpoint(udp::v4(), send_port));
         // enable SO_REUSEADDR to fix address already in use after crash
@@ -82,6 +86,7 @@ int main(int argc, char* argv[])
         udp::endpoint target_endpoint(target_address, target_port);
         SendServer send_server(io_service, send_socket, target_endpoint,
                                telemetry, command);
+                               
         io_service.run();
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
