@@ -22,8 +22,8 @@
  *  @endcode
  */
 
-#include "generated/nanopb/request.pb.h"
-#include "generated/nanopb/response.pb.h"
+#include "../src/generated/nanopb/request.pb.h"
+#include "../src/generated/nanopb/response.pb.h"
 
 #define ERR_SOCKET_CREATION -1
 #define ERR_ENCODING_FAILED -2
@@ -129,6 +129,35 @@ typedef struct {
  * ```
  */
 RequestStringResult request_string(Requester* reqr);
+
+/**
+ * @brief Structure to hold the result of a float request.
+ */
+typedef struct {
+    int err;      // Error code
+    double value; // Float value
+} RequestFloatResult;
+
+/**
+ * @brief Sends a request for a float value sample from the metric id of reqr
+ * from the server reqr.socket_fd is connected to. This function is blocking
+ * and will wait for the send operation to complete and for the response to be
+ * received.
+ *
+ * @param reqr Requester structure.
+ * @return Structure containing error code and float value.
+ *
+ * Example usage:
+ * ```
+ * RequestFloatResult result = request_float(&requester)
+ * if (result.err) {
+ *    // handle error
+ * } else {
+ *    // use result.value
+ * }
+ * ```
+ */
+RequestFloatResult request_float(Requester* reqr);
 
 /**
  * @brief Structure to hold the result of a double request.

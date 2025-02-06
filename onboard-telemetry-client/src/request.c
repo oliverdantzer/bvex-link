@@ -1,17 +1,20 @@
 #include "request.h"
 #include "generated/nanopb/request.pb.h"
 #include "generated/nanopb/response.pb.h"
-#include "socket.h"
+#include "send_telemetry.h"
 #include <arpa/inet.h> // send()
 #include <errno.h>
 #include <pb_decode.h>
 #include <pb_encode.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef DEBUG
+#include <stdlib.h>
+#endif
 
 Requester make_requester(char* metric_id, char* node, char* service)
 {
-    int sock = make_connected_send_socket(node, service);
+    int sock = connected_udp_socket(node, service);
     if(sock < 0) {
         fprintf(stderr, "Socket creation failed\n");
         return (Requester){.socket_fd = -1, .metric_id = NULL};
@@ -48,19 +51,16 @@ int recv_response(int socket_fd, Response* response)
         fprintf(stderr, "recv failed: %s\n", strerror(errno));
         return ERR_RECV_FAILED;
     } else if(bytes_received == 0) {
-        printf("Connection closed by the peer\n");
+        fprintf(stderr, "Connection closed by the peer\n");
         return ERR_RECV_FAILED;
     }
 
     bool status;
 
-    /* Create a stream that reads from the buffer. */
     pb_istream_t stream = pb_istream_from_buffer(recv_buffer, bytes_received);
 
-    /* Now we are ready to decode the message. */
     status = pb_decode(&stream, Response_fields, response);
 
-    /* Check for errors... */
     if(!status) {
         fprintf(stderr, "Decoding failed: %s\n", PB_GET_ERROR(&stream));
         return ERR_DECODING_FAILED;
@@ -91,8 +91,41 @@ RequestResult request(Requester* reqr)
         result.err = recv_err;
         return result;
     }
+
+    if(!response.has_primitive) {
+#ifdef DEBUG
+        fprintf(stderr, "Response indicated failure\n");
+#endif
+        result.err = 1;
+        return result;
+    }
+
     result.response = response;
     return result;
+}
+
+char* primitive_val_tag_to_string(pb_size_t tag)
+{
+    switch(tag) {
+    case primitive_Primitive_int_val_tag:
+        return "int";
+    case primitive_Primitive_long_val_tag:
+        return "long";
+    case primitive_Primitive_float_val_tag:
+        return "float";
+    case primitive_Primitive_double_val_tag:
+        return "double";
+    case primitive_Primitive_bool_val_tag:
+        return "bool";
+    case primitive_Primitive_string_val_tag:
+        return "string";
+    default:
+        char* result = (char*)malloc(50);
+        if(result != NULL) {
+            sprintf(result, "unknown primitive value tag %d", tag);
+        }
+        return result;
+    }
 }
 
 RequestIntResult request_int(Requester* reqr)
@@ -102,15 +135,18 @@ RequestIntResult request_int(Requester* reqr)
     RequestResult request_result = request(reqr);
     if(request_result.err) {
         result.err = request_result.err;
-    }
-
-    if(request_result.response.primitive.which_value != primitive_Primitive_int_val_tag) {
-        fprintf(stderr, "Invalid response type\n");
+    } else if(request_result.response.primitive.which_value !=
+              primitive_Primitive_int_val_tag) {
+#ifdef DEBUG
+        fprintf(stderr, "Invalid response type.\n");
+        fprintf(stderr, "Received %s instead of int.\n",
+                primitive_val_tag_to_string(
+                    request_result.response.primitive.which_value));
+#endif
         result.err = ERR_INVALID_RESPONSE_TYPE;
-        return result;
+    } else {
+        result.value = request_result.response.primitive.value.int_val;
     }
-
-    result.value = request_result.response.primitive.value.int_val;
     return result;
 }
 
@@ -126,7 +162,12 @@ RequestFloatResult request_float(Requester* reqr)
 
     if(request_result.response.primitive.which_value !=
        primitive_Primitive_float_val_tag) {
+#ifdef DEBUG
         fprintf(stderr, "Invalid response type\n");
+        fprintf(stderr, "Received %s instead of float.\n",
+                primitive_val_tag_to_string(
+                    request_result.response.primitive.which_value));
+#endif
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;
     }
@@ -147,7 +188,12 @@ RequestDoubleResult request_double(Requester* reqr)
 
     if(request_result.response.primitive.which_value !=
        primitive_Primitive_double_val_tag) {
+#ifdef DEBUG
         fprintf(stderr, "Invalid response type\n");
+        fprintf(stderr, "Received %s instead of double.\n",
+                primitive_val_tag_to_string(
+                    request_result.response.primitive.which_value));
+#endif
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;
     }
@@ -168,7 +214,12 @@ RequestStringResult request_string(Requester* reqr)
 
     if(request_result.response.primitive.which_value !=
        primitive_Primitive_string_val_tag) {
-        fprintf(stderr, "Invalid response type\n");
+#ifdef DEBUG
+        fprintf(stderr, "Invalid response type\n");\
+        fprintf(stderr, "Received %s instead of string.\n",
+                primitive_val_tag_to_string(
+                    request_result.response.primitive.which_value));
+#endif
         result.err = ERR_INVALID_RESPONSE_TYPE;
         return result;
     }
