@@ -1,7 +1,7 @@
+#include "../primitive.hpp"
 #include "pb_encode.h"
 #include "pb_generated/response.pb.h"
 #include <cassert>
-#include "../primitive.hpp"
 #include <cstdint>
 #include <iostream>
 #include <optional>
@@ -26,18 +26,38 @@ std::vector<uint8_t> encode_primitive_response(const std::string& metric_id,
     std::visit(
         [&response](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
-            if constexpr(std::is_same_v<T, int>) {
+            if constexpr(std::is_same_v<T, int32_t>) {
+                response.primitive.which_value =
+                    primitive_Primitive_int_val_tag;
                 response.primitive.value.int_val = arg;
+            } else if constexpr(std::is_same_v<T, int64_t>) {
+                response.primitive.which_value =
+                    primitive_Primitive_long_val_tag;
+                response.primitive.value.long_val = arg;
             } else if constexpr(std::is_same_v<T, float>) {
+                response.primitive.which_value =
+                    primitive_Primitive_float_val_tag;
                 response.primitive.value.float_val = arg;
             } else if constexpr(std::is_same_v<T, double>) {
+                response.primitive.which_value =
+                    primitive_Primitive_double_val_tag;
                 response.primitive.value.double_val = arg;
+            } else if constexpr(std::is_same_v<T, bool>) {
+                response.primitive.which_value =
+                    primitive_Primitive_bool_val_tag;
+                response.primitive.value.bool_val = arg;
+            } else if constexpr(std::is_same_v<T, const char*>) {
+                response.primitive.which_value =
+                    primitive_Primitive_string_val_tag;
+                strcpy(response.primitive.value.string_val, arg.c_str());
             } else {
-                std::cerr << "Unknown/unimplemented response value type"
-                          << std::endl;
+                throw std::runtime_error("Unknown/unimplemented response value type");
             }
         },
         value);
+    response.has_primitive = true;
+    return encode_response(response);
+}
 
 std::vector<uint8_t> encode_failure_response(const std::string& metric_id)
 {
