@@ -8,6 +8,10 @@
 #include <iostream>
 #include <string>
 
+#ifndef REQUEST_SERVER_PORT
+#define REQUEST_SERVER_PORT "8080"
+#endif
+
 using boost::asio::ip::udp;
 
 int main(int argc, char* argv[])

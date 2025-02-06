@@ -16,6 +16,12 @@ RequestServer::RequestServer(udp::socket& listen_socket,
       get_latest_sample_response_(get_latest_sample_response),
       recv_buffer_(REQUEST_PB_H_MAX_SIZE)
 {
+#ifdef DEBUG_RECV_REQUEST
+    if (!socket_.is_open()) {
+        std::cerr << "Socket is not open, cannot start receiving." << std::endl;
+        return;
+    }
+#endif
     start_recv();
 }
 
@@ -32,6 +38,9 @@ void RequestServer::start_recv()
                                boost::asio::placeholders::error,
                                boost::asio::placeholders::bytes_transferred);
 
+#ifdef DEBUG_RECV_REQUEST
+    std::cout << socket_.local_endpoint() << std::endl;
+#endif
     socket_.async_receive_from(
         boost::asio::buffer(&recv_buffer_[0], REQUEST_PB_H_MAX_SIZE),
         requester_endpoint_, on_recv);
@@ -43,7 +52,14 @@ void RequestServer::start_recv()
 void RequestServer::handle_recv(const boost::system::error_code& error,
                                 std::size_t bytes_received)
 {
-    if(!error) {
+#ifdef DEBUG_RECV_REQUEST
+    std::cout << "Received " << bytes_received << " bytes to request server"
+              << std::endl;
+#endif
+    if(error) {
+        std::cout << "RequestServer::handle_recv error code: "
+                  << error.message() << std::endl;
+    } else {
         std::vector<uint8_t> request_enc(recv_buffer_.begin(),
                                          recv_buffer_.begin() + bytes_received);
         std::optional<Request> request = decode_request(request_enc);

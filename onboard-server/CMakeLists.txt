@@ -10,9 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 option(DEBUG "Use verbose debug logging" ON)
 
 if(DEBUG)
-    message(STATUS "Debug mode is ON")
     add_definitions(-DDEBUG)
 endif()
+
 
 find_package(boost_asio CONFIG REQUIRED)
 find_package(nanopb CONFIG REQUIRED)
@@ -119,3 +119,19 @@ target_link_libraries(main PRIVATE
     # codec::downlink-tm-enc
     nanopb::protobuf-nanopb-static
 )
+
+set(REQUEST_SERVER_PORT "\"8080\"")
+target_compile_definitions(
+    main PRIVATE 
+        REQUEST_SERVER_PORT=${REQUEST_SERVER_PORT}
+)
+
+option(DEBUG_SAMPLE_RECEPTION "Log sample reception pipeline" OFF)
+if(DEBUG_SAMPLE_RECEPTION)
+    target_compile_definitions(main PRIVATE DEBUG_ADD_SAMPLE DEBUG_ONBOARD_RECV_SERVER)
+endif()
+
+option(DEBUG_REQUEST_RECEPTION "Log sample reception pipeline" OFF)
+if(DEBUG_REQUEST_RECEPTION)
+    target_compile_definitions(main PRIVATE DEBUG_RECV_REQUEST)
+endif()

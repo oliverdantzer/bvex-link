@@ -91,8 +91,6 @@ int make_connected_send_socket(char* node, char* service)
         return 2;
     }
 #ifdef TEST_SOCK_PORT
-    send(sockfd, "hello", 5, 0);
-
     struct sockaddr_in local_addr;
     socklen_t addr_len = sizeof(local_addr);
     if(getsockname(sockfd, (struct sockaddr*)&local_addr, &addr_len) == -1) {
