@@ -114,6 +114,27 @@ RequestIntResult request_int(Requester* reqr)
     return result;
 }
 
+RequestFloatResult request_float(Requester* reqr)
+{
+    RequestFloatResult result;
+
+    RequestResult request_result = request(reqr);
+    if(request_result.err) {
+        result.err = request_result.err;
+        return result;
+    }
+
+    if(request_result.response.primitive.which_value !=
+       primitive_Primitive_float_val_tag) {
+        fprintf(stderr, "Invalid response type\n");
+        result.err = ERR_INVALID_RESPONSE_TYPE;
+        return result;
+    }
+
+    result.value = request_result.response.primitive.value.float_val;
+    return result;
+}
+
 RequestDoubleResult request_double(Requester* reqr)
 {
     RequestDoubleResult result;
