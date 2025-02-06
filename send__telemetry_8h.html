@@ -100,10 +100,14 @@ $(function(){initNavTree('send__telemetry_8h.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">send_telemetry.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>API to send telemetry data to the onboard server.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -111,7 +115,7 @@ Include dependency graph for send_telemetry.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="send__telemetry_8h__incl.png" border="0" usemap="#ainclude_2send__telemetry_8h" alt=""/></div>
 <map name="ainclude_2send__telemetry_8h" id="ainclude_2send__telemetry_8h">
-<area shape="rect" title=" " alt="" coords="5,5,191,31"/>
+<area shape="rect" title="API to send telemetry data to the onboard server." alt="" coords="5,5,191,31"/>
 <area shape="rect" title=" " alt="" coords="6,79,89,104"/>
 <area shape="poly" title=" " alt="" coords="92,33,66,69,61,66,87,29"/>
 <area shape="rect" title=" " alt="" coords="113,79,184,104"/>
@@ -121,30 +125,393 @@ Include dependency graph for send_telemetry.h:</div>
 </div>
 <p><a href="send__telemetry_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a546747d3eb0d2aa534e10535d5f045a3" id="r_a546747d3eb0d2aa534e10535d5f045a3"><td class="memItemLeft" align="right" valign="top"><a id="a546747d3eb0d2aa534e10535d5f045a3" name="a546747d3eb0d2aa534e10535d5f045a3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GETADDRINFO_ERROR</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a546747d3eb0d2aa534e10535d5f045a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a99c77c42721cb59531fa6c3225439d14" id="r_a99c77c42721cb59531fa6c3225439d14"><td class="memItemLeft" align="right" valign="top"><a id="a99c77c42721cb59531fa6c3225439d14" name="a99c77c42721cb59531fa6c3225439d14"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_int32</b> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
+<tr class="memitem:adff03ed4946c56f4ba94c3a79f3a588e" id="r_adff03ed4946c56f4ba94c3a79f3a588e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a> (char *node, char *service)</td></tr>
+<tr class="memdesc:adff03ed4946c56f4ba94c3a79f3a588e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes UDP socket, connects to node:service, and returns socket file descriptor.  <br /></td></tr>
+<tr class="separator:adff03ed4946c56f4ba94c3a79f3a588e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99c77c42721cb59531fa6c3225439d14" id="r_a99c77c42721cb59531fa6c3225439d14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
+<tr class="memdesc:a99c77c42721cb59531fa6c3225439d14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t telemetry sample.  <br /></td></tr>
 <tr class="separator:a99c77c42721cb59531fa6c3225439d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a274ef2a58707d4c0714908d811855948" id="r_a274ef2a58707d4c0714908d811855948"><td class="memItemLeft" align="right" valign="top"><a id="a274ef2a58707d4c0714908d811855948" name="a274ef2a58707d4c0714908d811855948"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_int64</b> (int socket_fd, char *metric_id, float timestamp, int64_t value)</td></tr>
+<tr class="memitem:a274ef2a58707d4c0714908d811855948" id="r_a274ef2a58707d4c0714908d811855948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a274ef2a58707d4c0714908d811855948">send_sample_int64</a> (int socket_fd, char *metric_id, float timestamp, int64_t value)</td></tr>
+<tr class="memdesc:a274ef2a58707d4c0714908d811855948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int64_t telemetry sample.  <br /></td></tr>
 <tr class="separator:a274ef2a58707d4c0714908d811855948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2dc8b83b783d83ccfb0677d60caa47" id="r_abc2dc8b83b783d83ccfb0677d60caa47"><td class="memItemLeft" align="right" valign="top"><a id="abc2dc8b83b783d83ccfb0677d60caa47" name="abc2dc8b83b783d83ccfb0677d60caa47"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_float</b> (int socket_fd, char *metric_id, float timestamp, float value)</td></tr>
+<tr class="memitem:abc2dc8b83b783d83ccfb0677d60caa47" id="r_abc2dc8b83b783d83ccfb0677d60caa47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a> (int socket_fd, char *metric_id, float timestamp, float value)</td></tr>
+<tr class="memdesc:abc2dc8b83b783d83ccfb0677d60caa47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a float telemetry sample.  <br /></td></tr>
 <tr class="separator:abc2dc8b83b783d83ccfb0677d60caa47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61c515890eaaa305bdd3ac3865bddabd" id="r_a61c515890eaaa305bdd3ac3865bddabd"><td class="memItemLeft" align="right" valign="top"><a id="a61c515890eaaa305bdd3ac3865bddabd" name="a61c515890eaaa305bdd3ac3865bddabd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_double</b> (int socket_fd, char *metric_id, float timestamp, double value)</td></tr>
+<tr class="memitem:a61c515890eaaa305bdd3ac3865bddabd" id="r_a61c515890eaaa305bdd3ac3865bddabd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61c515890eaaa305bdd3ac3865bddabd">send_sample_double</a> (int socket_fd, char *metric_id, float timestamp, double value)</td></tr>
+<tr class="memdesc:a61c515890eaaa305bdd3ac3865bddabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a double telemetry sample.  <br /></td></tr>
 <tr class="separator:a61c515890eaaa305bdd3ac3865bddabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3d361e1989f77191bb4159f3a55f916" id="r_ae3d361e1989f77191bb4159f3a55f916"><td class="memItemLeft" align="right" valign="top"><a id="ae3d361e1989f77191bb4159f3a55f916" name="ae3d361e1989f77191bb4159f3a55f916"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_bool</b> (int socket_fd, char *metric_id, float timestamp, bool value)</td></tr>
+<tr class="memitem:ae3d361e1989f77191bb4159f3a55f916" id="r_ae3d361e1989f77191bb4159f3a55f916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3d361e1989f77191bb4159f3a55f916">send_sample_bool</a> (int socket_fd, char *metric_id, float timestamp, bool value)</td></tr>
+<tr class="memdesc:ae3d361e1989f77191bb4159f3a55f916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a boolean telemetry sample.  <br /></td></tr>
 <tr class="separator:ae3d361e1989f77191bb4159f3a55f916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e79e1091a21f466e0ff3ca3d49b839b" id="r_a4e79e1091a21f466e0ff3ca3d49b839b"><td class="memItemLeft" align="right" valign="top"><a id="a4e79e1091a21f466e0ff3ca3d49b839b" name="a4e79e1091a21f466e0ff3ca3d49b839b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_string</b> (int socket_fd, char *metric_id, float timestamp, char *value)</td></tr>
+<tr class="memitem:a4e79e1091a21f466e0ff3ca3d49b839b" id="r_a4e79e1091a21f466e0ff3ca3d49b839b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e79e1091a21f466e0ff3ca3d49b839b">send_sample_string</a> (int socket_fd, char *metric_id, float timestamp, char *value)</td></tr>
+<tr class="memdesc:a4e79e1091a21f466e0ff3ca3d49b839b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a string telemetry sample.  <br /></td></tr>
 <tr class="separator:a4e79e1091a21f466e0ff3ca3d49b839b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2af778575c06f4c035b528746e1ae1a0" id="r_a2af778575c06f4c035b528746e1ae1a0"><td class="memItemLeft" align="right" valign="top"><a id="a2af778575c06f4c035b528746e1ae1a0" name="a2af778575c06f4c035b528746e1ae1a0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_sample_file</b> (int socket_fd, char *metric_id, float timestamp, char *filepath, char *extension)</td></tr>
+<tr class="memitem:a2af778575c06f4c035b528746e1ae1a0" id="r_a2af778575c06f4c035b528746e1ae1a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2af778575c06f4c035b528746e1ae1a0">send_sample_file</a> (int socket_fd, char *metric_id, float timestamp, char *filepath, char *extension)</td></tr>
+<tr class="memdesc:a2af778575c06f4c035b528746e1ae1a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a file telemetry sample.  <br /></td></tr>
 <tr class="separator:a2af778575c06f4c035b528746e1ae1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>API to send telemetry data to the onboard server. </p>
+<p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="send__telemetry_8h.html">send_telemetry.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;ctime&gt;</span></div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    <span class="keywordtype">int</span> socket_fd = <a class="code hl_function" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a>(SAMPLE_SERVER_ADDR,</div>
+<div class="line">                                               SAMPLE_SERVER_PORT);</div>
+<div class="line">    <span class="keywordflow">if</span> (socket_fd &lt; 0) {</div>
+<div class="line">        printf(<span class="stringliteral">&quot;Error connecting to server\n&quot;</span>);</div>
+<div class="line">        <span class="keywordflow">return</span>;</div>
+<div class="line">    }</div>
+<div class="line">    <a class="code hl_function" href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a>(socket_fd, <span class="stringliteral">&quot;altitude&quot;</span>, time(NULL), 50392);</div>
+<div class="line">    <a class="code hl_function" href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a>(socket_fd, <span class="stringliteral">&quot;yaw&quot;</span>, time(NULL), 0.1452f);</div>
+<div class="line">    close(socket_fd);</div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="asend__telemetry_8h_html"><div class="ttname"><a href="send__telemetry_8h.html">send_telemetry.h</a></div><div class="ttdoc">API to send telemetry data to the onboard server.</div></div>
+<div class="ttc" id="asend__telemetry_8h_html_a99c77c42721cb59531fa6c3225439d14"><div class="ttname"><a href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a></div><div class="ttdeci">void send_sample_int32(int socket_fd, char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t telemetry sample.</div></div>
+<div class="ttc" id="asend__telemetry_8h_html_abc2dc8b83b783d83ccfb0677d60caa47"><div class="ttname"><a href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a></div><div class="ttdeci">void send_sample_float(int socket_fd, char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float telemetry sample.</div></div>
+<div class="ttc" id="asend__telemetry_8h_html_adff03ed4946c56f4ba94c3a79f3a588e"><div class="ttname"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a></div><div class="ttdeci">int connected_udp_socket(char *node, char *service)</div><div class="ttdoc">Makes UDP socket, connects to node:service, and returns socket file descriptor.</div></div>
+</div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
+<a id="adff03ed4946c56f4ba94c3a79f3a588e" name="adff03ed4946c56f4ba94c3a79f3a588e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">&#9670;&#160;</a></span>connected_udp_socket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int connected_udp_socket </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Makes UDP socket, connects to node:service, and returns socket file descriptor. </p>
+<p>This function creates a UDP socket, connects it to the specified node and service, and returns the socket file descriptor. The socket is not bound to a specific port, allowing the OS to choose. The socket's endpoint is set to the specified node and service using connect(), allowing you to send data to the same address with send().</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>IP address or hostname. </td></tr>
+    <tr><td class="paramname">service</td><td>Port number or service name (e.g., "1234" or "http"). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Socket file descriptor on success, or -1 on error.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>To close the socket, use close(fd), where fd is the socket's file descriptor. </dd></dl>
+
+</div>
+</div>
+<a id="ae3d361e1989f77191bb4159f3a55f916" name="ae3d361e1989f77191bb4159f3a55f916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d361e1989f77191bb4159f3a55f916">&#9670;&#160;</a></span>send_sample_bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_bool </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a boolean telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The boolean value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a61c515890eaaa305bdd3ac3865bddabd" name="a61c515890eaaa305bdd3ac3865bddabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61c515890eaaa305bdd3ac3865bddabd">&#9670;&#160;</a></span>send_sample_double()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_double </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a double telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The double value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2af778575c06f4c035b528746e1ae1a0" name="a2af778575c06f4c035b528746e1ae1a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2af778575c06f4c035b528746e1ae1a0">&#9670;&#160;</a></span>send_sample_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_file </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>filepath</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>extension</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a file telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">filepath</td><td>The path to the file to send. </td></tr>
+    <tr><td class="paramname">extension</td><td>The file extension. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abc2dc8b83b783d83ccfb0677d60caa47" name="abc2dc8b83b783d83ccfb0677d60caa47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc2dc8b83b783d83ccfb0677d60caa47">&#9670;&#160;</a></span>send_sample_float()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_float </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a float telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The float value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a99c77c42721cb59531fa6c3225439d14" name="a99c77c42721cb59531fa6c3225439d14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99c77c42721cb59531fa6c3225439d14">&#9670;&#160;</a></span>send_sample_int32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_int32 </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends an int32_t telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The int32_t value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a274ef2a58707d4c0714908d811855948" name="a274ef2a58707d4c0714908d811855948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a274ef2a58707d4c0714908d811855948">&#9670;&#160;</a></span>send_sample_int64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_int64 </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends an int64_t telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The int64_t value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4e79e1091a21f466e0ff3ca3d49b839b" name="a4e79e1091a21f466e0ff3ca3d49b839b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e79e1091a21f466e0ff3ca3d49b839b">&#9670;&#160;</a></span>send_sample_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void send_sample_string </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends a string telemetry sample. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
+    <tr><td class="paramname">value</td><td>The string value to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
