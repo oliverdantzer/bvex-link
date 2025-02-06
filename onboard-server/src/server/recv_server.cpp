@@ -10,8 +10,8 @@ RecvServer::RecvServer(
     udp::socket& listen_socket,
     std::function<void(std::unique_ptr<std::vector<uint8_t>>)> message_handler,
     std::size_t buffer_size)
-    : socket_(listen_socket),
-      message_handler_(message_handler), buffer_size_(buffer_size),
+    : socket_(listen_socket), message_handler_(message_handler),
+      buffer_size_(buffer_size),
       recv_buffer_(buffer_size) // initialize buffer with buffer_size bytes
 {
     start_recv();
@@ -31,9 +31,9 @@ void RecvServer::start_recv()
 
     // function to call handle_recv, passing it error code and
     // the number of bytes received
-    auto on_recv =
-        boost::bind(&RecvServer::handle_recv, this, boost::asio::placeholders::error,
-                    boost::asio::placeholders::bytes_transferred);
+    auto on_recv = boost::bind(&RecvServer::handle_recv, this,
+                               boost::asio::placeholders::error,
+                               boost::asio::placeholders::bytes_transferred);
 
     socket_.async_receive_from(
         boost::asio::buffer(&recv_buffer_[0], buffer_size_), remote_endpoint,
@@ -48,7 +48,6 @@ void RecvServer::handle_recv(const boost::system::error_code& error,
 {
     // We will get error boost::asio::error::message_size
     // if the message is too big to fit in the buffer
-    std::cout << "Received " << bytes_received << " bytes" << std::endl;
     if(!error) {
         // char *received_data(recv_buffer_.data());
         // Must use unique ptr to give ownership to the caller
