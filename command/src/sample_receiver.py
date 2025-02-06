@@ -50,7 +50,7 @@ class MetricReceiver:
             raise ValueError(
                 "Segments with the same sample_id cannot have any differing metadata"
             )
-        
+
         self.current_sample_assembler.add_segment(sample.segment)
 
     def get_ack(self) -> Ack:
@@ -73,8 +73,10 @@ class SampleReceiver:
         self.i = None
 
     def handle_sample(self, sample: Sample):
-        def store_sample(data, metadata):
-            return print(json.loads(data))
+        def store_sample(data: bytes, metadata: SampleMetadata):
+            print("Completed telemetry packet:")
+            print("sample data: ", json.loads(data))
+            print("sample metadata: ", metadata)
 
         metric_id = sample.metadata.metric_id
         if metric_id not in self.receivers:
