@@ -1,6 +1,6 @@
 #include "request_server.hpp"
-#include <codec/requests/request.hpp>
 #include <boost/bind/bind.hpp>
+#include <codec/requests/request.hpp>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -8,11 +8,11 @@
 
 using boost::asio::ip::udp;
 
-RequestServer::RequestServer(udp::socket& listen_socket,
+RequestServer::RequestServer(
+    udp::socket& listen_socket,
     std::function<std::optional<std::vector<uint8_t>>(std::string metric_id)>
         get_latest_sample_response)
-    : socket_(listen_socket),
-      requester_endpoint_(),
+    : socket_(listen_socket), requester_endpoint_(),
       get_latest_sample_response_(get_latest_sample_response),
       recv_buffer_(REQUEST_PB_H_MAX_SIZE)
 {
@@ -76,7 +76,8 @@ void RequestServer::handle_request(Request& request)
     std::optional<std::vector<uint8_t>> response_enc =
         get_latest_sample_response_(request.metric_id);
     if(response_enc) {
-            auto response_enc_ptr = std::make_shared<std::vector<uint8_t>>(*response_enc);
+        auto response_enc_ptr =
+            std::make_shared<std::vector<uint8_t>>(*response_enc);
         auto handle_completion_callback =
             boost::bind(&RequestServer::handle_sent, this, response_enc_ptr,
                         boost::asio::placeholders::error,
