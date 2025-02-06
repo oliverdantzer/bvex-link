@@ -34,6 +34,10 @@ option(TEST "Build test executable" OFF)
 if(TEST)
     message(STATUS "Test mode is ON")
     add_definitions(-DTEST)
+    
+    target_compile_definitions(
+        telemetry-uplink PRIVATE DEBUG
+    )
 
     # Collect source files for the test executable
     file(GLOB TEST_SOURCES 
@@ -50,10 +54,14 @@ if(TEST)
 
     set(REQUEST_SERVER_ADDR "\"localhost\"")
     set(REQUEST_SERVER_PORT "\"8080\"")
+    set(SAMPLE_SERVER_ADDR "\"localhost\"")
+    set(SAMPLE_SERVER_PORT "\"3000\"")
     target_compile_definitions(
         test PRIVATE 
             REQUEST_SERVER_ADDR=${REQUEST_SERVER_ADDR}
             REQUEST_SERVER_PORT=${REQUEST_SERVER_PORT}
+            SAMPLE_SERVER_ADDR=${SAMPLE_SERVER_ADDR}
+            SAMPLE_SERVER_PORT=${SAMPLE_SERVER_PORT}
     )
 
 endif()
