@@ -96,7 +96,6 @@ set(SOURCES
     src/telemetry.cpp
     src/utils/chunker.cpp
     src/utils/sample_transmitter.cpp
-    src/utils/telecommand.cpp
 )
 
 add_executable(main ${SOURCES} ${HEADERS})
