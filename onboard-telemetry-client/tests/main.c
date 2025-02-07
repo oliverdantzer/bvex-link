@@ -1,3 +1,4 @@
+#include "request.h"
 #include "send_telemetry.h"
 #include "test_file.h"
 #include "test_loop.h"
@@ -13,6 +14,8 @@
 
 #define SAMPLE_SERVER_ADDR "localhost"
 #define SAMPLE_SERVER_PORT "3000"
+#define REQUEST_SERVER_ADDR "localhost"
+#define REQUEST_SERVER_PORT "8080"
 
 int main(int argc, char** argv)
 {
@@ -39,50 +42,49 @@ int main(int argc, char** argv)
     printf("Start time: %f\n", start_time_in_seconds);
 
     char* test_name = argv[1];
-    if(strcmp(test_name, "test_spam") == 0) {
-        if(argc != 5) {
-            printf("Usage for test_spam: %s target_name target_port test_spam "
-                   "times\n",
-                   argv[0]);
+    char* metric_id = argv[2];
+    if(strcmp(test_name, "sample") == 0) {
+        int socket_fd =
+            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
+        if(socket_fd < 0) {
+            printf("Socket creation failed.\n");
             return 1;
         }
-        int times = atoi(argv[2]);
-        int socket_fd =
-            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-        n_samples(times, socket_fd);
-        close(socket_fd);
-    } else if(strcmp(test_name, "sample") == 0) {
-        char* type = argv[2];
+        char* type = argv[3];
         if(strcmp(type, "float") == 0) {
-            float value = strtof(argv[3], NULL);
-            int socket_fd =
-                connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-            test_one_float(socket_fd, start_time_in_seconds, value);
-            close(socket_fd);
+            float value = strtof(argv[4], NULL);
+            send_sample_float(socket_fd, metric_id, start_time_in_seconds,
+                              value);
         } else if(strcmp(type, "string") == 0) {
-            char* value = argv[3];
-            int socket_fd =
-                connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-            test_one_string(socket_fd, start_time_in_seconds, value);
-            close(socket_fd);
+            char* value = argv[4];
+            send_sample_string(socket_fd, metric_id, start_time_in_seconds,
+                               value);
         }
+        sleep(1);
+        close(socket_fd);
     } else if(strcmp(test_name, "request") == 0) {
-        char* type = argv[2];
-        if(strcmp(type, "float") == 0) {
-            test_request_float("test");
-        } else if(strcmp(type, "string") == 0) {
-            test_request_string("test");
+        Requester requester =
+            make_requester(metric_id, REQUEST_SERVER_ADDR, REQUEST_SERVER_PORT);
+        if(requester.socket_fd < 0) {
+            printf("Socket creation failed.\n");
+            return 1;
         }
-    } else if(strcmp(test_name, "test_loop") == 0) {
-        int socket_fd =
-            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-        primitive_telemetry_loop(socket_fd);
-        close(socket_fd);
-    } else if(strcmp(test_name, "test_file") == 0) {
-        int socket_fd =
-            connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-        test_file(socket_fd, start_time_in_seconds);
-        close(socket_fd);
+        char* type = argv[3];
+        if(strcmp(type, "float") == 0) {
+            RequestFloatResult result = request_float(&requester);
+            if(result.err) {
+                printf("Request failed.\n");
+                return 1;
+            }
+            printf("Request successful. Result: %f.\n", result.value);
+        } else if(strcmp(type, "string") == 0) {
+            RequestStringResult result = request_string(&requester);
+            if(result.err) {
+                printf("Request failed.\n");
+                return 1;
+            }
+            printf("Request successful. Result: %s.\n", result.value);
+        }
     } else {
         printf("Unknown test name: %s\n", test_name);
     }
