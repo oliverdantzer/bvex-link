@@ -1,15 +1,5 @@
 pvenv.cfg
 
-# For venv on Windows
-Include/
-Lib/
-Scripts/
-
-# For venv on Linux
-bin/
-include/
-lib/
-lib64
-share/
+venv/
 
 **/__pycache__/

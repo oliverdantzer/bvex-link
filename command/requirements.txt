@@ -2,3 +2,5 @@ python-dotenv==1.0.1
 matplotlib==3.9.2
 pillow==10.4.0
 protobuf
+click
+click_shell
