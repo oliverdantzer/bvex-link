@@ -13,7 +13,7 @@ IF(TEST_SOCK_PORT)
     add_definitions(-DTEST_SOCK_PORT)
 ENDIF()
 
-add_library(telemetry-uplink
+add_library(telemetry-client
     src/generated/nanopb/sample.pb.c
     src/generated/nanopb/primitive.pb.c
     src/generated/nanopb/request.pb.c
@@ -23,8 +23,8 @@ add_library(telemetry-uplink
     src/send_telemetry.c
 )
 
-target_link_libraries(telemetry-uplink PRIVATE nanopb::protobuf-nanopb-static)
-target_include_directories(telemetry-uplink
+target_link_libraries(telemetry-client PRIVATE nanopb::protobuf-nanopb-static)
+target_include_directories(telemetry-client
     PRIVATE src/generated/nanopb
     PUBLIC include
 )
@@ -36,7 +36,7 @@ if(TEST)
     add_definitions(-DTEST)
     
     target_compile_definitions(
-        telemetry-uplink PRIVATE DEBUG
+        telemetry-client PRIVATE DEBUG
     )
 
     # Collect source files for the test executable
@@ -50,7 +50,7 @@ if(TEST)
     target_include_directories(test PRIVATE tests)
 
     # Link telemetry-uplink
-    target_link_libraries(test PRIVATE nanopb::protobuf-nanopb-static telemetry-uplink m)
+    target_link_libraries(test PRIVATE nanopb::protobuf-nanopb-static telemetry-client m)
 
     set(REQUEST_SERVER_ADDR "\"localhost\"")
     set(REQUEST_SERVER_PORT "\"8080\"")
