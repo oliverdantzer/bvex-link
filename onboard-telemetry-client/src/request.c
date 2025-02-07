@@ -8,9 +8,7 @@
 #include <pb_encode.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef DEBUG
 #include <stdlib.h>
-#endif
 
 Requester make_requester(char* metric_id, char* node, char* service)
 {
