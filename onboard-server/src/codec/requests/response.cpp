@@ -46,7 +46,7 @@ std::vector<uint8_t> encode_primitive_response(const std::string& metric_id,
                 response.primitive.which_value =
                     primitive_Primitive_bool_val_tag;
                 response.primitive.value.bool_val = arg;
-            } else if constexpr(std::is_same_v<T, const char*>) {
+            } else if constexpr(std::is_same_v<T, std::string>) {
                 response.primitive.which_value =
                     primitive_Primitive_string_val_tag;
                 strcpy(response.primitive.value.string_val, arg.c_str());
