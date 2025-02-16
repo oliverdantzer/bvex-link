@@ -1,8 +1,3 @@
-You must determine MTU manually, `ping [command-ip] -f -l 1492` and keep lowering num bytes until no fragmentation needed.
-
-TODO: add this https://github.com/marketplace/actions/doxygen-github-pages-deploy-action
-
-
 Required packages:
 vcpkg
 cmake
