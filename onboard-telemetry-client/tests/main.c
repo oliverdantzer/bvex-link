@@ -12,9 +12,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#define SAMPLE_SERVER_ADDR "localhost"
+#define SAMPLE_SERVER_ADDR "127.0.0.1"
 #define SAMPLE_SERVER_PORT "3000"
-#define REQUEST_SERVER_ADDR "localhost"
+#define REQUEST_SERVER_ADDR "127.0.0.1"
 #define REQUEST_SERVER_PORT "8080"
 
 int main(int argc, char** argv)
@@ -24,11 +24,15 @@ int main(int argc, char** argv)
             "Usage: %s target_name target_port test_name [additional_args]\n",
             argv[0]);
         printf("  test_name: The name of the test to run (test_spam, test_one, "
-               "test_loop).\n");
+               "test_loop, sample, request).\n");
         printf("  additional_args: Additional arguments required by specific "
                "tests.\n");
         printf("    - test_spam: Requires an additional argument specifying "
                "the number of times to send.\n");
+        printf("    - sample: Requires type (float, string, or file) and value "
+               "arguments.\n");
+        printf(
+            "      For file type, value should be filepath and extension.\n");
         return 1;
     }
     struct timespec start_time;
@@ -59,6 +63,17 @@ int main(int argc, char** argv)
             char* value = argv[4];
             send_sample_string(socket_fd, metric_id, start_time_in_seconds,
                                value);
+        } else if(strcmp(type, "file") == 0) {
+            if(argc < 6) {
+                printf("Error: file type requires filepath and extension "
+                       "arguments.\n");
+                close(socket_fd);
+                return 1;
+            }
+            char* filepath = argv[4];
+            char* extension = argv[5];
+            send_sample_file(socket_fd, metric_id, start_time_in_seconds,
+                             filepath, extension);
         }
         sleep(1);
         close(socket_fd);

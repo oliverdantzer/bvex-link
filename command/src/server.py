@@ -4,11 +4,18 @@ import socket
 from dataclasses import dataclass
 from typing import Any, Callable
 import threading
-
+import logging
 import queue
 from cli import CLI
 from sample_data import Ack, Sample, SampleMetadata, Segment, SegmentMetadata
 from sample_receiver import SampleReceiver
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 
 class RecvServer(asyncio.DatagramProtocol):
@@ -34,10 +41,13 @@ class RecvServer(asyncio.DatagramProtocol):
                 self.remote_addr = addr
                 self.set_remote_addr(addr)
             else:
-                print("Warning: datagram recieved from multiple hosts, discarding")
+                logger.warning(
+                    "Datagram received from multiple hosts, discarding")
                 return
         sample_json = json.loads(data.decode())
-        # print(sample_json)
+        logger.debug(f"Received packet from {addr}, size: {len(data)} bytes")
+        logger.debug(f"Packet metadata - metric_id: {sample_json['metric_id']}, sample_id: {sample_json['sample_id']}, "
+                     f"segment: {sample_json['segment']['seqnum']}/{sample_json['segment']['num_segments']}")
         segment_metadata = SegmentMetadata(
             sample_json["segment"]["seqnum"], sample_json["segment"]["num_segments"]
         )
@@ -47,7 +57,8 @@ class RecvServer(asyncio.DatagramProtocol):
             sample_json["timestamp"],
             sample_json["data_type"],
         )
-        segment = Segment(segment_metadata, bytes(sample_json["segment"]["data"]))
+        segment = Segment(segment_metadata, bytes(
+            sample_json["segment"]["data"]))
         sample = Sample(sample_metadata, segment)
         self.handle_sample(sample)
 
@@ -82,17 +93,17 @@ class SendServer:
         # to be same so I dont have to do this workaround
         self.remote_addr = ('127.0.0.1', 3001)
         self.remote_addr_set.set()
-    
+
     def set_bps(self, bps: int):
         self.command_queue.put(SetBps(bps))
-    
+
     def set_max_pkt_size(self, pkt_size: int):
         self.command_queue.put(SetMaxPacketSize(pkt_size))
 
     async def send_loop(self) -> None:
-        print("Starting send loop")
+        logger.info("Starting send loop")
         await self.remote_addr_set.wait()
-        # print("remote addr received: ", self.remote_addr)
+        logger.info(f"Remote addr received: {self.remote_addr}")
         loop = asyncio.get_running_loop()
         while True:
             obj: Any = {}
@@ -126,18 +137,19 @@ class SendServer:
 
 
 async def run_server():
-    print("Starting UDP server")
-
     receiver = SampleReceiver()
 
     send_server = SendServer(receiver.get_ack)
 
     # Bind to localhost on UDP port 3000
+    local_addr = ("127.0.0.1", 3004)
     loop = asyncio.get_running_loop()
     transport, _ = await loop.create_datagram_endpoint(
-        lambda: RecvServer(receiver.handle_sample, send_server.set_remote_addr),
-        local_addr=("127.0.0.1", 3004),
+        lambda: RecvServer(receiver.handle_sample,
+                           send_server.set_remote_addr),
+        local_addr,
     )
+    logger.info(f"Server listening on {local_addr}")
 
     # Schedule the send_loop to run concurrently
     send_task = asyncio.create_task(send_server.send_loop())
