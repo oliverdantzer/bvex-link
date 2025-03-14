@@ -1,3 +1,5 @@
+Python version 3.13
+
 Create virtual env
 `python3 -m venv venv`
 
@@ -6,6 +8,11 @@ Activate venv Linux
 
 Activating virtual env on Windows
 `source ./win-venv.sh`
+
+Running
+```bash
+python3 src/server.py
+```
 
 src/generated/nano_pb2 can be built by running make in https://github.com/nanopb/nanopb/tree/master/generator/proto
 OR downloading prebuilt nanopb binaries
