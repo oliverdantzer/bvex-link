@@ -3,6 +3,7 @@ from typing import Callable
 
 from sample_data import Ack, Sample, SampleMetadata
 from segment_assembler import SegmentAssembler
+from store_sample import store_sample
 
 
 class MetricReceiver:
@@ -73,11 +74,6 @@ class SampleReceiver:
         self.i = None
 
     def handle_sample(self, sample: Sample):
-        def store_sample(data: bytes, metadata: SampleMetadata):
-            print("Completed telemetry packet:")
-            print("sample data: ", json.loads(data))
-            print("sample metadata: ", metadata)
-
         metric_id = sample.metadata.metric_id
         if metric_id not in self.receivers:
             self.receivers[metric_id] = MetricReceiver(sample, store_sample)
