@@ -42,6 +42,7 @@ Test sample sending:
 ```bash
 ./build/test sample testfloat float 12.0
 ./build/test sample teststring string hello
+./build/test sample teststring file /home/oliver/dev/bvex-link/test-samples/boat.png png
 ```
 
 Test requests sending:
