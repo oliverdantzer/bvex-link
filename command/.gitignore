@@ -3,3 +3,5 @@ pvenv.cfg
 venv/
 
 **/__pycache__/
+
+data/

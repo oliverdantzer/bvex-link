@@ -1,7 +1,7 @@
 import os
 from sample_data import SampleMetadata
 
-SAMPLE_STORE_DIR = os.path.abspath("../data")
+SAMPLE_STORE_DIR = os.path.abspath("data")
 
 
 class SampleStore:
