@@ -12,9 +12,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#define SAMPLE_SERVER_ADDR "localhost"
+#define SAMPLE_SERVER_ADDR "127.0.0.1"
 #define SAMPLE_SERVER_PORT "3000"
-#define REQUEST_SERVER_ADDR "localhost"
+#define REQUEST_SERVER_ADDR "127.0.0.1"
 #define REQUEST_SERVER_PORT "8080"
 
 int main(int argc, char** argv)
