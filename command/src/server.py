@@ -126,18 +126,18 @@ class SendServer:
 
 
 async def run_server():
-    print("Starting UDP server")
-
     receiver = SampleReceiver()
 
     send_server = SendServer(receiver.get_ack)
 
     # Bind to localhost on UDP port 3000
+    local_addr=("127.0.0.1", 3004)
     loop = asyncio.get_running_loop()
     transport, _ = await loop.create_datagram_endpoint(
         lambda: RecvServer(receiver.handle_sample, send_server.set_remote_addr),
-        local_addr=("127.0.0.1", 3004),
+        local_addr,
     )
+    print("Server listening on ", local_addr)
 
     # Schedule the send_loop to run concurrently
     send_task = asyncio.create_task(send_server.send_loop())
