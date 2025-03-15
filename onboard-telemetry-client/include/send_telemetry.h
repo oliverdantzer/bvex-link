@@ -54,56 +54,61 @@ int connected_udp_socket(char* node, char* service);
  * @brief Sends an int32_t telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The int32_t value to send.
  */
-void send_sample_int32(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE], float timestamp,
+void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
                        int32_t value);
 
 /**
  * @brief Sends an int64_t telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The int64_t value to send.
  */
-void send_sample_int64(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE], float timestamp,
+void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
                        int64_t value);
 
 /**
  * @brief Sends a float telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The float value to send.
  */
-void send_sample_float(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE], float timestamp,
+void send_sample_float(int socket_fd, char* metric_id, float timestamp,
                        float value);
 
 /**
  * @brief Sends a double telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The double value to send.
  */
-void send_sample_double(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE], float timestamp,
+void send_sample_double(int socket_fd, char* metric_id, float timestamp,
                         double value);
 
 /**
  * @brief Sends a boolean telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The boolean value to send.
  */
-void send_sample_bool(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
-                      float timestamp, bool value);
+void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
+                      bool value);
 
 /**
  * @brief Sends a string telemetry sample.
@@ -111,22 +116,25 @@ void send_sample_bool(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
  * @note The string value must have a null terminator.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
- * @param value The string value to send.
+ * @param value The string value to send. Must be less than
+ * STRING_VALUE_MAX_SIZE.
  */
-void send_sample_string(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
-                        float timestamp, char value[STRING_VALUE_MAX_SIZE]);
+void send_sample_string(int socket_fd, char* metric_id, float timestamp,
+                        char* value);
 
 /**
  * @brief Sends a file telemetry sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric.
+ * @param metric_id The identifier for the metric. Must be less than
+ * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
- * @param filepath The path to the file to send.
- * @param extension The file extension.
+ * @param filepath The path to the file to send. Must be less than
+ * FILE_PATH_MAX_SIZE.
+ * @param extension The file extension. Must be less than EXTENSION_MAX_SIZE.
  */
-void send_sample_file(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
-                      float timestamp, char filepath[FILE_PATH_MAX_SIZE],
-                      char extension[EXTENSION_MAX_SIZE]);
+void send_sample_file(int socket_fd, char* metric_id, float timestamp,
+                      char* filepath, char* extension);
