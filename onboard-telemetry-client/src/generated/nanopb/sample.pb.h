@@ -12,12 +12,12 @@
 
 /* Struct definitions */
 typedef struct _File {
-    char filepath[101];
-    char extension[11];
+    char filepath[128];
+    char extension[16];
 } File;
 
 typedef struct _Sample {
-    char metric_id[41];
+    char metric_id[64];
     float timestamp; /* s since last epoch */
     pb_size_t which_data;
     union {
@@ -70,9 +70,9 @@ extern const pb_msgdesc_t File_msg;
 #define File_fields &File_msg
 
 /* Maximum encoded size of messages (where known) */
-#define File_size                                114
+#define File_size                                147
 #define SAMPLE_PB_H_MAX_SIZE                     Sample_size
-#define Sample_size                              163
+#define Sample_size                              4171
 
 #ifdef __cplusplus
 } /* extern "C" */

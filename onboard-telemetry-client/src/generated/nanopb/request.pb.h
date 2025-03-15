@@ -11,7 +11,7 @@
 
 /* Struct definitions */
 typedef struct _Request {
-    char metric_id[41];
+    char metric_id[64];
 } Request;
 
 
@@ -39,7 +39,7 @@ extern const pb_msgdesc_t Request_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define REQUEST_PB_H_MAX_SIZE                    Request_size
-#define Request_size                             42
+#define Request_size                             65
 
 #ifdef __cplusplus
 } /* extern "C" */
