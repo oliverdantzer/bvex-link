@@ -15,7 +15,7 @@ typedef struct {
 
 int send_sample(int socket_fd, Sample message)
 {
-    uint8_t buffer[512];
+    uint8_t buffer[SAMPLE_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Sample_fields, &message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
@@ -58,8 +58,8 @@ int send_sample_async(int socket_fd, Sample sample)
     return 0;
 }
 
-void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
-                       int32_t value)
+void send_sample_int32(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                       float timestamp, int32_t value)
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -70,8 +70,8 @@ void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
-                       int64_t value)
+void send_sample_int64(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                       float timestamp, int64_t value)
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -82,8 +82,8 @@ void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-void send_sample_float(int socket_fd, char* metric_id, float timestamp,
-                       float value)
+void send_sample_float(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                       float timestamp, float value)
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -94,8 +94,8 @@ void send_sample_float(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-void send_sample_double(int socket_fd, char* metric_id, float timestamp,
-                        double value)
+void send_sample_double(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                        float timestamp, double value)
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -106,8 +106,8 @@ void send_sample_double(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
-                      bool value)
+void send_sample_bool(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                      float timestamp, bool value)
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -118,8 +118,8 @@ void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-void send_sample_string(int socket_fd, char* metric_id, float timestamp,
-                        char* value)
+void send_sample_string(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                        float timestamp, char value[STRING_VALUE_MAX_SIZE])
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
@@ -130,9 +130,9 @@ void send_sample_string(int socket_fd, char* metric_id, float timestamp,
     send_sample_async(socket_fd, sample);
 }
 
-// ensure filepath length does not exceed 100
-void send_sample_file(int socket_fd, char* metric_id, float timestamp,
-                      char* filepath, char* extension)
+void send_sample_file(int socket_fd, char metric_id[METRIC_ID_MAX_SIZE],
+                      float timestamp, char filepath[FILE_PATH_MAX_SIZE],
+                      char extension[EXTENSION_MAX_SIZE])
 {
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
