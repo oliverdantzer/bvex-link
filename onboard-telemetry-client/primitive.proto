@@ -11,6 +11,6 @@ message Primitive {
         float float_val = 3;
         double double_val = 4;
         bool bool_val = 5;
-        string string_val = 6 [ (nanopb).max_length = 60 ];
+        string string_val = 6 [ (nanopb).max_size = 4096 ];
     }
 }

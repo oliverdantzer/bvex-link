@@ -6,5 +6,5 @@ import "nanopb.proto";
 
 message Request
 {
-    string metric_id = 1 [ (nanopb).max_length = 40 ];
+    string metric_id = 1 [ (nanopb).max_size = 64 ];
 }
