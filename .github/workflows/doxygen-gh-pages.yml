@@ -35,11 +35,11 @@ jobs:
       shell: bash
 
     - name: Enter onboard-telemetry-client directory and generate Doxygen
-      run: cd onboard-telemetry-client && doxygen
+      run: cd bcp-fetch-client && doxygen
       shell: bash
       
     - name: Create .nojekyll (ensures pages with underscores work on gh pages)
-      run: touch onboard-telemetry-client/docs/html/.nojekyll
+      run: touch bcp-fetch-client/docs/html/.nojekyll
       shell: bash
 
     - name: Deploy to GitHub Pages

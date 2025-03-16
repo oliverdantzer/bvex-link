@@ -22,9 +22,9 @@ add_library(bcp-fetch
     src/generated/nanopb/primitive.pb.c
     src/generated/nanopb/request.pb.c
     src/generated/nanopb/response.pb.c
-    src/request.c
+    src/request_sample.c
     src/socket.c
-    src/send_telemetry.c
+    src/send_sample.c
 )
 
 target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
