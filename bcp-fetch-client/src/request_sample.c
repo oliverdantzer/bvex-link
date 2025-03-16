@@ -1,14 +1,14 @@
-#include "request.h"
+#include "request_sample.h"
+#include "connected_udp_socket.h"
 #include "generated/nanopb/request.pb.h"
 #include "generated/nanopb/response.pb.h"
-#include "send_telemetry.h"
 #include <arpa/inet.h> // send()
 #include <errno.h>
 #include <pb_decode.h>
 #include <pb_encode.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 Requester make_requester(char* metric_id, char* node, char* service)
 {
@@ -213,7 +213,7 @@ RequestStringResult request_string(Requester* reqr)
     if(request_result.response.primitive.which_value !=
        primitive_Primitive_string_val_tag) {
 #ifdef DEBUG
-        fprintf(stderr, "Invalid response type\n");\
+        fprintf(stderr, "Invalid response type\n");
         fprintf(stderr, "Received %s instead of string.\n",
                 primitive_val_tag_to_string(
                     request_result.response.primitive.which_value));

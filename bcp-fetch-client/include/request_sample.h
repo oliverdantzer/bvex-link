@@ -6,6 +6,8 @@
  *  Example usage:
  *  @code
  *  #include "request_sample.h"
+ *  #include "connected_udp_socket.h"
+ * 
  *  int main() {
  *      char* metric_id = "altitude";
  *      char* node = "localhost";

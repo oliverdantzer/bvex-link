@@ -1,4 +1,4 @@
-#include "send_telemetry.h"
+#include "send_sample.h"
 #include "generated/nanopb/sample.pb.h"
 #include <arpa/inet.h> // send()
 #include <errno.h>
