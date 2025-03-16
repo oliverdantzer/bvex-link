@@ -1,5 +1,5 @@
 #include "test_request.h"
-#include "request.h"
+#include "request_sample.h"
 #include "stdio.h"
 
 #define REQUEST_SERVER_ADDR "localhost"

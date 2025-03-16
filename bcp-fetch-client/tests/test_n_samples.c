@@ -1,4 +1,4 @@
-#include "send_telemetry.h"
+#include "send_sample.h"
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>

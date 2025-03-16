@@ -1,6 +1,6 @@
 #include "test_loop.h"
 #include "common.h"
-#include "send_telemetry.h"
+#include "send_sample.h"
 #include <time.h>
 #include <unistd.h>
 

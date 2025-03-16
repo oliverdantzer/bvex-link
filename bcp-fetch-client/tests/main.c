@@ -1,5 +1,6 @@
-#include "request.h"
-#include "send_telemetry.h"
+#include "request_sample.h"
+#include "send_sample.h"
+#include "connected_udp_socket.h"
 #include "test_file.h"
 #include "test_loop.h"
 #include "test_loop_send_time.h"
