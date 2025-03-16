@@ -19,13 +19,13 @@ send_status_t send_sample(int socket_fd, Sample message)
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Sample_fields, &message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
-        return ENCODING_ERROR;
+        return SEND_STATUS_ENCODING_ERROR;
     }
 
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
     if(bytes_sent < 0) {
         fprintf(stderr, "send failed: %s\n", strerror(errno));
-        return SEND_ERROR;
+        return SEND_STATUS_SEND_ERROR;
     }
     return 0;
 }
@@ -43,7 +43,7 @@ send_status_t send_sample_async(int socket_fd, Sample sample)
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
-        return MEMORY_ALLOCATION_ERROR;
+        return SEND_STATUS_MEMORY_ALLOCATION_ERROR;
     }
     temp_data->socket_fd = socket_fd;
     temp_data->sample = sample;
@@ -52,14 +52,14 @@ send_status_t send_sample_async(int socket_fd, Sample sample)
     if(rc != 0) {
         fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
         free(temp_data); // Free temp_data if thread creation fails
-        return THREAD_CREATION_ERROR;
+        return SEND_STATUS_THREAD_CREATION_ERROR;
     }
     pthread_detach(temp_thread); // Detach thread to let it run independently
-    return 0;
+    return SEND_STATUS_OK;
 }
 
 send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
-                      int32_t value)
+                                int32_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
@@ -76,7 +76,7 @@ send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
 }
 
 send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
-                      int64_t value)
+                                int64_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
@@ -93,7 +93,7 @@ send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
 }
 
 send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
-                      float value)
+                                float value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
@@ -109,8 +109,8 @@ send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-send_status_t send_sample_double(int socket_fd, char* metric_id, float timestamp,
-                       double value)
+send_status_t send_sample_double(int socket_fd, char* metric_id,
+                                 float timestamp, double value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
@@ -127,7 +127,7 @@ send_status_t send_sample_double(int socket_fd, char* metric_id, float timestamp
 }
 
 send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
-                     bool value)
+                               bool value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
@@ -143,8 +143,8 @@ send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-send_status_t send_sample_string(int socket_fd, char* metric_id, float timestamp,
-                       char* value)
+send_status_t send_sample_string(int socket_fd, char* metric_id,
+                                 float timestamp, char* value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
@@ -162,7 +162,7 @@ send_status_t send_sample_string(int socket_fd, char* metric_id, float timestamp
 }
 
 send_status_t send_sample_file(int socket_fd, char* metric_id, float timestamp,
-                     char* filepath, char* extension)
+                               char* filepath, char* extension)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
