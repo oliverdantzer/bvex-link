@@ -18,13 +18,17 @@ send_status_t send_sample(int socket_fd, Sample message)
     uint8_t buffer[SAMPLE_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Sample_fields, &message)) {
+#ifdef DEBUG
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
+#endif
         return SEND_STATUS_ENCODING_ERROR;
     }
 
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
     if(bytes_sent < 0) {
+#ifdef DEBUG
         fprintf(stderr, "send failed: %s\n", strerror(errno));
+#endif
         return SEND_STATUS_SEND_ERROR;
     }
     return 0;
@@ -42,7 +46,9 @@ send_status_t send_sample_async(int socket_fd, Sample sample)
 {
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
+#ifdef DEBUG
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
+#endif
         return SEND_STATUS_MEMORY_ALLOCATION_ERROR;
     }
     temp_data->socket_fd = socket_fd;
@@ -50,7 +56,9 @@ send_status_t send_sample_async(int socket_fd, Sample sample)
     pthread_t temp_thread;
     int rc = pthread_create(&temp_thread, NULL, send_sample_one_arg, temp_data);
     if(rc != 0) {
+#ifdef DEBUG
         fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
+#endif
         free(temp_data); // Free temp_data if thread creation fails
         return SEND_STATUS_THREAD_CREATION_ERROR;
     }
