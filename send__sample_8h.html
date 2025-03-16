@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BCP Telemetry Client: include/send_telemetry.h File Reference</title>
+<title>BCP Telemetry Client: include/send_sample.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,8 +19,6 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
-<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -73,7 +71,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('send__telemetry_8h.html',''); initResizable(true); });
+$(function(){initNavTree('send__sample_8h.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -101,83 +99,107 @@ $(function(){initNavTree('send__telemetry_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">send_telemetry.h File Reference</div></div>
+  <div class="headertitle"><div class="title">send_sample.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>API to send telemetry data to the onboard server.  
+<p>API to send sample data to the onboard server.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for send_telemetry.h:</div>
+Include dependency graph for send_sample.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="send__telemetry_8h__incl.png" border="0" usemap="#ainclude_2send__telemetry_8h" alt=""/></div>
-<map name="ainclude_2send__telemetry_8h" id="ainclude_2send__telemetry_8h">
-<area shape="rect" title="API to send telemetry data to the onboard server." alt="" coords="5,5,191,31"/>
-<area shape="rect" title=" " alt="" coords="6,79,89,104"/>
-<area shape="poly" title=" " alt="" coords="92,33,66,69,61,66,87,29"/>
-<area shape="rect" title=" " alt="" coords="113,79,184,104"/>
-<area shape="poly" title=" " alt="" coords="109,29,135,66,130,69,104,33"/>
+<div class="center"><img src="send__sample_8h__incl.png" border="0" usemap="#ainclude_2send__sample_8h" alt=""/></div>
+<map name="ainclude_2send__sample_8h" id="ainclude_2send__sample_8h">
+<area shape="rect" title="API to send sample data to the onboard server." alt="" coords="12,5,183,31"/>
+<area shape="rect" title=" " alt="" coords="5,79,88,104"/>
+<area shape="poly" title=" " alt="" coords="91,33,65,69,61,66,87,29"/>
+<area shape="rect" title=" " alt="" coords="113,79,183,104"/>
+<area shape="poly" title=" " alt="" coords="108,29,134,66,130,69,104,33"/>
 </map>
 </div>
 </div>
-<p><a href="send__telemetry_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="send__sample_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a546747d3eb0d2aa534e10535d5f045a3" id="r_a546747d3eb0d2aa534e10535d5f045a3"><td class="memItemLeft" align="right" valign="top"><a id="a546747d3eb0d2aa534e10535d5f045a3" name="a546747d3eb0d2aa534e10535d5f045a3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>GETADDRINFO_ERROR</b>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:a546747d3eb0d2aa534e10535d5f045a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f207dff0f64a7964a14ca279468b97e" id="r_a3f207dff0f64a7964a14ca279468b97e"><td class="memItemLeft" align="right" valign="top"><a id="a3f207dff0f64a7964a14ca279468b97e" name="a3f207dff0f64a7964a14ca279468b97e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>STRING_VALUE_MAX_SIZE</b>&#160;&#160;&#160;4096</td></tr>
+<tr class="separator:a3f207dff0f64a7964a14ca279468b97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7faae1421c6ba49a4f8aeed84f8ab465" id="r_a7faae1421c6ba49a4f8aeed84f8ab465"><td class="memItemLeft" align="right" valign="top"><a id="a7faae1421c6ba49a4f8aeed84f8ab465" name="a7faae1421c6ba49a4f8aeed84f8ab465"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>METRIC_ID_MAX_SIZE</b>&#160;&#160;&#160;64</td></tr>
+<tr class="separator:a7faae1421c6ba49a4f8aeed84f8ab465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aca6f1afe46d4f008b2f063c79acf39" id="r_a2aca6f1afe46d4f008b2f063c79acf39"><td class="memItemLeft" align="right" valign="top"><a id="a2aca6f1afe46d4f008b2f063c79acf39" name="a2aca6f1afe46d4f008b2f063c79acf39"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FILE_PATH_MAX_SIZE</b>&#160;&#160;&#160;128</td></tr>
+<tr class="separator:a2aca6f1afe46d4f008b2f063c79acf39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d20980c19d43eac05a1fdaeb9e1c7e" id="r_af7d20980c19d43eac05a1fdaeb9e1c7e"><td class="memItemLeft" align="right" valign="top"><a id="af7d20980c19d43eac05a1fdaeb9e1c7e" name="af7d20980c19d43eac05a1fdaeb9e1c7e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EXTENSION_MAX_SIZE</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:af7d20980c19d43eac05a1fdaeb9e1c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ae81e9c37c3f8e89f9dc5275f5b8372af" id="r_ae81e9c37c3f8e89f9dc5275f5b8372af"><td class="memItemLeft" align="right" valign="top"><a id="ae81e9c37c3f8e89f9dc5275f5b8372af" name="ae81e9c37c3f8e89f9dc5275f5b8372af"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>send_status_t</b> { <br />
+&#160;&#160;<b>SEND_STATUS_OK</b> = 0
+, <b>SEND_STATUS_ENCODING_ERROR</b>
+, <b>SEND_STATUS_SEND_ERROR</b>
+, <b>SEND_STATUS_MEMORY_ALLOCATION_ERROR</b>
+, <br />
+&#160;&#160;<b>SEND_STATUS_THREAD_CREATION_ERROR</b>
+<br />
+ }</td></tr>
+<tr class="separator:ae81e9c37c3f8e89f9dc5275f5b8372af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:adff03ed4946c56f4ba94c3a79f3a588e" id="r_adff03ed4946c56f4ba94c3a79f3a588e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a> (char *node, char *service)</td></tr>
 <tr class="memdesc:adff03ed4946c56f4ba94c3a79f3a588e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes UDP socket, connects to node:service, and returns socket file descriptor.  <br /></td></tr>
 <tr class="separator:adff03ed4946c56f4ba94c3a79f3a588e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99c77c42721cb59531fa6c3225439d14" id="r_a99c77c42721cb59531fa6c3225439d14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
-<tr class="memdesc:a99c77c42721cb59531fa6c3225439d14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t telemetry sample.  <br /></td></tr>
-<tr class="separator:a99c77c42721cb59531fa6c3225439d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a274ef2a58707d4c0714908d811855948" id="r_a274ef2a58707d4c0714908d811855948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a274ef2a58707d4c0714908d811855948">send_sample_int64</a> (int socket_fd, char *metric_id, float timestamp, int64_t value)</td></tr>
-<tr class="memdesc:a274ef2a58707d4c0714908d811855948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int64_t telemetry sample.  <br /></td></tr>
-<tr class="separator:a274ef2a58707d4c0714908d811855948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2dc8b83b783d83ccfb0677d60caa47" id="r_abc2dc8b83b783d83ccfb0677d60caa47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a> (int socket_fd, char *metric_id, float timestamp, float value)</td></tr>
-<tr class="memdesc:abc2dc8b83b783d83ccfb0677d60caa47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a float telemetry sample.  <br /></td></tr>
-<tr class="separator:abc2dc8b83b783d83ccfb0677d60caa47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61c515890eaaa305bdd3ac3865bddabd" id="r_a61c515890eaaa305bdd3ac3865bddabd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61c515890eaaa305bdd3ac3865bddabd">send_sample_double</a> (int socket_fd, char *metric_id, float timestamp, double value)</td></tr>
-<tr class="memdesc:a61c515890eaaa305bdd3ac3865bddabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a double telemetry sample.  <br /></td></tr>
-<tr class="separator:a61c515890eaaa305bdd3ac3865bddabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3d361e1989f77191bb4159f3a55f916" id="r_ae3d361e1989f77191bb4159f3a55f916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3d361e1989f77191bb4159f3a55f916">send_sample_bool</a> (int socket_fd, char *metric_id, float timestamp, bool value)</td></tr>
-<tr class="memdesc:ae3d361e1989f77191bb4159f3a55f916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a boolean telemetry sample.  <br /></td></tr>
-<tr class="separator:ae3d361e1989f77191bb4159f3a55f916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e79e1091a21f466e0ff3ca3d49b839b" id="r_a4e79e1091a21f466e0ff3ca3d49b839b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e79e1091a21f466e0ff3ca3d49b839b">send_sample_string</a> (int socket_fd, char *metric_id, float timestamp, char *value)</td></tr>
-<tr class="memdesc:a4e79e1091a21f466e0ff3ca3d49b839b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a string telemetry sample.  <br /></td></tr>
-<tr class="separator:a4e79e1091a21f466e0ff3ca3d49b839b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2af778575c06f4c035b528746e1ae1a0" id="r_a2af778575c06f4c035b528746e1ae1a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2af778575c06f4c035b528746e1ae1a0">send_sample_file</a> (int socket_fd, char *metric_id, float timestamp, char *filepath, char *extension)</td></tr>
-<tr class="memdesc:a2af778575c06f4c035b528746e1ae1a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a file telemetry sample.  <br /></td></tr>
-<tr class="separator:a2af778575c06f4c035b528746e1ae1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe75efa2e79cffe63bb841d6d81425ac" id="r_afe75efa2e79cffe63bb841d6d81425ac"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
+<tr class="memdesc:afe75efa2e79cffe63bb841d6d81425ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t sample.  <br /></td></tr>
+<tr class="separator:afe75efa2e79cffe63bb841d6d81425ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8177dbadebb5825e6a9f416ecd30f6ff" id="r_a8177dbadebb5825e6a9f416ecd30f6ff"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8177dbadebb5825e6a9f416ecd30f6ff">send_sample_int64</a> (int socket_fd, char *metric_id, float timestamp, int64_t value)</td></tr>
+<tr class="memdesc:a8177dbadebb5825e6a9f416ecd30f6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int64_t sample.  <br /></td></tr>
+<tr class="separator:a8177dbadebb5825e6a9f416ecd30f6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e466e61abd53f66935dc251cd0cf54" id="r_a27e466e61abd53f66935dc251cd0cf54"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a> (int socket_fd, char *metric_id, float timestamp, float value)</td></tr>
+<tr class="memdesc:a27e466e61abd53f66935dc251cd0cf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a float sample.  <br /></td></tr>
+<tr class="separator:a27e466e61abd53f66935dc251cd0cf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf806dee9974b5e0ebdd11dafe2e58de" id="r_aaf806dee9974b5e0ebdd11dafe2e58de"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf806dee9974b5e0ebdd11dafe2e58de">send_sample_double</a> (int socket_fd, char *metric_id, float timestamp, double value)</td></tr>
+<tr class="memdesc:aaf806dee9974b5e0ebdd11dafe2e58de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a double sample.  <br /></td></tr>
+<tr class="separator:aaf806dee9974b5e0ebdd11dafe2e58de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8b453d804aa1731ab6837c5fbc9dea9" id="r_ad8b453d804aa1731ab6837c5fbc9dea9"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8b453d804aa1731ab6837c5fbc9dea9">send_sample_bool</a> (int socket_fd, char *metric_id, float timestamp, bool value)</td></tr>
+<tr class="memdesc:ad8b453d804aa1731ab6837c5fbc9dea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a boolean sample.  <br /></td></tr>
+<tr class="separator:ad8b453d804aa1731ab6837c5fbc9dea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99b7906cc57ef4e69335cf31ad24eb37" id="r_a99b7906cc57ef4e69335cf31ad24eb37"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99b7906cc57ef4e69335cf31ad24eb37">send_sample_string</a> (int socket_fd, char *metric_id, float timestamp, char *value)</td></tr>
+<tr class="memdesc:a99b7906cc57ef4e69335cf31ad24eb37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a string sample.  <br /></td></tr>
+<tr class="separator:a99b7906cc57ef4e69335cf31ad24eb37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abea5096dd1fe00dd5669d1e78e2daf9c" id="r_abea5096dd1fe00dd5669d1e78e2daf9c"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abea5096dd1fe00dd5669d1e78e2daf9c">send_sample_file</a> (int socket_fd, char *metric_id, float timestamp, char *filepath, char *extension)</td></tr>
+<tr class="memdesc:abea5096dd1fe00dd5669d1e78e2daf9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a file sample.  <br /></td></tr>
+<tr class="separator:abea5096dd1fe00dd5669d1e78e2daf9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>API to send telemetry data to the onboard server. </p>
-<p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="send__telemetry_8h.html">send_telemetry.h</a>&quot;</span></div>
+<div class="textblock"><p>API to send sample data to the onboard server. </p>
+<p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="send__sample_8h.html">send_sample.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;ctime&gt;</span></div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">    <span class="keywordtype">int</span> socket_fd = <a class="code hl_function" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a>(SAMPLE_SERVER_ADDR,</div>
 <div class="line">                                               SAMPLE_SERVER_PORT);</div>
 <div class="line">    <span class="keywordflow">if</span> (socket_fd &lt; 0) {</div>
 <div class="line">        printf(<span class="stringliteral">&quot;Error connecting to server\n&quot;</span>);</div>
-<div class="line">        <span class="keywordflow">return</span>;</div>
+<div class="line">        <span class="keywordflow">return</span> 1;</div>
 <div class="line">    }</div>
-<div class="line">    <a class="code hl_function" href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a>(socket_fd, <span class="stringliteral">&quot;altitude&quot;</span>, time(NULL), 50392);</div>
-<div class="line">    <a class="code hl_function" href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a>(socket_fd, <span class="stringliteral">&quot;yaw&quot;</span>, time(NULL), 0.1452f);</div>
+<div class="line">    <span class="keywordtype">float</span> current_time = time(NULL);</div>
+<div class="line">    <a class="code hl_function" href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a>(socket_fd, <span class="stringliteral">&quot;altitude&quot;</span>, current_time, 50392);</div>
+<div class="line">    <a class="code hl_function" href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a>(socket_fd, <span class="stringliteral">&quot;yaw&quot;</span>, current_time, 0.1452f);</div>
 <div class="line">    close(socket_fd);</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="asend__telemetry_8h_html"><div class="ttname"><a href="send__telemetry_8h.html">send_telemetry.h</a></div><div class="ttdoc">API to send telemetry data to the onboard server.</div></div>
-<div class="ttc" id="asend__telemetry_8h_html_a99c77c42721cb59531fa6c3225439d14"><div class="ttname"><a href="#a99c77c42721cb59531fa6c3225439d14">send_sample_int32</a></div><div class="ttdeci">void send_sample_int32(int socket_fd, char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t telemetry sample.</div></div>
-<div class="ttc" id="asend__telemetry_8h_html_abc2dc8b83b783d83ccfb0677d60caa47"><div class="ttname"><a href="#abc2dc8b83b783d83ccfb0677d60caa47">send_sample_float</a></div><div class="ttdeci">void send_sample_float(int socket_fd, char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float telemetry sample.</div></div>
-<div class="ttc" id="asend__telemetry_8h_html_adff03ed4946c56f4ba94c3a79f3a588e"><div class="ttname"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a></div><div class="ttdeci">int connected_udp_socket(char *node, char *service)</div><div class="ttdoc">Makes UDP socket, connects to node:service, and returns socket file descriptor.</div></div>
+<div class="ttc" id="asend__sample_8h_html"><div class="ttname"><a href="send__sample_8h.html">send_sample.h</a></div><div class="ttdoc">API to send sample data to the onboard server.</div></div>
+<div class="ttc" id="asend__sample_8h_html_a27e466e61abd53f66935dc251cd0cf54"><div class="ttname"><a href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a></div><div class="ttdeci">send_status_t send_sample_float(int socket_fd, char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float sample.</div></div>
+<div class="ttc" id="asend__sample_8h_html_adff03ed4946c56f4ba94c3a79f3a588e"><div class="ttname"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a></div><div class="ttdeci">int connected_udp_socket(char *node, char *service)</div><div class="ttdoc">Makes UDP socket, connects to node:service, and returns socket file descriptor.</div></div>
+<div class="ttc" id="asend__sample_8h_html_afe75efa2e79cffe63bb841d6d81425ac"><div class="ttname"><a href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a></div><div class="ttdeci">send_status_t send_sample_int32(int socket_fd, char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t sample.</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="adff03ed4946c56f4ba94c3a79f3a588e" name="adff03ed4946c56f4ba94c3a79f3a588e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">&#9670;&#160;</a></span>connected_udp_socket()</h2>
@@ -212,14 +234,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae3d361e1989f77191bb4159f3a55f916" name="ae3d361e1989f77191bb4159f3a55f916"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3d361e1989f77191bb4159f3a55f916">&#9670;&#160;</a></span>send_sample_bool()</h2>
+<a id="ad8b453d804aa1731ab6837c5fbc9dea9" name="ad8b453d804aa1731ab6837c5fbc9dea9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8b453d804aa1731ab6837c5fbc9dea9">&#9670;&#160;</a></span>send_sample_bool()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_bool </td>
+          <td class="memname">send_status_t send_sample_bool </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -241,27 +263,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a boolean telemetry sample. </p>
+<p>Sends a boolean sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
     <tr><td class="paramname">value</td><td>The boolean value to send. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="a61c515890eaaa305bdd3ac3865bddabd" name="a61c515890eaaa305bdd3ac3865bddabd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61c515890eaaa305bdd3ac3865bddabd">&#9670;&#160;</a></span>send_sample_double()</h2>
+<a id="aaf806dee9974b5e0ebdd11dafe2e58de" name="aaf806dee9974b5e0ebdd11dafe2e58de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf806dee9974b5e0ebdd11dafe2e58de">&#9670;&#160;</a></span>send_sample_double()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_double </td>
+          <td class="memname">send_status_t send_sample_double </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -283,27 +306,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a double telemetry sample. </p>
+<p>Sends a double sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
     <tr><td class="paramname">value</td><td>The double value to send. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="a2af778575c06f4c035b528746e1ae1a0" name="a2af778575c06f4c035b528746e1ae1a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2af778575c06f4c035b528746e1ae1a0">&#9670;&#160;</a></span>send_sample_file()</h2>
+<a id="abea5096dd1fe00dd5669d1e78e2daf9c" name="abea5096dd1fe00dd5669d1e78e2daf9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea5096dd1fe00dd5669d1e78e2daf9c">&#9670;&#160;</a></span>send_sample_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_file </td>
+          <td class="memname">send_status_t send_sample_file </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -330,28 +354,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a file telemetry sample. </p>
+<p>Sends a file sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
-    <tr><td class="paramname">filepath</td><td>The path to the file to send. </td></tr>
-    <tr><td class="paramname">extension</td><td>The file extension. </td></tr>
+    <tr><td class="paramname">filepath</td><td>The path to the file to send. Must be less than FILE_PATH_MAX_SIZE. </td></tr>
+    <tr><td class="paramname">extension</td><td>The file extension. Must be less than EXTENSION_MAX_SIZE. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="abc2dc8b83b783d83ccfb0677d60caa47" name="abc2dc8b83b783d83ccfb0677d60caa47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc2dc8b83b783d83ccfb0677d60caa47">&#9670;&#160;</a></span>send_sample_float()</h2>
+<a id="a27e466e61abd53f66935dc251cd0cf54" name="a27e466e61abd53f66935dc251cd0cf54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27e466e61abd53f66935dc251cd0cf54">&#9670;&#160;</a></span>send_sample_float()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_float </td>
+          <td class="memname">send_status_t send_sample_float </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -373,27 +398,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a float telemetry sample. </p>
+<p>Sends a float sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
     <tr><td class="paramname">value</td><td>The float value to send. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="a99c77c42721cb59531fa6c3225439d14" name="a99c77c42721cb59531fa6c3225439d14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99c77c42721cb59531fa6c3225439d14">&#9670;&#160;</a></span>send_sample_int32()</h2>
+<a id="afe75efa2e79cffe63bb841d6d81425ac" name="afe75efa2e79cffe63bb841d6d81425ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe75efa2e79cffe63bb841d6d81425ac">&#9670;&#160;</a></span>send_sample_int32()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_int32 </td>
+          <td class="memname">send_status_t send_sample_int32 </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -415,27 +441,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends an int32_t telemetry sample. </p>
+<p>Sends an int32_t sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
     <tr><td class="paramname">value</td><td>The int32_t value to send. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="a274ef2a58707d4c0714908d811855948" name="a274ef2a58707d4c0714908d811855948"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a274ef2a58707d4c0714908d811855948">&#9670;&#160;</a></span>send_sample_int64()</h2>
+<a id="a8177dbadebb5825e6a9f416ecd30f6ff" name="a8177dbadebb5825e6a9f416ecd30f6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8177dbadebb5825e6a9f416ecd30f6ff">&#9670;&#160;</a></span>send_sample_int64()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_int64 </td>
+          <td class="memname">send_status_t send_sample_int64 </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -457,27 +484,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends an int64_t telemetry sample. </p>
+<p>Sends an int64_t sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
     <tr><td class="paramname">value</td><td>The int64_t value to send. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
-<a id="a4e79e1091a21f466e0ff3ca3d49b839b" name="a4e79e1091a21f466e0ff3ca3d49b839b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e79e1091a21f466e0ff3ca3d49b839b">&#9670;&#160;</a></span>send_sample_string()</h2>
+<a id="a99b7906cc57ef4e69335cf31ad24eb37" name="a99b7906cc57ef4e69335cf31ad24eb37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99b7906cc57ef4e69335cf31ad24eb37">&#9670;&#160;</a></span>send_sample_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void send_sample_string </td>
+          <td class="memname">send_status_t send_sample_string </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>socket_fd</em></span>, </td>
         </tr>
@@ -499,16 +527,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a string telemetry sample. </p>
+<p>Sends a string sample. </p>
+<dl class="section note"><dt>Note</dt><dd>The string value must have a null terminator.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">socket_fd</td><td>The socket file descriptor. </td></tr>
-    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. </td></tr>
+    <tr><td class="paramname">metric_id</td><td>The identifier for the metric. Must be less than METRIC_ID_MAX_SIZE. </td></tr>
     <tr><td class="paramname">timestamp</td><td>The timestamp of the sample. </td></tr>
-    <tr><td class="paramname">value</td><td>The string value to send. </td></tr>
+    <tr><td class="paramname">value</td><td>The string value to send. Must be less than STRING_VALUE_MAX_SIZE. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>send_status_t Status code indicating success or type of error. </dd></dl>
 
 </div>
 </div>
@@ -517,7 +547,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="send__telemetry_8h.html">send_telemetry.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="send__sample_8h.html">send_sample.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>
