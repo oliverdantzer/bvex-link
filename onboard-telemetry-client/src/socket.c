@@ -45,7 +45,7 @@ int connected_udp_socket(char* node, char* service)
     status = getaddrinfo(node, service, &hints, &servinfo);
     if(status != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
-        return GETADDRINFO_ERROR;
+        return -1;
     }
 
     // --- LOOP THROUGH servinfo AND CONNECT TO FIRST SUCCESSFUL RESULT ---
@@ -88,7 +88,7 @@ int connected_udp_socket(char* node, char* service)
     // if p is NULL, then we have looped through all servinfo nodes and failed
     if(p == NULL) {
         fprintf(stderr, "client: failed to connect\n");
-        return 2;
+        return -1;
     }
 #ifdef TEST_SOCK_PORT
     struct sockaddr_in local_addr;
