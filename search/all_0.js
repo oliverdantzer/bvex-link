@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['connected_5fudp_5fsocket_0',['connected_udp_socket',['../send__sample_8h.html#adff03ed4946c56f4ba94c3a79f3a588e',1,'send_sample.h']]]
+  ['make_5frequester_0',['make_requester',['../request__sample_8h.html#ae4b46cc52c0d5e020c15488f7664a3cd',1,'request_sample.h']]],
+  ['makerequesterargs_1',['MakeRequesterArgs',['../structMakeRequesterArgs.html',1,'']]]
 ];

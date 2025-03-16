@@ -154,9 +154,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adff03ed4946c56f4ba94c3a79f3a588e" id="r_adff03ed4946c56f4ba94c3a79f3a588e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a> (char *node, char *service)</td></tr>
-<tr class="memdesc:adff03ed4946c56f4ba94c3a79f3a588e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes UDP socket, connects to node:service, and returns socket file descriptor.  <br /></td></tr>
-<tr class="separator:adff03ed4946c56f4ba94c3a79f3a588e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe75efa2e79cffe63bb841d6d81425ac" id="r_afe75efa2e79cffe63bb841d6d81425ac"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
 <tr class="memdesc:afe75efa2e79cffe63bb841d6d81425ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t sample.  <br /></td></tr>
 <tr class="separator:afe75efa2e79cffe63bb841d6d81425ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,9 +179,11 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API to send sample data to the onboard server. </p>
 <p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="send__sample_8h.html">send_sample.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;connected_udp_socket.h&quot;</span></div>
+<div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;ctime&gt;</span></div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <span class="keywordtype">int</span> socket_fd = <a class="code hl_function" href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a>(SAMPLE_SERVER_ADDR,</div>
+<div class="line">    <span class="keywordtype">int</span> socket_fd = connected_udp_socket(SAMPLE_SERVER_ADDR,</div>
 <div class="line">                                               SAMPLE_SERVER_PORT);</div>
 <div class="line">    <span class="keywordflow">if</span> (socket_fd &lt; 0) {</div>
 <div class="line">        printf(<span class="stringliteral">&quot;Error connecting to server\n&quot;</span>);</div>
@@ -198,42 +197,8 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="asend__sample_8h_html"><div class="ttname"><a href="send__sample_8h.html">send_sample.h</a></div><div class="ttdoc">API to send sample data to the onboard server.</div></div>
 <div class="ttc" id="asend__sample_8h_html_a27e466e61abd53f66935dc251cd0cf54"><div class="ttname"><a href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a></div><div class="ttdeci">send_status_t send_sample_float(int socket_fd, char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float sample.</div></div>
-<div class="ttc" id="asend__sample_8h_html_adff03ed4946c56f4ba94c3a79f3a588e"><div class="ttname"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">connected_udp_socket</a></div><div class="ttdeci">int connected_udp_socket(char *node, char *service)</div><div class="ttdoc">Makes UDP socket, connects to node:service, and returns socket file descriptor.</div></div>
 <div class="ttc" id="asend__sample_8h_html_afe75efa2e79cffe63bb841d6d81425ac"><div class="ttname"><a href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a></div><div class="ttdeci">send_status_t send_sample_int32(int socket_fd, char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t sample.</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="adff03ed4946c56f4ba94c3a79f3a588e" name="adff03ed4946c56f4ba94c3a79f3a588e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adff03ed4946c56f4ba94c3a79f3a588e">&#9670;&#160;</a></span>connected_udp_socket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int connected_udp_socket </td>
-          <td>(</td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Makes UDP socket, connects to node:service, and returns socket file descriptor. </p>
-<p>This function creates a UDP socket, connects it to the specified node and service, and returns the socket file descriptor. The socket is not bound to a specific port, allowing the OS to choose. The socket's endpoint is set to the specified node and service using connect(), allowing you to send data to the same address with send().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>IP address or hostname. </td></tr>
-    <tr><td class="paramname">service</td><td>Port number or service name (e.g., "1234" or "http"). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Socket file descriptor on success, or -1 on error.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>To close the socket, use close(fd), where fd is the socket's file descriptor. </dd></dl>
-
-</div>
-</div>
 <a id="ad8b453d804aa1731ab6837c5fbc9dea9" name="ad8b453d804aa1731ab6837c5fbc9dea9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad8b453d804aa1731ab6837c5fbc9dea9">&#9670;&#160;</a></span>send_sample_bool()</h2>
 

@@ -1,6 +1,5 @@
 var send__sample_8h =
 [
-    [ "connected_udp_socket", "send__sample_8h.html#adff03ed4946c56f4ba94c3a79f3a588e", null ],
     [ "send_sample_bool", "send__sample_8h.html#ad8b453d804aa1731ab6837c5fbc9dea9", null ],
     [ "send_sample_double", "send__sample_8h.html#aaf806dee9974b5e0ebdd11dafe2e58de", null ],
     [ "send_sample_file", "send__sample_8h.html#abea5096dd1fe00dd5669d1e78e2daf9c", null ],
