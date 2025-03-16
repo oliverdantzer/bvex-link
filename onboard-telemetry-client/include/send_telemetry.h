@@ -61,7 +61,7 @@ typedef enum {
 int connected_udp_socket(char* node, char* service);
 
 /**
- * @brief Sends an int32_t telemetry sample.
+ * @brief Sends an int32_t sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
@@ -74,7 +74,7 @@ send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
                                 int32_t value);
 
 /**
- * @brief Sends an int64_t telemetry sample.
+ * @brief Sends an int64_t sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
@@ -87,7 +87,7 @@ send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
                                 int64_t value);
 
 /**
- * @brief Sends a float telemetry sample.
+ * @brief Sends a float sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
@@ -100,7 +100,7 @@ send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
                                 float value);
 
 /**
- * @brief Sends a double telemetry sample.
+ * @brief Sends a double sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
@@ -113,7 +113,7 @@ send_status_t send_sample_double(int socket_fd, char* metric_id,
                                  float timestamp, double value);
 
 /**
- * @brief Sends a boolean telemetry sample.
+ * @brief Sends a boolean sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
@@ -126,7 +126,7 @@ send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
                                bool value);
 
 /**
- * @brief Sends a string telemetry sample.
+ * @brief Sends a string sample.
  *
  * @note The string value must have a null terminator.
  *
@@ -142,7 +142,7 @@ send_status_t send_sample_string(int socket_fd, char* metric_id,
                                  float timestamp, char* value);
 
 /**
- * @brief Sends a file telemetry sample.
+ * @brief Sends a file sample.
  *
  * @param socket_fd The socket file descriptor.
  * @param metric_id The identifier for the metric. Must be less than
