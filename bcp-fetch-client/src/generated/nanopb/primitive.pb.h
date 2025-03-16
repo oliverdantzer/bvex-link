@@ -18,7 +18,7 @@ typedef struct _primitive_Primitive {
         float float_val;
         double double_val;
         bool bool_val;
-        char string_val[61];
+        char string_val[4096];
     } value;
 } primitive_Primitive;
 
@@ -57,7 +57,7 @@ extern const pb_msgdesc_t primitive_Primitive_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define PRIMITIVE_PRIMITIVE_PB_H_MAX_SIZE        primitive_Primitive_size
-#define primitive_Primitive_size                 62
+#define primitive_Primitive_size                 4098
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -12,7 +12,7 @@
 
 /* Struct definitions */
 typedef struct _Response {
-    char metric_id[41];
+    char metric_id[64];
     bool has_primitive;
     primitive_Primitive primitive;
 } Response;
@@ -45,7 +45,7 @@ extern const pb_msgdesc_t Response_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define RESPONSE_PB_H_MAX_SIZE                   Response_size
-#define Response_size                            106
+#define Response_size                            4166
 
 #ifdef __cplusplus
 } /* extern "C" */

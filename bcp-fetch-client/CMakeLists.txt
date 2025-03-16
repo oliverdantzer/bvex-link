@@ -7,13 +7,17 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 find_package(nanopb CONFIG REQUIRED)
 
+option(BCP_FETCH_BOUNDS_CHECKING "Explicitly check bounds on library function args" OFF)
+IF(BCP_FETCH_BOUNDS_CHECKING)
+    add_definitions(-BCP_FETCH_BOUNDS_CHECKING)
+ENDIF()
+
 option(TEST_SOCK_PORT "Enable printing socket port number" OFF)
 IF(TEST_SOCK_PORT)
-    message(STATUS "Socket port number will be printed")
     add_definitions(-DTEST_SOCK_PORT)
 ENDIF()
 
-add_library(telemetry-client
+add_library(bcp-fetch
     src/generated/nanopb/sample.pb.c
     src/generated/nanopb/primitive.pb.c
     src/generated/nanopb/request.pb.c
@@ -23,20 +27,20 @@ add_library(telemetry-client
     src/send_telemetry.c
 )
 
-target_link_libraries(telemetry-client PRIVATE nanopb::protobuf-nanopb-static)
-target_include_directories(telemetry-client
+target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
+target_include_directories(bcp-fetch
     PRIVATE src/generated/nanopb
     PUBLIC include
 )
 
-option(TEST "Build test executable" OFF)
+option(BCP_FETCH_TEST "Build test executable" OFF)
 
-if(TEST)
+if(BCP_FETCH_TEST)
     message(STATUS "Test mode is ON")
-    add_definitions(-DTEST)
+    add_definitions(-DBCP_FETCH_TEST)
     
     target_compile_definitions(
-        telemetry-client PRIVATE DEBUG
+        bcp-fetch PRIVATE DEBUG
     )
 
     # Collect source files for the test executable
@@ -50,7 +54,7 @@ if(TEST)
     target_include_directories(test PRIVATE tests)
 
     # Link telemetry-uplink
-    target_link_libraries(test PRIVATE nanopb::protobuf-nanopb-static telemetry-client m)
+    target_link_libraries(test PRIVATE nanopb::protobuf-nanopb-static bcp-fetch m)
 
     set(REQUEST_SERVER_ADDR "\"localhost\"")
     set(REQUEST_SERVER_PORT "\"8080\"")
