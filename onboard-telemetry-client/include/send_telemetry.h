@@ -25,14 +25,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define GETADDRINFO_ERROR 2
-#define ENCODING_ERROR 3
-#define SEND_ERROR 4
-#define MEMORY_ALLOCATION_ERROR 5
-#define THREAD_CREATION_ERROR 6
+typedef enum {
+    OK = 0,
+    GETADDRINFO_ERROR,
+    ENCODING_ERROR,
+    SEND_ERROR,
+    MEMORY_ALLOCATION_ERROR,
+    THREAD_CREATION_ERROR,
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    #define BOUNDS_CHECK_ERROR 7
+    BOUNDS_CHECK_ERROR,
 #endif
+} send_status_t;
 
 #define STRING_VALUE_MAX_SIZE 4096
 #define METRIC_ID_MAX_SIZE 64
@@ -66,9 +69,10 @@ int connected_udp_socket(char* node, char* service);
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The int32_t value to send.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
-                       int32_t value);
+send_status_t send_sample_int32(int socket_fd, char* metric_id,
+                                     float timestamp, int32_t value);
 
 /**
  * @brief Sends an int64_t telemetry sample.
@@ -78,9 +82,10 @@ int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The int64_t value to send.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
-                       int64_t value);
+send_status_t send_sample_int64(int socket_fd, char* metric_id,
+                                     float timestamp, int64_t value);
 
 /**
  * @brief Sends a float telemetry sample.
@@ -90,9 +95,10 @@ int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The float value to send.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_float(int socket_fd, char* metric_id, float timestamp,
-                       float value);
+send_status_t send_sample_float(int socket_fd, char* metric_id,
+                                     float timestamp, float value);
 
 /**
  * @brief Sends a double telemetry sample.
@@ -102,9 +108,10 @@ int send_sample_float(int socket_fd, char* metric_id, float timestamp,
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The double value to send.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_double(int socket_fd, char* metric_id, float timestamp,
-                        double value);
+send_status_t send_sample_double(int socket_fd, char* metric_id,
+                                      float timestamp, double value);
 
 /**
  * @brief Sends a boolean telemetry sample.
@@ -114,9 +121,10 @@ int send_sample_double(int socket_fd, char* metric_id, float timestamp,
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The boolean value to send.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
-                      bool value);
+send_status_t send_sample_bool(int socket_fd, char* metric_id,
+                                    float timestamp, bool value);
 
 /**
  * @brief Sends a string telemetry sample.
@@ -129,9 +137,10 @@ int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
  * @param timestamp The timestamp of the sample.
  * @param value The string value to send. Must be less than
  * STRING_VALUE_MAX_SIZE.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_string(int socket_fd, char* metric_id, float timestamp,
-                        char* value);
+send_status_t send_sample_string(int socket_fd, char* metric_id,
+                                      float timestamp, char* value);
 
 /**
  * @brief Sends a file telemetry sample.
@@ -143,6 +152,8 @@ int send_sample_string(int socket_fd, char* metric_id, float timestamp,
  * @param filepath The path to the file to send. Must be less than
  * FILE_PATH_MAX_SIZE.
  * @param extension The file extension. Must be less than EXTENSION_MAX_SIZE.
+ * @return send_status_t Status code indicating success or type of error.
  */
-int send_sample_file(int socket_fd, char* metric_id, float timestamp,
-                      char* filepath, char* extension);
+send_status_t send_sample_file(int socket_fd, char* metric_id,
+                                    float timestamp, char* filepath,
+                                    char* extension);

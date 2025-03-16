@@ -13,7 +13,7 @@ typedef struct {
     Sample sample;
 } send_sample_data_t;
 
-int send_sample(int socket_fd, Sample message)
+send_status_t send_sample(int socket_fd, Sample message)
 {
     uint8_t buffer[SAMPLE_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
@@ -38,7 +38,7 @@ void* send_sample_one_arg(void* arg)
     return NULL;
 }
 
-int send_sample_async(int socket_fd, Sample sample)
+send_status_t send_sample_async(int socket_fd, Sample sample)
 {
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
@@ -58,7 +58,7 @@ int send_sample_async(int socket_fd, Sample sample)
     return 0;
 }
 
-int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
                       int32_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -75,7 +75,7 @@ int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
                       int64_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -92,7 +92,7 @@ int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_float(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
                       float value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -109,7 +109,7 @@ int send_sample_float(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_double(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_double(int socket_fd, char* metric_id, float timestamp,
                        double value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -126,7 +126,7 @@ int send_sample_double(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
                      bool value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -143,7 +143,7 @@ int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_string(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_string(int socket_fd, char* metric_id, float timestamp,
                        char* value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
@@ -161,7 +161,7 @@ int send_sample_string(int socket_fd, char* metric_id, float timestamp,
     return send_sample_async(socket_fd, sample);
 }
 
-int send_sample_file(int socket_fd, char* metric_id, float timestamp,
+send_status_t send_sample_file(int socket_fd, char* metric_id, float timestamp,
                      char* filepath, char* extension)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
