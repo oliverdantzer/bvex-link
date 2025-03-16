@@ -1,21 +1,22 @@
 #pragma once
 
-/** @file send_telemetry.h
- *  @brief API to send telemetry data to the onboard server.
+/** @file send_sample.h
+ *  @brief API to send sample data to the onboard server.
  *
  *  Example usage:
  *  @code
- *  #include "send_telemetry.h"
+ *  #include "send_sample.h"
  *  #include <ctime>
  *  int main() {
  *      int socket_fd = connected_udp_socket(SAMPLE_SERVER_ADDR,
  *                                                 SAMPLE_SERVER_PORT);
  *      if (socket_fd < 0) {
  *          printf("Error connecting to server\n");
- *          return;
+ *          return 1;
  *      }
- *      send_sample_int32(socket_fd, "altitude", time(NULL), 50392);
- *      send_sample_float(socket_fd, "yaw", time(NULL), 0.1452f);
+ *      float current_time = time(NULL);
+ *      send_sample_int32(socket_fd, "altitude", current_time, 50392);
+ *      send_sample_float(socket_fd, "yaw", current_time, 0.1452f);
  *      close(socket_fd);
  *      return 0;
  *  }
