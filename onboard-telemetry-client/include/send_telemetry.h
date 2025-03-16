@@ -26,6 +26,14 @@
 #include <stdint.h>
 
 #define GETADDRINFO_ERROR 2
+#define ENCODING_ERROR 3
+#define SEND_ERROR 4
+#define MEMORY_ALLOCATION_ERROR 5
+#define THREAD_CREATION_ERROR 6
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    #define BOUNDS_CHECK_ERROR 7
+#endif
+
 #define STRING_VALUE_MAX_SIZE 4096
 #define METRIC_ID_MAX_SIZE 64
 #define FILE_PATH_MAX_SIZE 128
@@ -59,7 +67,7 @@ int connected_udp_socket(char* node, char* service);
  * @param timestamp The timestamp of the sample.
  * @param value The int32_t value to send.
  */
-void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
+int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
                        int32_t value);
 
 /**
@@ -71,7 +79,7 @@ void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
  * @param timestamp The timestamp of the sample.
  * @param value The int64_t value to send.
  */
-void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
+int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
                        int64_t value);
 
 /**
@@ -83,7 +91,7 @@ void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
  * @param timestamp The timestamp of the sample.
  * @param value The float value to send.
  */
-void send_sample_float(int socket_fd, char* metric_id, float timestamp,
+int send_sample_float(int socket_fd, char* metric_id, float timestamp,
                        float value);
 
 /**
@@ -95,7 +103,7 @@ void send_sample_float(int socket_fd, char* metric_id, float timestamp,
  * @param timestamp The timestamp of the sample.
  * @param value The double value to send.
  */
-void send_sample_double(int socket_fd, char* metric_id, float timestamp,
+int send_sample_double(int socket_fd, char* metric_id, float timestamp,
                         double value);
 
 /**
@@ -107,7 +115,7 @@ void send_sample_double(int socket_fd, char* metric_id, float timestamp,
  * @param timestamp The timestamp of the sample.
  * @param value The boolean value to send.
  */
-void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
+int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
                       bool value);
 
 /**
@@ -122,7 +130,7 @@ void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
  * @param value The string value to send. Must be less than
  * STRING_VALUE_MAX_SIZE.
  */
-void send_sample_string(int socket_fd, char* metric_id, float timestamp,
+int send_sample_string(int socket_fd, char* metric_id, float timestamp,
                         char* value);
 
 /**
@@ -136,5 +144,5 @@ void send_sample_string(int socket_fd, char* metric_id, float timestamp,
  * FILE_PATH_MAX_SIZE.
  * @param extension The file extension. Must be less than EXTENSION_MAX_SIZE.
  */
-void send_sample_file(int socket_fd, char* metric_id, float timestamp,
+int send_sample_file(int socket_fd, char* metric_id, float timestamp,
                       char* filepath, char* extension);

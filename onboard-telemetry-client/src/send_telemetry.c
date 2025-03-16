@@ -19,13 +19,13 @@ int send_sample(int socket_fd, Sample message)
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Sample_fields, &message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
-        return -1;
+        return ENCODING_ERROR;
     }
 
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
     if(bytes_sent < 0) {
         fprintf(stderr, "send failed: %s\n", strerror(errno));
-        return -1;
+        return SEND_ERROR;
     }
     return 0;
 }
@@ -43,7 +43,7 @@ int send_sample_async(int socket_fd, Sample sample)
     send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
     if(temp_data == NULL) {
         fprintf(stderr, "Memory allocation failed for temp_data.\n");
-        return -1;
+        return MEMORY_ALLOCATION_ERROR;
     }
     temp_data->socket_fd = socket_fd;
     temp_data->sample = sample;
@@ -52,92 +52,130 @@ int send_sample_async(int socket_fd, Sample sample)
     if(rc != 0) {
         fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
         free(temp_data); // Free temp_data if thread creation fails
-        return -1;
+        return THREAD_CREATION_ERROR;
     }
     pthread_detach(temp_thread); // Detach thread to let it run independently
     return 0;
 }
 
-void send_sample_int32(int socket_fd, char* metric_id, float timestamp,
-                       int32_t value)
+int send_sample_int32(int socket_fd, char* metric_id, float timestamp,
+                      int32_t value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_int_val_tag;
     sample.data.primitive.value.int_val = value;
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_int64(int socket_fd, char* metric_id, float timestamp,
-                       int64_t value)
+int send_sample_int64(int socket_fd, char* metric_id, float timestamp,
+                      int64_t value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_long_val_tag;
     sample.data.primitive.value.long_val = value;
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_float(int socket_fd, char* metric_id, float timestamp,
-                       float value)
+int send_sample_float(int socket_fd, char* metric_id, float timestamp,
+                      float value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_float_val_tag;
     sample.data.primitive.value.float_val = value;
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_double(int socket_fd, char* metric_id, float timestamp,
-                        double value)
+int send_sample_double(int socket_fd, char* metric_id, float timestamp,
+                       double value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_double_val_tag;
     sample.data.primitive.value.double_val = value;
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_bool(int socket_fd, char* metric_id, float timestamp,
-                      bool value)
+int send_sample_bool(int socket_fd, char* metric_id, float timestamp,
+                     bool value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_bool_val_tag;
     sample.data.primitive.value.bool_val = value;
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_string(int socket_fd, char* metric_id, float timestamp,
-                        char* value)
+int send_sample_string(int socket_fd, char* metric_id, float timestamp,
+                       char* value)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
+       strlen(value) >= sizeof(((Sample*)0)->data.primitive.value.string_val)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_string_val_tag;
     strcpy(sample.data.primitive.value.string_val, value);
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
 
-void send_sample_file(int socket_fd, char* metric_id, float timestamp,
-                      char* filepath, char* extension)
+int send_sample_file(int socket_fd, char* metric_id, float timestamp,
+                     char* filepath, char* extension)
 {
+#ifdef BCP_FETCH_BOUNDS_CHECKING
+    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
+       strlen(filepath) >= sizeof(((Sample*)0)->data.file.filepath) ||
+       strlen(extension) >= sizeof(((Sample*)0)->data.file.extension)) {
+        return BOUNDS_CHECK_ERROR;
+    }
+#endif
     Sample sample = Sample_init_zero;
     strcpy(sample.metric_id, metric_id);
     sample.timestamp = timestamp;
     sample.which_data = Sample_file_tag;
     strcpy(sample.data.file.filepath, filepath);
     strcpy(sample.data.file.extension, extension);
-    send_sample_async(socket_fd, sample);
+    return send_sample_async(socket_fd, sample);
 }
