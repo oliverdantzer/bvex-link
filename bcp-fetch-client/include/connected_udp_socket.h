@@ -15,4 +15,4 @@
  * @note To close the socket, use close(fd), where fd is the socket's file
  * descriptor.
  */
-int connected_udp_socket(char* node, char* service);
+int connected_udp_socket(const char* node, const char* service);

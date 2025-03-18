@@ -150,8 +150,8 @@ char* command_server_recv(command_server_t* server)
     return result;
 }
 
-int command_server_broadcast(command_server_t* server,
-                                    const char* message)
+int command_server_broadcast(const command_server_t* server,
+                             const char* message)
 {
     if(!server || !message) {
         return -1;

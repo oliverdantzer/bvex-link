@@ -56,8 +56,8 @@ char* command_server_recv(command_server_t* server);
  * @param message The message to broadcast
  * @return int Returns 0 on success, -1 on error
  */
-int command_server_broadcast(command_server_t* server,
-                                    const char* message);
+int command_server_broadcast(const command_server_t* server,
+                             const char* message);
 
 /**
  * @brief Cleans up and destroys the command server

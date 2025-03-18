@@ -7,7 +7,7 @@
  *  @code
  *  #include "send_sample.h"
  *  #include "connected_udp_socket.h"
- *  
+ *
  *  #include <ctime>
  *  int main() {
  *      int socket_fd = connected_udp_socket(SAMPLE_SERVER_ADDR,
@@ -54,8 +54,8 @@ typedef enum {
  * @param value The int32_t value to send.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
-                                int32_t value);
+send_status_t send_sample_int32(int socket_fd, const char* metric_id,
+                                float timestamp, int32_t value);
 
 /**
  * @brief Sends an int64_t sample.
@@ -67,8 +67,8 @@ send_status_t send_sample_int32(int socket_fd, char* metric_id, float timestamp,
  * @param value The int64_t value to send.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
-                                int64_t value);
+send_status_t send_sample_int64(int socket_fd, const char* metric_id,
+                                float timestamp, int64_t value);
 
 /**
  * @brief Sends a float sample.
@@ -80,8 +80,8 @@ send_status_t send_sample_int64(int socket_fd, char* metric_id, float timestamp,
  * @param value The float value to send.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
-                                float value);
+send_status_t send_sample_float(int socket_fd, const char* metric_id,
+                                float timestamp, float value);
 
 /**
  * @brief Sends a double sample.
@@ -93,7 +93,7 @@ send_status_t send_sample_float(int socket_fd, char* metric_id, float timestamp,
  * @param value The double value to send.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_double(int socket_fd, char* metric_id,
+send_status_t send_sample_double(int socket_fd, const char* metric_id,
                                  float timestamp, double value);
 
 /**
@@ -106,8 +106,8 @@ send_status_t send_sample_double(int socket_fd, char* metric_id,
  * @param value The boolean value to send.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
-                               bool value);
+send_status_t send_sample_bool(int socket_fd, const char* metric_id,
+                               float timestamp, bool value);
 
 /**
  * @brief Sends a string sample.
@@ -122,8 +122,8 @@ send_status_t send_sample_bool(int socket_fd, char* metric_id, float timestamp,
  * STRING_VALUE_MAX_SIZE.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_string(int socket_fd, char* metric_id,
-                                 float timestamp, char* value);
+send_status_t send_sample_string(int socket_fd, const char* metric_id,
+                                 float timestamp, const char* value);
 
 /**
  * @brief Sends a file sample.
@@ -137,5 +137,6 @@ send_status_t send_sample_string(int socket_fd, char* metric_id,
  * @param extension The file extension. Must be less than EXTENSION_MAX_SIZE.
  * @return send_status_t Status code indicating success or type of error.
  */
-send_status_t send_sample_file(int socket_fd, char* metric_id, float timestamp,
-                               char* filepath, char* extension);
+send_status_t send_sample_file(int socket_fd, const char* metric_id,
+                               float timestamp, const char* filepath,
+                               const char* extension);

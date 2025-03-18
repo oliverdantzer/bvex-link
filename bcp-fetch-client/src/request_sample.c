@@ -10,7 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-Requester make_requester(char* metric_id, char* node, char* service)
+Requester make_requester(const char* metric_id, const char* node,
+                         const char* service)
 {
     int sock = connected_udp_socket(node, service);
     if(sock < 0) {
@@ -24,7 +25,7 @@ Requester make_requester(char* metric_id, char* node, char* service)
     return reqr;
 }
 
-int send_request(int socket_fd, Request* message)
+int send_request(int socket_fd, const Request* message)
 {
     uint8_t buffer[REQUEST_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
@@ -102,7 +103,7 @@ RequestResult request(Requester* reqr)
     return result;
 }
 
-char* primitive_val_tag_to_string(pb_size_t tag)
+char* primitive_val_tag_to_string(const pb_size_t tag)
 {
     switch(tag) {
     case primitive_Primitive_int_val_tag:
@@ -126,11 +127,11 @@ char* primitive_val_tag_to_string(pb_size_t tag)
     }
 }
 
-RequestIntResult request_int(Requester* reqr)
+RequestIntResult request_int(const Requester* reqr)
 {
     RequestIntResult result;
 
-    RequestResult request_result = request(reqr);
+    RequestResult request_result = request((Requester*)reqr);
     if(request_result.err) {
         result.err = request_result.err;
     } else if(request_result.response.primitive.which_value !=
@@ -148,11 +149,11 @@ RequestIntResult request_int(Requester* reqr)
     return result;
 }
 
-RequestFloatResult request_float(Requester* reqr)
+RequestFloatResult request_float(const Requester* reqr)
 {
     RequestFloatResult result;
 
-    RequestResult request_result = request(reqr);
+    RequestResult request_result = request((Requester*)reqr);
     if(request_result.err) {
         result.err = request_result.err;
         return result;
@@ -174,11 +175,11 @@ RequestFloatResult request_float(Requester* reqr)
     return result;
 }
 
-RequestDoubleResult request_double(Requester* reqr)
+RequestDoubleResult request_double(const Requester* reqr)
 {
     RequestDoubleResult result;
 
-    RequestResult request_result = request(reqr);
+    RequestResult request_result = request((Requester*)reqr);
     if(request_result.err) {
         result.err = request_result.err;
         return result;
@@ -200,11 +201,11 @@ RequestDoubleResult request_double(Requester* reqr)
     return result;
 }
 
-RequestStringResult request_string(Requester* reqr)
+RequestStringResult request_string(const Requester* reqr)
 {
     RequestStringResult result;
 
-    RequestResult request_result = request(reqr);
+    RequestResult request_result = request((Requester*)reqr);
     if(request_result.err) {
         result.err = request_result.err;
         return result;

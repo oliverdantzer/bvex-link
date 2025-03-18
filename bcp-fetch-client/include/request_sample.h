@@ -7,7 +7,7 @@
  *  @code
  *  #include "request_sample.h"
  *  #include "connected_udp_socket.h"
- * 
+ *
  *  int main() {
  *      char* metric_id = "altitude";
  *      char* node = "localhost";
@@ -42,17 +42,17 @@
  * @brief Structure to hold requester information.
  */
 typedef struct {
-    int socket_fd;   // Socket file descriptor
-    char* metric_id; // Metric ID
+    int socket_fd;         // Socket file descriptor
+    const char* metric_id; // Metric ID
 } Requester;
 
 /**
  * @brief Structure to hold arguments for making a requester.
  */
 typedef struct {
-    char* metric_id; // Metric ID
-    char* node;      // Node address
-    char* service;   // Service address
+    const char* metric_id; // Metric ID
+    const char* node;      // Node address
+    const char* service;   // Service address
 } MakeRequesterArgs;
 
 /**
@@ -80,7 +80,8 @@ typedef struct {
  * ```
  * @note Threading multiple requests to the same Requester is not recommended.
  */
-Requester make_requester(char* metric_id, char* node, char* service);
+Requester make_requester(const char* metric_id, const char* node,
+                         const char* service);
 
 /**
  * @brief Structure to hold the result of an integer request.
@@ -107,7 +108,7 @@ typedef struct {
  * }
  * ```
  */
-RequestIntResult request_int(Requester* reqr);
+RequestIntResult request_int(const Requester* reqr);
 
 /**
  * @brief Structure to hold the result of a string request.
@@ -134,7 +135,7 @@ typedef struct {
  * }
  * ```
  */
-RequestStringResult request_string(Requester* reqr);
+RequestStringResult request_string(const Requester* reqr);
 
 /**
  * @brief Structure to hold the result of a float request.
@@ -163,7 +164,7 @@ typedef struct {
  * }
  * ```
  */
-RequestFloatResult request_float(Requester* reqr);
+RequestFloatResult request_float(const Requester* reqr);
 
 /**
  * @brief Structure to hold the result of a double request.
@@ -192,4 +193,4 @@ typedef struct {
  * }
  * ```
  */
-RequestDoubleResult request_double(Requester* reqr);
+RequestDoubleResult request_double(const Requester* reqr);
