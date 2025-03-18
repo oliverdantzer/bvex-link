@@ -66,33 +66,33 @@ if(BCP_FETCH_TEST)
     endmacro()
 
     # Test executable for request_sample
-    add_executable(request_sample_test
+    add_executable(request_sample
         tests/request_sample/main.c
         tests/common/common.c
     )
-    configure_test_executable(request_sample_test)
+    configure_test_executable(request_sample)
 
     # Test executable for send_sample
-    add_executable(send_sample_test
+    add_executable(send_sample
         tests/send_sample/main.c
         tests/send_sample/test_loop.c
         tests/common/common.c
     )
-    configure_test_executable(send_sample_test)
+    configure_test_executable(send_sample)
 
     # Test executable for command_server
-    add_executable(command_server_test
+    add_executable(command_server
         tests/command_server/main.c
         tests/common/common.c
     )
-    configure_test_executable(command_server_test)
+    configure_test_executable(command_server)
 
     # Test executable for command client
-    add_executable(command_client_test
+    add_executable(command_client
         tests/command_client/main.c
         tests/command_client/test_client.c
         tests/common/common.c
     )
-    configure_test_executable(command_client_test)
+    configure_test_executable(command_client)
 
 endif()
