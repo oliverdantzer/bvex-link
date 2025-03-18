@@ -25,6 +25,7 @@ add_library(bcp-fetch
     src/request_sample.c
     src/socket.c
     src/send_sample.c
+    src/command_server.c
 )
 
 target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
