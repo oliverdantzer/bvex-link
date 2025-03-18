@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -217,14 +218,14 @@ int command_server_broadcast(const command_server_t* server,
     }
 
     size_t message_len = strlen(message);
-    int success = 0;
+    bool success = true; // Start with success
 
     // Send message to all connected clients
     for(size_t i = 0; i < server->num_connections; i++) {
         ssize_t bytes_sent =
             write(server->connections[i].fd, message, message_len);
-        if(bytes_sent == (ssize_t)message_len) {
-            success = 1;
+        if(bytes_sent != (ssize_t)message_len) {
+            success = false; // Set to failure if any client fails
         }
     }
 
