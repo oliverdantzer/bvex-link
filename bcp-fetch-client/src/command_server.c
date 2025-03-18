@@ -1,4 +1,5 @@
 #include "command_server.h"
+#include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
@@ -68,9 +69,9 @@ static void* server_thread(void* arg)
 
                 if(bytes > 0) {
                     buffer[bytes] = '\0';
-                    // Write to commands fd with newline
-                    write(server->commands_fd, buffer, bytes);
-                    write(server->commands_fd, "\n", 1);
+                    // Write to commands pipe with newline
+                    write(server->commands_write_fd, buffer, bytes);
+                    write(server->commands_write_fd, "\n", 1);
                 } else if(bytes <= 0) {
                     // Connection closed or error
                     close(server->connections[i].fd);
@@ -90,8 +91,7 @@ static void* server_thread(void* arg)
     return NULL;
 }
 
-command_server_t* command_server_create(int socket_fd, int commands_fd,
-                                        size_t max_connections)
+command_server_t* command_server_create(uint16_t port, size_t max_connections)
 {
     command_server_t* server = malloc(sizeof(command_server_t));
     if(!server) {
@@ -104,11 +104,70 @@ command_server_t* command_server_create(int socket_fd, int commands_fd,
         return NULL;
     }
 
+    // Create pipe for commands
+    int pipe_fds[2];
+    if(pipe(pipe_fds) < 0) {
+        free(server->connections);
+        free(server);
+        return NULL;
+    }
+    server->commands_read_fd = pipe_fds[0];
+    server->commands_write_fd = pipe_fds[1];
+
+    // Create socket
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if(socket_fd < 0) {
+        close(server->commands_read_fd);
+        close(server->commands_write_fd);
+        free(server->connections);
+        free(server);
+        return NULL;
+    }
+
+    // Enable address reuse
+    int opt = 1;
+    if(setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        close(socket_fd);
+        close(server->commands_read_fd);
+        close(server->commands_write_fd);
+        free(server->connections);
+        free(server);
+        return NULL;
+    }
+
+    // Setup server address
+    struct sockaddr_in server_addr;
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(port);
+
+    // Bind socket to address
+    if(bind(socket_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) <
+       0) {
+        close(socket_fd);
+        close(server->commands_read_fd);
+        close(server->commands_write_fd);
+        free(server->connections);
+        free(server);
+        return NULL;
+    }
+
+    // Listen for connections
+    if(listen(socket_fd, 5) < 0) {
+        close(socket_fd);
+        close(server->commands_read_fd);
+        close(server->commands_write_fd);
+        free(server->connections);
+        free(server);
+        return NULL;
+    }
+
     server->socket_fd = socket_fd;
-    server->commands_fd = commands_fd;
     server->num_connections = 0;
     server->max_connections = max_connections;
     server->running = 0;
+    server->port = port;
 
     return server;
 }
@@ -135,7 +194,7 @@ char* command_server_recv(command_server_t* server)
     }
 
     char buffer[BUFFER_SIZE];
-    ssize_t bytes = read(server->commands_fd, buffer, BUFFER_SIZE - 1);
+    ssize_t bytes = read(server->commands_read_fd, buffer, BUFFER_SIZE - 1);
 
     if(bytes <= 0) {
         return NULL;
@@ -186,6 +245,11 @@ void command_server_destroy(command_server_t* server)
     for(size_t i = 0; i < server->num_connections; i++) {
         close(server->connections[i].fd);
     }
+
+    // Close server socket and pipes
+    close(server->socket_fd);
+    close(server->commands_read_fd);
+    close(server->commands_write_fd);
 
     // Clean up resources
     free(server->connections);

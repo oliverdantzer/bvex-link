@@ -1,5 +1,6 @@
 #include "command_server.h"
 #include <fcntl.h>
+#include <netinet/in.h>
 #include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,23 +23,32 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if(socket_fd < 0) {
-        printf("Failed to create socket\n");
+    command_server_t* server = command_server_create(port, 10);
+    if(!server) {
+        printf("Failed to create command server\n");
         return 1;
     }
-    int commands_fd = open("/dev/null", O_WRONLY);
-    if(commands_fd < 0) {
-        printf("Failed to open /dev/null\n");
-        return 1;
-    }
-    command_server_t* server =
-        command_server_create(socket_fd, commands_fd, port);
-    command_server_listen(server);
-    while(1) {
-        struct pollfd pfd = {.fd = commands_fd, .events = POLLIN};
 
-        if(poll(&pfd, 1, 1000) > 0 && (pfd.revents & POLLIN)) {
+    if(command_server_listen(server) < 0) {
+        printf("Failed to start command server\n");
+        command_server_destroy(server);
+        return 1;
+    }
+
+    printf("Command server listening on port %d\n", port);
+
+    struct pollfd fds[1];
+    fds[0].fd = server->commands_read_fd;
+    fds[0].events = POLLIN;
+
+    while(1) {
+        int ret = poll(fds, 1, 1000); // Poll with 1 second timeout
+        if(ret < 0) {
+            printf("Poll error\n");
+            break;
+        }
+
+        if(fds[0].revents & POLLIN) {
             char* cmd = command_server_recv(server);
             if(cmd) {
                 if(strcmp(cmd, "ping") == 0) {
