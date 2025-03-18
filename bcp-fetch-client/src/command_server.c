@@ -202,6 +202,12 @@ char* command_server_recv(command_server_t* server)
     }
 
     buffer[bytes] = '\0';
+
+    // Strip trailing newline if present
+    if(bytes > 0 && buffer[bytes - 1] == '\n') {
+        buffer[bytes - 1] = '\0';
+    }
+
     char* result = strdup(buffer);
     if(!result) {
         return NULL;
