@@ -1,3 +1,3 @@
-[submodule "onboard-telemetry-client/doxygen-awesome-css"]
-	path = onboard-telemetry-client/doxygen-awesome-css
+[submodule "bcp-fetch-client/doxygen-awesome-css"]
+	path = bcp-fetch-client/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
