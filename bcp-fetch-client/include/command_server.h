@@ -50,6 +50,16 @@ int command_server_listen(command_server_t* server);
 char* command_server_recv(command_server_t* server);
 
 /**
+ * @brief Broadcasts a stdout message to all connected clients
+ *
+ * @param server Pointer to the command server
+ * @param message The message to broadcast
+ * @return int Returns 0 on success, -1 on error
+ */
+int command_server_broadcast(command_server_t* server,
+                                    const char* message);
+
+/**
  * @brief Cleans up and destroys the command server
  *
  * @param server Pointer to the command server

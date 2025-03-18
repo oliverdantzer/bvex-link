@@ -150,6 +150,28 @@ char* command_server_recv(command_server_t* server)
     return result;
 }
 
+int command_server_broadcast(command_server_t* server,
+                                    const char* message)
+{
+    if(!server || !message) {
+        return -1;
+    }
+
+    size_t message_len = strlen(message);
+    int success = 0;
+
+    // Send message to all connected clients
+    for(size_t i = 0; i < server->num_connections; i++) {
+        ssize_t bytes_sent =
+            write(server->connections[i].fd, message, message_len);
+        if(bytes_sent == (ssize_t)message_len) {
+            success = 1;
+        }
+    }
+
+    return success ? 0 : -1;
+}
+
 void command_server_destroy(command_server_t* server)
 {
     if(!server) {
