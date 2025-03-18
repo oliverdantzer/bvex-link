@@ -117,13 +117,3 @@ void interactive_session(const char* host, int port)
 
     close(sock);
 }
-
-int main(int argc, char** argv)
-{
-    printf("Running command client tests...\n");
-
-    interactive_session(DEFAULT_SERVER_ADDR, DEFAULT_SERVER_PORT);
-
-    printf("Command client tests completed\n");
-    return 0;
-}
