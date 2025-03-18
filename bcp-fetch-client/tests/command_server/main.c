@@ -50,16 +50,20 @@ int main(int argc, char** argv)
 
         if(fds[0].revents & POLLIN) {
             char* cmd = command_server_recv(server);
+            printf("Received command: %s\n", cmd);
             if(cmd) {
                 if(strcmp(cmd, "ping") == 0) {
+                    printf("Broadcasting pong!\n");
                     command_server_broadcast(server, "pong!");
                 } else if(strcmp(cmd, "time") == 0) {
+                    printf("Broadcasting time\n");
                     time_t now = time(NULL);
                     char time_str[64];
                     strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S",
                              localtime(&now));
                     command_server_broadcast(server, time_str);
                 } else {
+                    printf("Broadcasting help\n");
                     // Default help message
                     command_server_broadcast(
                         server, "Available commands:\n"
