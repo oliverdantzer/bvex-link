@@ -2,6 +2,7 @@
 #include "command_server.h"
 #include "common.h"
 #include <arpa/inet.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <poll.h>
 #include <stdio.h>
@@ -22,19 +23,34 @@ static int create_client_socket_with_params(const char* host, int port)
         return -1;
     }
 
-    struct sockaddr_in server_addr;
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
+    struct addrinfo hints, *servinfo, *p;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
 
-    if(inet_pton(AF_INET, host, &server_addr.sin_addr) <= 0) {
-        perror("Invalid address");
+    char port_str[6];
+    snprintf(port_str, sizeof(port_str), "%d", port);
+
+    int rv;
+    if((rv = getaddrinfo(host, port_str, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         close(sock);
         return -1;
     }
 
-    if(connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        perror("Connection failed");
+    // loop through all the results and connect to the first we can
+    for(p = servinfo; p != NULL; p = p->ai_next) {
+        if(connect(sock, p->ai_addr, p->ai_addrlen) == -1) {
+            perror("connect");
+            continue;
+        }
+        break;
+    }
+
+    freeaddrinfo(servinfo);
+
+    if(p == NULL) {
+        fprintf(stderr, "Failed to connect\n");
         close(sock);
         return -1;
     }
