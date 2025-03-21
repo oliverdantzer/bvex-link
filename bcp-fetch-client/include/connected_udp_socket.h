@@ -5,8 +5,8 @@
  * This header provides a function to create a UDP socket that are
  * connected to a specific endpoint. This should be used to create a
  * socket for the send sample functions in send_sample.h.
- *
- * @example
+ * 
+ * ### Example usage
  * @code
  * #include <stdio.h>
  * #include <string.h>
