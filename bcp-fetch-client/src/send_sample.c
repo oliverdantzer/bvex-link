@@ -33,39 +33,6 @@ send_status_t send_sample(int socket_fd, const Sample message)
     }
     return 0;
 }
-
-void* send_sample_one_arg(void* arg)
-{
-    const send_sample_data_t* data = (const send_sample_data_t*)arg;
-    send_sample(data->socket_fd, data->sample);
-    free((void*)data); // Free the allocated data after sending
-    return NULL;
-}
-
-send_status_t send_sample_async(int socket_fd, const Sample sample)
-{
-    send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
-    if(temp_data == NULL) {
-#ifdef DEBUG
-        fprintf(stderr, "Memory allocation failed for temp_data.\n");
-#endif
-        return SEND_STATUS_MEMORY_ALLOCATION_ERROR;
-    }
-    temp_data->socket_fd = socket_fd;
-    temp_data->sample = sample;
-    pthread_t temp_thread;
-    int rc = pthread_create(&temp_thread, NULL, send_sample_one_arg, temp_data);
-    if(rc != 0) {
-#ifdef DEBUG
-        fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
-#endif
-        free(temp_data); // Free temp_data if thread creation fails
-        return SEND_STATUS_THREAD_CREATION_ERROR;
-    }
-    pthread_detach(temp_thread); // Detach thread to let it run independently
-    return SEND_STATUS_OK;
-}
-
 send_status_t send_sample_int32(int socket_fd, const char* metric_id,
                                 float timestamp, int32_t value)
 {
@@ -83,7 +50,7 @@ send_status_t send_sample_int32(int socket_fd, const char* metric_id,
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_int_val_tag;
     sample.data.primitive.value.int_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_int64(int socket_fd, const char* metric_id,
@@ -103,7 +70,7 @@ send_status_t send_sample_int64(int socket_fd, const char* metric_id,
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_long_val_tag;
     sample.data.primitive.value.long_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_float(int socket_fd, const char* metric_id,
@@ -123,7 +90,7 @@ send_status_t send_sample_float(int socket_fd, const char* metric_id,
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_float_val_tag;
     sample.data.primitive.value.float_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_double(int socket_fd, const char* metric_id,
@@ -143,7 +110,7 @@ send_status_t send_sample_double(int socket_fd, const char* metric_id,
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_double_val_tag;
     sample.data.primitive.value.double_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_bool(int socket_fd, const char* metric_id,
@@ -163,7 +130,7 @@ send_status_t send_sample_bool(int socket_fd, const char* metric_id,
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_bool_val_tag;
     sample.data.primitive.value.bool_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_string(int socket_fd, const char* metric_id,
@@ -185,7 +152,7 @@ send_status_t send_sample_string(int socket_fd, const char* metric_id,
     sample.data.primitive.which_value = primitive_Primitive_string_val_tag;
     strlcpy(sample.data.primitive.value.string_val, value,
             STRING_VALUE_MAX_SIZE);
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_file(int socket_fd, const char* metric_id,
@@ -209,5 +176,5 @@ send_status_t send_sample_file(int socket_fd, const char* metric_id,
     sample.which_data = Sample_file_tag;
     strlcpy(sample.data.file.filepath, filepath, FILE_PATH_MAX_SIZE);
     strlcpy(sample.data.file.extension, extension, EXTENSION_MAX_SIZE);
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
