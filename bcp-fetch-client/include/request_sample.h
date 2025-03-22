@@ -35,12 +35,15 @@ extern "C" {
 #include "../src/generated/nanopb/request.pb.h"
 #include "../src/generated/nanopb/response.pb.h"
 
-#define ERR_SOCKET_CREATION -1
-#define ERR_ENCODING_FAILED -2
-#define ERR_SEND_FAILED -3
-#define ERR_RECV_FAILED -4
-#define ERR_DECODING_FAILED -5
-#define ERR_INVALID_RESPONSE_TYPE -6
+typedef enum {
+    REQUEST_STATUS_OK = 0,
+    REQUEST_STATUS_SOCKET_CREATION_ERROR = -1,
+    REQUEST_STATUS_ENCODING_ERROR = -2,
+    REQUEST_STATUS_SEND_ERROR = -3,
+    REQUEST_STATUS_RECV_ERROR = -4,
+    REQUEST_STATUS_DECODING_ERROR = -5,
+    REQUEST_STATUS_INVALID_RESPONSE_TYPE = -6
+} request_status_t;
 
 /**
  * @brief Structure to hold requester information.
@@ -91,8 +94,8 @@ Requester make_requester(const char* metric_id, const char* node,
  * @brief Structure to hold the result of an integer request.
  */
 typedef struct {
-    int err;   // Error code
-    int value; // Integer value
+    request_status_t err; // Error code
+    int value;            // Integer value
 } RequestIntResult;
 
 /**
@@ -118,8 +121,8 @@ RequestIntResult request_int(const Requester* reqr);
  * @brief Structure to hold the result of a string request.
  */
 typedef struct {
-    int err;     // Error code
-    char* value; // String value
+    request_status_t err; // Error code
+    char* value;          // String value
 } RequestStringResult;
 
 /**
@@ -145,8 +148,8 @@ RequestStringResult request_string(const Requester* reqr);
  * @brief Structure to hold the result of a float request.
  */
 typedef struct {
-    int err;      // Error code
-    double value; // Float value
+    request_status_t err; // Error code
+    double value;         // Float value
 } RequestFloatResult;
 
 /**
@@ -174,8 +177,8 @@ RequestFloatResult request_float(const Requester* reqr);
  * @brief Structure to hold the result of a double request.
  */
 typedef struct {
-    int err;      // Error code
-    double value; // Double value
+    request_status_t err; // Error code
+    double value;         // Double value
 } RequestDoubleResult;
 
 /**

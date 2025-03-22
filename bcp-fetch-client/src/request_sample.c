@@ -31,14 +31,14 @@ int send_request(int socket_fd, const Request* message)
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
     if(!pb_encode(&stream, Request_fields, message)) {
         fprintf(stderr, "Encoding failed: %s\n", PB_GET_ERROR(&stream));
-        return ERR_ENCODING_FAILED;
+        return REQUEST_STATUS_ENCODING_ERROR;
     }
     ssize_t bytes_sent = send(socket_fd, buffer, stream.bytes_written, 0);
     if(bytes_sent == -1) {
         fprintf(stderr, "send failed: %s\n", strerror(errno));
-        return ERR_SEND_FAILED;
+        return REQUEST_STATUS_SEND_ERROR;
     }
-    return 0;
+    return REQUEST_STATUS_OK;
 }
 
 int recv_response(int socket_fd, Response* response)
@@ -48,10 +48,10 @@ int recv_response(int socket_fd, Response* response)
         recv(socket_fd, recv_buffer, RESPONSE_PB_H_MAX_SIZE, 0);
     if(bytes_received == -1) {
         fprintf(stderr, "recv failed: %s\n", strerror(errno));
-        return ERR_RECV_FAILED;
+        return REQUEST_STATUS_RECV_ERROR;
     } else if(bytes_received == 0) {
         fprintf(stderr, "Connection closed by the peer\n");
-        return ERR_RECV_FAILED;
+        return REQUEST_STATUS_RECV_ERROR;
     }
 
     bool status;
@@ -62,13 +62,13 @@ int recv_response(int socket_fd, Response* response)
 
     if(!status) {
         fprintf(stderr, "Decoding failed: %s\n", PB_GET_ERROR(&stream));
-        return ERR_DECODING_FAILED;
+        return REQUEST_STATUS_DECODING_ERROR;
     }
-    return 0;
+    return REQUEST_STATUS_OK;
 }
 
 typedef struct {
-    int err;
+    request_status_t err;
     Response response;
 } RequestResult;
 
@@ -95,7 +95,7 @@ RequestResult request(Requester* reqr)
 #ifdef DEBUG
         fprintf(stderr, "Response indicated failure\n");
 #endif
-        result.err = 1;
+        result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
         return result;
     }
 
@@ -142,7 +142,7 @@ RequestIntResult request_int(const Requester* reqr)
                 primitive_val_tag_to_string(
                     request_result.response.primitive.which_value));
 #endif
-        result.err = ERR_INVALID_RESPONSE_TYPE;
+        result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
     } else {
         result.value = request_result.response.primitive.value.int_val;
     }
@@ -167,7 +167,7 @@ RequestFloatResult request_float(const Requester* reqr)
                 primitive_val_tag_to_string(
                     request_result.response.primitive.which_value));
 #endif
-        result.err = ERR_INVALID_RESPONSE_TYPE;
+        result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
         return result;
     }
 
@@ -193,7 +193,7 @@ RequestDoubleResult request_double(const Requester* reqr)
                 primitive_val_tag_to_string(
                     request_result.response.primitive.which_value));
 #endif
-        result.err = ERR_INVALID_RESPONSE_TYPE;
+        result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
         return result;
     }
 
@@ -219,7 +219,7 @@ RequestStringResult request_string(const Requester* reqr)
                 primitive_val_tag_to_string(
                     request_result.response.primitive.which_value));
 #endif
-        result.err = ERR_INVALID_RESPONSE_TYPE;
+        result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
         return result;
     }
 
