@@ -260,11 +260,11 @@ TEST_F(SendSampleTest, InvalidMetricId)
 }
 #endif
 
-// TEST_F(SendSampleTest, InvalidSocket)
-// {
-//     send_status_t status = send_sample_int32(-1, "test", 1234.5f, 42);
-//     EXPECT_EQ(status, SEND_STATUS_SEND_ERROR);
-// }
+TEST_F(SendSampleTest, InvalidSocket)
+{
+    send_status_t status = send_sample_int32(-1, "test", 1234.5f, 42);
+    EXPECT_EQ(status, SEND_STATUS_SEND_ERROR);
+}
 
 TEST_F(SendSampleTest, NullMetricId)
 {
