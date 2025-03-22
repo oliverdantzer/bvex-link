@@ -11,7 +11,7 @@ find_package(nanopb CONFIG REQUIRED)
 
 option(BCP_FETCH_DISABLE_BOUNDS_CHECKING "Disable bounds checking for better performance (not recommended for development)" OFF)
 IF(NOT BCP_FETCH_DISABLE_BOUNDS_CHECKING)
-    add_definitions(-BCP_FETCH_BOUNDS_CHECKING)
+    add_definitions(-DBCP_FETCH_BOUNDS_CHECKING)
 ENDIF()
 
 add_library(bcp-fetch
@@ -55,6 +55,7 @@ if(BCP_FETCH_GTEST)
         # GTest::gmock
         # GTest::gmock_main
     )
+    target_compile_definitions(gtest PRIVATE BCP_FETCH_BOUNDS_CHECKING)
 
     include(GoogleTest)
     gtest_discover_tests(gtest)

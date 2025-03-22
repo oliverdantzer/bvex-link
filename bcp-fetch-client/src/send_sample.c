@@ -70,12 +70,12 @@ send_status_t send_sample_int32(int socket_fd, const char* metric_id,
                                 float timestamp, int32_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_int_val_tag;
@@ -87,12 +87,12 @@ send_status_t send_sample_int64(int socket_fd, const char* metric_id,
                                 float timestamp, int64_t value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_long_val_tag;
@@ -104,12 +104,12 @@ send_status_t send_sample_float(int socket_fd, const char* metric_id,
                                 float timestamp, float value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_float_val_tag;
@@ -121,12 +121,12 @@ send_status_t send_sample_double(int socket_fd, const char* metric_id,
                                  float timestamp, double value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_double_val_tag;
@@ -138,12 +138,12 @@ send_status_t send_sample_bool(int socket_fd, const char* metric_id,
                                float timestamp, bool value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_bool_val_tag;
@@ -155,17 +155,18 @@ send_status_t send_sample_string(int socket_fd, const char* metric_id,
                                  float timestamp, const char* value)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
-       strlen(value) >= sizeof(((Sample*)0)->data.primitive.value.string_val)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
+       strnlen(value, STRING_VALUE_MAX_SIZE) == STRING_VALUE_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_string_val_tag;
-    strcpy(sample.data.primitive.value.string_val, value);
+    strlcpy(sample.data.primitive.value.string_val, value,
+            STRING_VALUE_MAX_SIZE);
     return send_sample_async(socket_fd, sample);
 }
 
@@ -174,17 +175,17 @@ send_status_t send_sample_file(int socket_fd, const char* metric_id,
                                const char* extension)
 {
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
-       strlen(filepath) >= sizeof(((Sample*)0)->data.file.filepath) ||
-       strlen(extension) >= sizeof(((Sample*)0)->data.file.extension)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
+       strnlen(filepath, FILE_PATH_MAX_SIZE) == FILE_PATH_MAX_SIZE ||
+       strnlen(extension, EXTENSION_MAX_SIZE) == EXTENSION_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_file_tag;
-    strcpy(sample.data.file.filepath, filepath);
-    strcpy(sample.data.file.extension, extension);
+    strlcpy(sample.data.file.filepath, filepath, FILE_PATH_MAX_SIZE);
+    strlcpy(sample.data.file.extension, extension, EXTENSION_MAX_SIZE);
     return send_sample_async(socket_fd, sample);
 }
