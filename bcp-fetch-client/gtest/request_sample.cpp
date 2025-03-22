@@ -26,8 +26,8 @@ class RequestSampleTest : public ::testing::Test
             }
         });
 
-        // Give the server time to start and bind
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        // Wait for server to be ready
+        server->waitUntilReady();
 
         // Verify server is running by checking if port is in use
         int sock = socket(AF_INET, SOCK_DGRAM, 0);

@@ -31,6 +31,41 @@ class TestServer
 
     void setHandler(RequestHandler handler) { handler_ = handler; }
 
+    bool isReady() const
+    {
+        if(server_fd_ < 0)
+            return false;
+
+        // Try to bind to the same address/port to check if it's in use
+        int test_sock = socket(AF_INET, SOCK_DGRAM, 0);
+        if(test_sock < 0)
+            return false;
+
+        struct sockaddr_in addr;
+        std::memset(&addr, 0, sizeof(addr));
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = inet_addr(host_.c_str());
+        addr.sin_port = htons(port_);
+
+        bool ready =
+            bind(test_sock, (struct sockaddr*)&addr, sizeof(addr)) != 0;
+        close(test_sock);
+        return ready;
+    }
+
+    void waitUntilReady(
+        std::chrono::milliseconds timeout = std::chrono::seconds(5)) const
+    {
+        auto start = std::chrono::steady_clock::now();
+        while(!isReady()) {
+            if(std::chrono::steady_clock::now() - start > timeout) {
+                throw std::runtime_error(
+                    "Server failed to become ready within timeout");
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+
     void start()
     {
         server_fd_ = socket(AF_INET, SOCK_DGRAM, 0);
