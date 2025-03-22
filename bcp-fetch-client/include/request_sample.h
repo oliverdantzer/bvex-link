@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** @file request_sample.h
  *  @brief API to request sample data from the onboard server.
  *
@@ -194,3 +198,7 @@ typedef struct {
  * ```
  */
 RequestDoubleResult request_double(const Requester* reqr);
+
+#ifdef __cplusplus
+}
+#endif
