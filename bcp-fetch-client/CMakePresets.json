@@ -8,7 +8,7 @@
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "BCP_FETCH_TEST": "ON",
-        "BCP_FETCH_BOUNDS_CHECKING": "ON"
+        "BCP_FETCH_GTEST": "ON"
       }
     },
     {
