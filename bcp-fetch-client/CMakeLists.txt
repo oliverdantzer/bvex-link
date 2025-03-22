@@ -14,11 +14,6 @@ IF(NOT BCP_FETCH_DISABLE_BOUNDS_CHECKING)
     add_definitions(-BCP_FETCH_BOUNDS_CHECKING)
 ENDIF()
 
-option(TEST_SOCK_PORT "Enable printing socket port number" OFF)
-IF(TEST_SOCK_PORT)
-    add_definitions(-DTEST_SOCK_PORT)
-ENDIF()
-
 add_library(bcp-fetch
     src/generated/nanopb/sample.pb.c
     src/generated/nanopb/primitive.pb.c
