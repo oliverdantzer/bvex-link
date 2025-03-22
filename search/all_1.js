@@ -1,13 +1,14 @@
 var searchData=
 [
-  ['request_5fdouble_0',['request_double',['../request__sample_8h.html#acb8d051bfdca133fd18c2c6f5f63b9f0',1,'request_sample.h']]],
-  ['request_5ffloat_1',['request_float',['../request__sample_8h.html#a52f56da71a9990d1844d4a3e8353f3bc',1,'request_sample.h']]],
-  ['request_5fint_2',['request_int',['../request__sample_8h.html#abeb6d36ec80a5add84b7d1b066218f35',1,'request_sample.h']]],
-  ['request_5fsample_2eh_3',['request_sample.h',['../request__sample_8h.html',1,'']]],
-  ['request_5fstring_4',['request_string',['../request__sample_8h.html#a370be4bcdf9e0de3dd8aa4b3505f7546',1,'request_sample.h']]],
-  ['requestdoubleresult_5',['RequestDoubleResult',['../structRequestDoubleResult.html',1,'']]],
-  ['requester_6',['Requester',['../structRequester.html',1,'']]],
-  ['requestfloatresult_7',['RequestFloatResult',['../structRequestFloatResult.html',1,'']]],
-  ['requestintresult_8',['RequestIntResult',['../structRequestIntResult.html',1,'']]],
-  ['requeststringresult_9',['RequestStringResult',['../structRequestStringResult.html',1,'']]]
+  ['client_5fconnection_5ft_0',['client_connection_t',['../structclient__connection__t.html',1,'']]],
+  ['command_20server_20simultaneously_1',['Example of polling stdin and command server simultaneously',['../command__server_8h.html#autotoc_md1',1,'']]],
+  ['command_5fserver_2eh_2',['command_server.h',['../command__server_8h.html',1,'']]],
+  ['command_5fserver_5fbroadcast_3',['command_server_broadcast',['../command__server_8h.html#af6f1200fbd10f971b299bd34301facb8',1,'command_server.h']]],
+  ['command_5fserver_5fcreate_4',['command_server_create',['../command__server_8h.html#a90d8e096ea3a8a086cad7ede8bfc44a8',1,'command_server.h']]],
+  ['command_5fserver_5fdestroy_5',['command_server_destroy',['../command__server_8h.html#a963b5d950d069a896c76c87f87f8845c',1,'command_server.h']]],
+  ['command_5fserver_5flisten_6',['command_server_listen',['../command__server_8h.html#a3784290bfc78a1cf6a2a217b405cce8b',1,'command_server.h']]],
+  ['command_5fserver_5frecv_7',['command_server_recv',['../command__server_8h.html#abe8a8742d3c43f1c7c21981ea709a6aa',1,'command_server.h']]],
+  ['command_5fserver_5ft_8',['command_server_t',['../structcommand__server__t.html',1,'']]],
+  ['connected_5fudp_5fsocket_9',['connected_udp_socket',['../connected__udp__socket_8h.html#ad7cb07d67f19e1f050c7fa2903539b9f',1,'connected_udp_socket.h']]],
+  ['connected_5fudp_5fsocket_2eh_10',['connected_udp_socket.h',['../connected__udp__socket_8h.html',1,'']]]
 ];

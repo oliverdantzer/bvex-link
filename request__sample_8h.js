@@ -6,9 +6,9 @@ var request__sample_8h =
     [ "RequestStringResult", "structRequestStringResult.html", null ],
     [ "RequestFloatResult", "structRequestFloatResult.html", null ],
     [ "RequestDoubleResult", "structRequestDoubleResult.html", null ],
-    [ "make_requester", "request__sample_8h.html#ae4b46cc52c0d5e020c15488f7664a3cd", null ],
-    [ "request_double", "request__sample_8h.html#acb8d051bfdca133fd18c2c6f5f63b9f0", null ],
-    [ "request_float", "request__sample_8h.html#a52f56da71a9990d1844d4a3e8353f3bc", null ],
-    [ "request_int", "request__sample_8h.html#abeb6d36ec80a5add84b7d1b066218f35", null ],
-    [ "request_string", "request__sample_8h.html#a370be4bcdf9e0de3dd8aa4b3505f7546", null ]
+    [ "make_requester", "request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9", null ],
+    [ "request_double", "request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4", null ],
+    [ "request_float", "request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0", null ],
+    [ "request_int", "request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b", null ],
+    [ "request_string", "request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26", null ]
 ];

@@ -154,53 +154,55 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afe75efa2e79cffe63bb841d6d81425ac" id="r_afe75efa2e79cffe63bb841d6d81425ac"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a> (int socket_fd, char *metric_id, float timestamp, int32_t value)</td></tr>
-<tr class="memdesc:afe75efa2e79cffe63bb841d6d81425ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t sample.  <br /></td></tr>
-<tr class="separator:afe75efa2e79cffe63bb841d6d81425ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8177dbadebb5825e6a9f416ecd30f6ff" id="r_a8177dbadebb5825e6a9f416ecd30f6ff"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8177dbadebb5825e6a9f416ecd30f6ff">send_sample_int64</a> (int socket_fd, char *metric_id, float timestamp, int64_t value)</td></tr>
-<tr class="memdesc:a8177dbadebb5825e6a9f416ecd30f6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int64_t sample.  <br /></td></tr>
-<tr class="separator:a8177dbadebb5825e6a9f416ecd30f6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27e466e61abd53f66935dc251cd0cf54" id="r_a27e466e61abd53f66935dc251cd0cf54"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a> (int socket_fd, char *metric_id, float timestamp, float value)</td></tr>
-<tr class="memdesc:a27e466e61abd53f66935dc251cd0cf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a float sample.  <br /></td></tr>
-<tr class="separator:a27e466e61abd53f66935dc251cd0cf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf806dee9974b5e0ebdd11dafe2e58de" id="r_aaf806dee9974b5e0ebdd11dafe2e58de"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf806dee9974b5e0ebdd11dafe2e58de">send_sample_double</a> (int socket_fd, char *metric_id, float timestamp, double value)</td></tr>
-<tr class="memdesc:aaf806dee9974b5e0ebdd11dafe2e58de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a double sample.  <br /></td></tr>
-<tr class="separator:aaf806dee9974b5e0ebdd11dafe2e58de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8b453d804aa1731ab6837c5fbc9dea9" id="r_ad8b453d804aa1731ab6837c5fbc9dea9"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8b453d804aa1731ab6837c5fbc9dea9">send_sample_bool</a> (int socket_fd, char *metric_id, float timestamp, bool value)</td></tr>
-<tr class="memdesc:ad8b453d804aa1731ab6837c5fbc9dea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a boolean sample.  <br /></td></tr>
-<tr class="separator:ad8b453d804aa1731ab6837c5fbc9dea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99b7906cc57ef4e69335cf31ad24eb37" id="r_a99b7906cc57ef4e69335cf31ad24eb37"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99b7906cc57ef4e69335cf31ad24eb37">send_sample_string</a> (int socket_fd, char *metric_id, float timestamp, char *value)</td></tr>
-<tr class="memdesc:a99b7906cc57ef4e69335cf31ad24eb37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a string sample.  <br /></td></tr>
-<tr class="separator:a99b7906cc57ef4e69335cf31ad24eb37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abea5096dd1fe00dd5669d1e78e2daf9c" id="r_abea5096dd1fe00dd5669d1e78e2daf9c"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abea5096dd1fe00dd5669d1e78e2daf9c">send_sample_file</a> (int socket_fd, char *metric_id, float timestamp, char *filepath, char *extension)</td></tr>
-<tr class="memdesc:abea5096dd1fe00dd5669d1e78e2daf9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a file sample.  <br /></td></tr>
-<tr class="separator:abea5096dd1fe00dd5669d1e78e2daf9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd3df9dcefa947bdd6744f76019342e5" id="r_abd3df9dcefa947bdd6744f76019342e5"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd3df9dcefa947bdd6744f76019342e5">send_sample_int32</a> (int socket_fd, const char *metric_id, float timestamp, int32_t value)</td></tr>
+<tr class="memdesc:abd3df9dcefa947bdd6744f76019342e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int32_t sample.  <br /></td></tr>
+<tr class="separator:abd3df9dcefa947bdd6744f76019342e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16369add85770edc59b482b96c3745b4" id="r_a16369add85770edc59b482b96c3745b4"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16369add85770edc59b482b96c3745b4">send_sample_int64</a> (int socket_fd, const char *metric_id, float timestamp, int64_t value)</td></tr>
+<tr class="memdesc:a16369add85770edc59b482b96c3745b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an int64_t sample.  <br /></td></tr>
+<tr class="separator:a16369add85770edc59b482b96c3745b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af81f318a47a57c9af2faa53da742ad62" id="r_af81f318a47a57c9af2faa53da742ad62"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af81f318a47a57c9af2faa53da742ad62">send_sample_float</a> (int socket_fd, const char *metric_id, float timestamp, float value)</td></tr>
+<tr class="memdesc:af81f318a47a57c9af2faa53da742ad62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a float sample.  <br /></td></tr>
+<tr class="separator:af81f318a47a57c9af2faa53da742ad62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8857b40259a45ac044ebdf8421e66a" id="r_a8d8857b40259a45ac044ebdf8421e66a"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d8857b40259a45ac044ebdf8421e66a">send_sample_double</a> (int socket_fd, const char *metric_id, float timestamp, double value)</td></tr>
+<tr class="memdesc:a8d8857b40259a45ac044ebdf8421e66a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a double sample.  <br /></td></tr>
+<tr class="separator:a8d8857b40259a45ac044ebdf8421e66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6df0a41b3e493e116197cbb049c52bb6" id="r_a6df0a41b3e493e116197cbb049c52bb6"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6df0a41b3e493e116197cbb049c52bb6">send_sample_bool</a> (int socket_fd, const char *metric_id, float timestamp, bool value)</td></tr>
+<tr class="memdesc:a6df0a41b3e493e116197cbb049c52bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a boolean sample.  <br /></td></tr>
+<tr class="separator:a6df0a41b3e493e116197cbb049c52bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fd9091926abda6c70c893d43365d9f7" id="r_a4fd9091926abda6c70c893d43365d9f7"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fd9091926abda6c70c893d43365d9f7">send_sample_string</a> (int socket_fd, const char *metric_id, float timestamp, const char *value)</td></tr>
+<tr class="memdesc:a4fd9091926abda6c70c893d43365d9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a string sample.  <br /></td></tr>
+<tr class="separator:a4fd9091926abda6c70c893d43365d9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e5d177ca0d3f8814a657a6e63c52b7b" id="r_a2e5d177ca0d3f8814a657a6e63c52b7b"><td class="memItemLeft" align="right" valign="top">send_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e5d177ca0d3f8814a657a6e63c52b7b">send_sample_file</a> (int socket_fd, const char *metric_id, float timestamp, const char *filepath, const char *extension)</td></tr>
+<tr class="memdesc:a2e5d177ca0d3f8814a657a6e63c52b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a file sample.  <br /></td></tr>
+<tr class="separator:a2e5d177ca0d3f8814a657a6e63c52b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API to send sample data to the onboard server. </p>
 <p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="send__sample_8h.html">send_sample.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;connected_udp_socket.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="connected__udp__socket_8h.html">connected_udp_socket.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;ctime&gt;</span></div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <span class="keywordtype">int</span> socket_fd = connected_udp_socket(SAMPLE_SERVER_ADDR,</div>
+<div class="line">    <span class="keywordtype">int</span> socket_fd = <a class="code hl_function" href="connected__udp__socket_8h.html#ad7cb07d67f19e1f050c7fa2903539b9f">connected_udp_socket</a>(SAMPLE_SERVER_ADDR,</div>
 <div class="line">                                               SAMPLE_SERVER_PORT);</div>
 <div class="line">    <span class="keywordflow">if</span> (socket_fd &lt; 0) {</div>
 <div class="line">        printf(<span class="stringliteral">&quot;Error connecting to server\n&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span> 1;</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordtype">float</span> current_time = time(NULL);</div>
-<div class="line">    <a class="code hl_function" href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a>(socket_fd, <span class="stringliteral">&quot;altitude&quot;</span>, current_time, 50392);</div>
-<div class="line">    <a class="code hl_function" href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a>(socket_fd, <span class="stringliteral">&quot;yaw&quot;</span>, current_time, 0.1452f);</div>
+<div class="line">    <a class="code hl_function" href="#abd3df9dcefa947bdd6744f76019342e5">send_sample_int32</a>(socket_fd, <span class="stringliteral">&quot;altitude&quot;</span>, current_time, 50392);</div>
+<div class="line">    <a class="code hl_function" href="#af81f318a47a57c9af2faa53da742ad62">send_sample_float</a>(socket_fd, <span class="stringliteral">&quot;yaw&quot;</span>, current_time, 0.1452f);</div>
 <div class="line">    close(socket_fd);</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
+<div class="ttc" id="aconnected__udp__socket_8h_html"><div class="ttname"><a href="connected__udp__socket_8h.html">connected_udp_socket.h</a></div><div class="ttdoc">Header file for creating connected UDP sockets.</div></div>
+<div class="ttc" id="aconnected__udp__socket_8h_html_ad7cb07d67f19e1f050c7fa2903539b9f"><div class="ttname"><a href="connected__udp__socket_8h.html#ad7cb07d67f19e1f050c7fa2903539b9f">connected_udp_socket</a></div><div class="ttdeci">int connected_udp_socket(const char *node, const char *service)</div><div class="ttdoc">Makes UDP socket, connects to node:service, and returns socket file descriptor.</div></div>
 <div class="ttc" id="asend__sample_8h_html"><div class="ttname"><a href="send__sample_8h.html">send_sample.h</a></div><div class="ttdoc">API to send sample data to the onboard server.</div></div>
-<div class="ttc" id="asend__sample_8h_html_a27e466e61abd53f66935dc251cd0cf54"><div class="ttname"><a href="#a27e466e61abd53f66935dc251cd0cf54">send_sample_float</a></div><div class="ttdeci">send_status_t send_sample_float(int socket_fd, char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float sample.</div></div>
-<div class="ttc" id="asend__sample_8h_html_afe75efa2e79cffe63bb841d6d81425ac"><div class="ttname"><a href="#afe75efa2e79cffe63bb841d6d81425ac">send_sample_int32</a></div><div class="ttdeci">send_status_t send_sample_int32(int socket_fd, char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t sample.</div></div>
+<div class="ttc" id="asend__sample_8h_html_abd3df9dcefa947bdd6744f76019342e5"><div class="ttname"><a href="#abd3df9dcefa947bdd6744f76019342e5">send_sample_int32</a></div><div class="ttdeci">send_status_t send_sample_int32(int socket_fd, const char *metric_id, float timestamp, int32_t value)</div><div class="ttdoc">Sends an int32_t sample.</div></div>
+<div class="ttc" id="asend__sample_8h_html_af81f318a47a57c9af2faa53da742ad62"><div class="ttname"><a href="#af81f318a47a57c9af2faa53da742ad62">send_sample_float</a></div><div class="ttdeci">send_status_t send_sample_float(int socket_fd, const char *metric_id, float timestamp, float value)</div><div class="ttdoc">Sends a float sample.</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ad8b453d804aa1731ab6837c5fbc9dea9" name="ad8b453d804aa1731ab6837c5fbc9dea9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8b453d804aa1731ab6837c5fbc9dea9">&#9670;&#160;</a></span>send_sample_bool()</h2>
+<a id="a6df0a41b3e493e116197cbb049c52bb6" name="a6df0a41b3e493e116197cbb049c52bb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6df0a41b3e493e116197cbb049c52bb6">&#9670;&#160;</a></span>send_sample_bool()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +215,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -242,8 +244,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaf806dee9974b5e0ebdd11dafe2e58de" name="aaf806dee9974b5e0ebdd11dafe2e58de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf806dee9974b5e0ebdd11dafe2e58de">&#9670;&#160;</a></span>send_sample_double()</h2>
+<a id="a8d8857b40259a45ac044ebdf8421e66a" name="a8d8857b40259a45ac044ebdf8421e66a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d8857b40259a45ac044ebdf8421e66a">&#9670;&#160;</a></span>send_sample_double()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +258,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -285,8 +287,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abea5096dd1fe00dd5669d1e78e2daf9c" name="abea5096dd1fe00dd5669d1e78e2daf9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abea5096dd1fe00dd5669d1e78e2daf9c">&#9670;&#160;</a></span>send_sample_file()</h2>
+<a id="a2e5d177ca0d3f8814a657a6e63c52b7b" name="a2e5d177ca0d3f8814a657a6e63c52b7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e5d177ca0d3f8814a657a6e63c52b7b">&#9670;&#160;</a></span>send_sample_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,7 +301,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -309,12 +311,12 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>filepath</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>filepath</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>extension</em></span>&#160;)</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>extension</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -334,8 +336,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a27e466e61abd53f66935dc251cd0cf54" name="a27e466e61abd53f66935dc251cd0cf54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27e466e61abd53f66935dc251cd0cf54">&#9670;&#160;</a></span>send_sample_float()</h2>
+<a id="af81f318a47a57c9af2faa53da742ad62" name="af81f318a47a57c9af2faa53da742ad62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af81f318a47a57c9af2faa53da742ad62">&#9670;&#160;</a></span>send_sample_float()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +350,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -377,8 +379,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afe75efa2e79cffe63bb841d6d81425ac" name="afe75efa2e79cffe63bb841d6d81425ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe75efa2e79cffe63bb841d6d81425ac">&#9670;&#160;</a></span>send_sample_int32()</h2>
+<a id="abd3df9dcefa947bdd6744f76019342e5" name="abd3df9dcefa947bdd6744f76019342e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd3df9dcefa947bdd6744f76019342e5">&#9670;&#160;</a></span>send_sample_int32()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +393,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -420,8 +422,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8177dbadebb5825e6a9f416ecd30f6ff" name="a8177dbadebb5825e6a9f416ecd30f6ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8177dbadebb5825e6a9f416ecd30f6ff">&#9670;&#160;</a></span>send_sample_int64()</h2>
+<a id="a16369add85770edc59b482b96c3745b4" name="a16369add85770edc59b482b96c3745b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16369add85770edc59b482b96c3745b4">&#9670;&#160;</a></span>send_sample_int64()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -434,7 +436,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -463,8 +465,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a99b7906cc57ef4e69335cf31ad24eb37" name="a99b7906cc57ef4e69335cf31ad24eb37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99b7906cc57ef4e69335cf31ad24eb37">&#9670;&#160;</a></span>send_sample_string()</h2>
+<a id="a4fd9091926abda6c70c893d43365d9f7" name="a4fd9091926abda6c70c893d43365d9f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fd9091926abda6c70c893d43365d9f7">&#9670;&#160;</a></span>send_sample_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -477,7 +479,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -487,7 +489,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['make_5frequester_0',['make_requester',['../request__sample_8h.html#ae4b46cc52c0d5e020c15488f7664a3cd',1,'request_sample.h']]],
-  ['makerequesterargs_1',['MakeRequesterArgs',['../structMakeRequesterArgs.html',1,'']]]
+  ['and_20command_20server_20simultaneously_0',['Example of polling stdin and command server simultaneously',['../command__server_8h.html#autotoc_md1',1,'']]]
 ];

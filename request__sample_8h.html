@@ -168,37 +168,37 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae4b46cc52c0d5e020c15488f7664a3cd" id="r_ae4b46cc52c0d5e020c15488f7664a3cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequester.html">Requester</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a> (char *metric_id, char *node, char *service)</td></tr>
-<tr class="memdesc:ae4b46cc52c0d5e020c15488f7664a3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from.  <br /></td></tr>
-<tr class="separator:ae4b46cc52c0d5e020c15488f7664a3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeb6d36ec80a5add84b7d1b066218f35" id="r_abeb6d36ec80a5add84b7d1b066218f35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestIntResult.html">RequestIntResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a> (<a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
-<tr class="memdesc:abeb6d36ec80a5add84b7d1b066218f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends requests an integer value sample from the metrid id of reqr from the server reqr.socket_fd is connected to.  <br /></td></tr>
-<tr class="separator:abeb6d36ec80a5add84b7d1b066218f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a370be4bcdf9e0de3dd8aa4b3505f7546" id="r_a370be4bcdf9e0de3dd8aa4b3505f7546"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestStringResult.html">RequestStringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a370be4bcdf9e0de3dd8aa4b3505f7546">request_string</a> (<a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
-<tr class="memdesc:a370be4bcdf9e0de3dd8aa4b3505f7546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a string value sample from the metric id of reqr from the server reqr.socket_fd is connected to.  <br /></td></tr>
-<tr class="separator:a370be4bcdf9e0de3dd8aa4b3505f7546"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52f56da71a9990d1844d4a3e8353f3bc" id="r_a52f56da71a9990d1844d4a3e8353f3bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestFloatResult.html">RequestFloatResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52f56da71a9990d1844d4a3e8353f3bc">request_float</a> (<a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
-<tr class="memdesc:a52f56da71a9990d1844d4a3e8353f3bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a float value sample from the metric id of reqr from the server reqr.socket_fd is connected to. This function is blocking and will wait for the send operation to complete and for the response to be received.  <br /></td></tr>
-<tr class="separator:a52f56da71a9990d1844d4a3e8353f3bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb8d051bfdca133fd18c2c6f5f63b9f0" id="r_acb8d051bfdca133fd18c2c6f5f63b9f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestDoubleResult.html">RequestDoubleResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a> (<a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
-<tr class="memdesc:acb8d051bfdca133fd18c2c6f5f63b9f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a double value sample from the metric id of reqr from the server reqr.socket_fd is connected to. This function is blocking and will wait for the send operation to complete and for the response to be received.  <br /></td></tr>
-<tr class="separator:acb8d051bfdca133fd18c2c6f5f63b9f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8867a0791f746be48a7ddd0906462a9" id="r_ae8867a0791f746be48a7ddd0906462a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequester.html">Requester</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a> (const char *metric_id, const char *node, const char *service)</td></tr>
+<tr class="memdesc:ae8867a0791f746be48a7ddd0906462a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request a value from.  <br /></td></tr>
+<tr class="separator:ae8867a0791f746be48a7ddd0906462a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89c2ec9483476654344d0f6fe45f579b" id="r_a89c2ec9483476654344d0f6fe45f579b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestIntResult.html">RequestIntResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89c2ec9483476654344d0f6fe45f579b">request_int</a> (const <a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
+<tr class="memdesc:a89c2ec9483476654344d0f6fe45f579b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends requests an integer value sample from the metrid id of reqr from the server reqr.socket_fd is connected to.  <br /></td></tr>
+<tr class="separator:a89c2ec9483476654344d0f6fe45f579b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e7ce227a7015915387f22506ab8de26" id="r_a5e7ce227a7015915387f22506ab8de26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestStringResult.html">RequestStringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e7ce227a7015915387f22506ab8de26">request_string</a> (const <a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
+<tr class="memdesc:a5e7ce227a7015915387f22506ab8de26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a string value sample from the metric id of reqr from the server reqr.socket_fd is connected to.  <br /></td></tr>
+<tr class="separator:a5e7ce227a7015915387f22506ab8de26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66cac95d7c69e68a89dbf6840dd266e0" id="r_a66cac95d7c69e68a89dbf6840dd266e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestFloatResult.html">RequestFloatResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a> (const <a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
+<tr class="memdesc:a66cac95d7c69e68a89dbf6840dd266e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a float value sample from the metric id of reqr from the server reqr.socket_fd is connected to. This function is blocking and will wait for the send operation to complete and for the response to be received.  <br /></td></tr>
+<tr class="separator:a66cac95d7c69e68a89dbf6840dd266e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f35717ba1b13b08fb2b56685145b2c4" id="r_a6f35717ba1b13b08fb2b56685145b2c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRequestDoubleResult.html">RequestDoubleResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a> (const <a class="el" href="structRequester.html">Requester</a> *reqr)</td></tr>
+<tr class="memdesc:a6f35717ba1b13b08fb2b56685145b2c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a request for a double value sample from the metric id of reqr from the server reqr.socket_fd is connected to. This function is blocking and will wait for the send operation to complete and for the response to be received.  <br /></td></tr>
+<tr class="separator:a6f35717ba1b13b08fb2b56685145b2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API to request sample data from the onboard server. </p>
 <p>Example usage: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="request__sample_8h.html">request_sample.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;connected_udp_socket.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="connected__udp__socket_8h.html">connected_udp_socket.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">    <span class="keywordtype">char</span>* metric_id = <span class="stringliteral">&quot;altitude&quot;</span>;</div>
 <div class="line">    <span class="keywordtype">char</span>* node = <span class="stringliteral">&quot;localhost&quot;</span>;</div>
 <div class="line">    <span class="keywordtype">char</span>* port = <span class="stringliteral">&quot;3000&quot;</span>;</div>
-<div class="line">    <a class="code hl_struct" href="structRequester.html">Requester</a> requester = <a class="code hl_function" href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a>(metric_id, node, port);</div>
+<div class="line">    <a class="code hl_struct" href="structRequester.html">Requester</a> requester = <a class="code hl_function" href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a>(metric_id, node, port);</div>
 <div class="line">    <span class="keywordflow">if</span> (requester.socket_fd &lt; 0) {</div>
 <div class="line">        printf(<span class="stringliteral">&quot;Error creating requester\n&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span> 1;</div>
 <div class="line">    }</div>
-<div class="line">    <a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> result = <a class="code hl_function" href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a>(&amp;requester);</div>
+<div class="line">    <a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> result = <a class="code hl_function" href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a>(&amp;requester);</div>
 <div class="line">    <span class="keywordflow">if</span> (result.err) {</div>
 <div class="line">        printf(<span class="stringliteral">&quot;Request error\n&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span> 1;</div>
@@ -206,14 +206,15 @@ Functions</h2></td></tr>
 <div class="line">    printf(<span class="stringliteral">&quot;Response value: %f\n&quot;</span>, result.value);</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
+<div class="ttc" id="aconnected__udp__socket_8h_html"><div class="ttname"><a href="connected__udp__socket_8h.html">connected_udp_socket.h</a></div><div class="ttdoc">Header file for creating connected UDP sockets.</div></div>
 <div class="ttc" id="arequest__sample_8h_html"><div class="ttname"><a href="request__sample_8h.html">request_sample.h</a></div><div class="ttdoc">API to request sample data from the onboard server.</div></div>
-<div class="ttc" id="arequest__sample_8h_html_acb8d051bfdca133fd18c2c6f5f63b9f0"><div class="ttname"><a href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="arequest__sample_8h_html_ae4b46cc52c0d5e020c15488f7664a3cd"><div class="ttname"><a href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a></div><div class="ttdeci">Requester make_requester(char *metric_id, char *node, char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:171</div></div>
+<div class="ttc" id="arequest__sample_8h_html_a6f35717ba1b13b08fb2b56685145b2c4"><div class="ttname"><a href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(const Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div></div>
+<div class="ttc" id="arequest__sample_8h_html_ae8867a0791f746be48a7ddd0906462a9"><div class="ttname"><a href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a></div><div class="ttdeci">Requester make_requester(const char *metric_id, const char *node, const char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:172</div></div>
 <div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:44</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ae4b46cc52c0d5e020c15488f7664a3cd" name="ae4b46cc52c0d5e020c15488f7664a3cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b46cc52c0d5e020c15488f7664a3cd">&#9670;&#160;</a></span>make_requester()</h2>
+<a id="ae8867a0791f746be48a7ddd0906462a9" name="ae8867a0791f746be48a7ddd0906462a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8867a0791f746be48a7ddd0906462a9">&#9670;&#160;</a></span>make_requester()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,17 +222,17 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structRequester.html">Requester</a> make_requester </td>
           <td>(</td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>metric_id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>node</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -247,7 +248,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structRequester.html" title="Structure to hold requester information.">Requester</a> structure.</dd></dl>
 <p>This requester object is used instead of requesting a metric directly from a socket file descriptor to make it difficult to request different metric ids from the same socket.</p>
-<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequester.html">Requester</a> altitudeRequester = <a class="code hl_function" href="#ae4b46cc52c0d5e020c15488f7664a3cd">make_requester</a>(</div>
+<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequester.html">Requester</a> altitudeRequester = <a class="code hl_function" href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a>(</div>
 <div class="line">   <span class="stringliteral">&quot;altitude&quot;</span>, <span class="stringliteral">&quot;localhost&quot;</span>, <span class="stringliteral">&quot;3000&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span> (altitudeRequester.socket_fd &lt; 0) {</div>
 <div class="line">   <span class="comment">// handle error</span></div>
@@ -258,8 +259,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acb8d051bfdca133fd18c2c6f5f63b9f0" name="acb8d051bfdca133fd18c2c6f5f63b9f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb8d051bfdca133fd18c2c6f5f63b9f0">&#9670;&#160;</a></span>request_double()</h2>
+<a id="a6f35717ba1b13b08fb2b56685145b2c4" name="a6f35717ba1b13b08fb2b56685145b2c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f35717ba1b13b08fb2b56685145b2c4">&#9670;&#160;</a></span>request_double()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,7 +268,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structRequestDoubleResult.html">RequestDoubleResult</a> request_double </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -281,7 +282,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structRequestDoubleResult.html" title="Structure to hold the result of a double request.">RequestDoubleResult</a> structure containing error code and double value.</dd></dl>
-<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> result = <a class="code hl_function" href="#acb8d051bfdca133fd18c2c6f5f63b9f0">request_double</a>(&amp;requester)</div>
+<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> result = <a class="code hl_function" href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a>(&amp;requester)</div>
 <div class="line"><span class="keywordflow">if</span> (result.err) {</div>
 <div class="line">   <span class="comment">// handle error</span></div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
@@ -290,8 +291,8 @@ Functions</h2></td></tr>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a52f56da71a9990d1844d4a3e8353f3bc" name="a52f56da71a9990d1844d4a3e8353f3bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52f56da71a9990d1844d4a3e8353f3bc">&#9670;&#160;</a></span>request_float()</h2>
+<a id="a66cac95d7c69e68a89dbf6840dd266e0" name="a66cac95d7c69e68a89dbf6840dd266e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66cac95d7c69e68a89dbf6840dd266e0">&#9670;&#160;</a></span>request_float()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,7 +300,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structRequestFloatResult.html">RequestFloatResult</a> request_float </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -313,19 +314,19 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Structure containing error code and float value.</dd></dl>
-<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a> result = <a class="code hl_function" href="#a52f56da71a9990d1844d4a3e8353f3bc">request_float</a>(&amp;requester)</div>
+<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a> result = <a class="code hl_function" href="#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a>(&amp;requester)</div>
 <div class="line"><span class="keywordflow">if</span> (result.err) {</div>
 <div class="line">   <span class="comment">// handle error</span></div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
-<div class="ttc" id="arequest__sample_8h_html_a52f56da71a9990d1844d4a3e8353f3bc"><div class="ttname"><a href="#a52f56da71a9990d1844d4a3e8353f3bc">request_float</a></div><div class="ttdeci">RequestFloatResult request_float(Requester *reqr)</div><div class="ttdoc">Sends a request for a float value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:142</div></div>
+<div class="ttc" id="arequest__sample_8h_html_a66cac95d7c69e68a89dbf6840dd266e0"><div class="ttname"><a href="#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a></div><div class="ttdeci">RequestFloatResult request_float(const Requester *reqr)</div><div class="ttdoc">Sends a request for a float value sample from the metric id of reqr from the server reqr....</div></div>
+<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:143</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="abeb6d36ec80a5add84b7d1b066218f35" name="abeb6d36ec80a5add84b7d1b066218f35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abeb6d36ec80a5add84b7d1b066218f35">&#9670;&#160;</a></span>request_int()</h2>
+<a id="a89c2ec9483476654344d0f6fe45f579b" name="a89c2ec9483476654344d0f6fe45f579b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89c2ec9483476654344d0f6fe45f579b">&#9670;&#160;</a></span>request_int()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +334,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structRequestIntResult.html">RequestIntResult</a> request_int </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -347,19 +348,19 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structRequestIntResult.html" title="Structure to hold the result of an integer request.">RequestIntResult</a> structure containing error code and integer value.</dd></dl>
-<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a> result = <a class="code hl_function" href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a>(&amp;requester)</div>
+<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a> result = <a class="code hl_function" href="#a89c2ec9483476654344d0f6fe45f579b">request_int</a>(&amp;requester)</div>
 <div class="line"><span class="keywordflow">if</span> (result.err) {</div>
 <div class="line">   <span class="comment">// handle error</span></div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
-<div class="ttc" id="arequest__sample_8h_html_abeb6d36ec80a5add84b7d1b066218f35"><div class="ttname"><a href="#abeb6d36ec80a5add84b7d1b066218f35">request_int</a></div><div class="ttdeci">RequestIntResult request_int(Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:88</div></div>
+<div class="ttc" id="arequest__sample_8h_html_a89c2ec9483476654344d0f6fe45f579b"><div class="ttname"><a href="#a89c2ec9483476654344d0f6fe45f579b">request_int</a></div><div class="ttdeci">RequestIntResult request_int(const Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div></div>
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:89</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a370be4bcdf9e0de3dd8aa4b3505f7546" name="a370be4bcdf9e0de3dd8aa4b3505f7546"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a370be4bcdf9e0de3dd8aa4b3505f7546">&#9670;&#160;</a></span>request_string()</h2>
+<a id="a5e7ce227a7015915387f22506ab8de26" name="a5e7ce227a7015915387f22506ab8de26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e7ce227a7015915387f22506ab8de26">&#9670;&#160;</a></span>request_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +368,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structRequestStringResult.html">RequestStringResult</a> request_string </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structRequester.html">Requester</a> *</td>          <td class="paramname"><span class="paramname"><em>reqr</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -381,14 +382,14 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structRequestStringResult.html" title="Structure to hold the result of a string request.">RequestStringResult</a> structure containing error code and string value.</dd></dl>
-<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a> result = <a class="code hl_function" href="#a370be4bcdf9e0de3dd8aa4b3505f7546">request_string</a>(&amp;requester)</div>
+<p>Example usage: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a> result = <a class="code hl_function" href="#a5e7ce227a7015915387f22506ab8de26">request_string</a>(&amp;requester)</div>
 <div class="line"><span class="keywordflow">if</span> (result.err) {</div>
 <div class="line">   <span class="comment">// handle error</span></div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
-<div class="ttc" id="arequest__sample_8h_html_a370be4bcdf9e0de3dd8aa4b3505f7546"><div class="ttname"><a href="#a370be4bcdf9e0de3dd8aa4b3505f7546">request_string</a></div><div class="ttdeci">RequestStringResult request_string(Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:115</div></div>
+<div class="ttc" id="arequest__sample_8h_html_a5e7ce227a7015915387f22506ab8de26"><div class="ttname"><a href="#a5e7ce227a7015915387f22506ab8de26">request_string</a></div><div class="ttdeci">RequestStringResult request_string(const Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div></div>
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:116</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
