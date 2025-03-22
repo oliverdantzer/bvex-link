@@ -57,6 +57,7 @@ TEST(ConnectedUdpSocket, BasicFunctionality)
     ssize_t received = recvfrom(other_fd, buffer, sizeof(buffer), 0,
                               (struct sockaddr*)&other_addr, &addr_len);
     EXPECT_NE(received, -1);
+    buffer[received] = '\0';  // Null terminate the received string
     EXPECT_EQ(strcmp(buffer, test_msg), 0);
 
     // Clean up
