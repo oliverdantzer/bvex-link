@@ -42,7 +42,8 @@ int connected_udp_socket(const char* node, const char* service)
     int connect_status; // status of connect() call
     for(p = servinfo; p != NULL; p = p->ai_next) {
         // attempt to create socket
-        sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        sockfd =
+            socket(p->ai_family, SOCK_DGRAM | SOCK_NONBLOCK, p->ai_protocol);
         // if socket creation fails, print error and continue to next node of
         // servinfo
         if(sockfd == -1) {
