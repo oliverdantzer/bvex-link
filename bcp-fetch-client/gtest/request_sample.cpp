@@ -1,7 +1,11 @@
 #include "request_sample.h"
 #include "../test_common/test_server.hpp"
+#include <arpa/inet.h>
 #include <chrono>
 #include <gtest/gtest.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <thread>
 
 class RequestSampleTest : public ::testing::Test
@@ -11,18 +15,40 @@ class RequestSampleTest : public ::testing::Test
     {
         // Start test server in a separate thread
         server = std::make_unique<TestServer>("127.0.0.1", 3000);
+
+        // Start server thread
         server_thread = std::thread([this]() {
-            server->start();
-            server->run();
+            try {
+                server->start();
+                server->run();
+            } catch(const std::exception& e) {
+                std::cerr << "Server error: " << e.what() << std::endl;
+            }
         });
 
-        // Give the server time to start
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // Give the server time to start and bind
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        // Verify server is running by checking if port is in use
+        int sock = socket(AF_INET, SOCK_DGRAM, 0);
+        struct sockaddr_in addr;
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        addr.sin_port = htons(3000);
+
+        if(bind(sock, (struct sockaddr*)&addr, sizeof(addr)) == 0) {
+            std::cerr << "Warning: Server port not in use after initialization"
+                      << std::endl;
+            close(sock);
+        }
+        close(sock);
     }
 
     void TearDown() override
     {
-        server->stop();
+        if(server) {
+            server->stop();
+        }
         if(server_thread.joinable()) {
             server_thread.join();
         }
@@ -36,15 +62,17 @@ TEST_F(RequestSampleTest, RequestInt)
 {
     // Set up server to return integer value
     server->setHandler([](const Request& request, Response& response) {
+        strcpy(response.metric_id, request.metric_id);
         response.has_primitive = true;
         response.primitive.which_value = primitive_Primitive_int_val_tag;
         response.primitive.value.int_val = 42;
     });
 
     Requester requester = make_requester("test_metric", "127.0.0.1", "3000");
-    ASSERT_GE(requester.socket_fd, 0);
+    ASSERT_GE(requester.socket_fd, 0) << "Failed to create requester";
 
     RequestIntResult result = request_int(&requester);
+
     EXPECT_EQ(result.err, REQUEST_STATUS_OK);
     if(!result.err) {
         EXPECT_EQ(result.value, 42);
