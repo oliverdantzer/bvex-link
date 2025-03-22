@@ -25,6 +25,7 @@ add_library(bcp-fetch
     src/request_sample.c
     src/socket.c
     src/send_sample.c
+    src/command_server.c
 )
 
 target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
@@ -33,7 +34,7 @@ target_include_directories(bcp-fetch
     PUBLIC include
 )
 
-option(BCP_FETCH_TEST "Build test executable" OFF)
+option(BCP_FETCH_TEST "Build test executables" OFF)
 
 if(BCP_FETCH_TEST)
     message(STATUS "Test mode is ON")
@@ -43,29 +44,55 @@ if(BCP_FETCH_TEST)
         bcp-fetch PRIVATE DEBUG
     )
 
-    # Collect source files for the test executable
-    file(GLOB TEST_SOURCES 
-        "tests/*.c"
-        )
-
-    # Create the test executable target
-    add_executable(test ${TEST_SOURCES})
-
-    target_include_directories(test PRIVATE tests)
-
-    # Link telemetry-uplink
-    target_link_libraries(test PRIVATE nanopb::protobuf-nanopb-static bcp-fetch m)
-
     set(REQUEST_SERVER_ADDR "\"localhost\"")
     set(REQUEST_SERVER_PORT "\"8080\"")
     set(SAMPLE_SERVER_ADDR "\"localhost\"")
     set(SAMPLE_SERVER_PORT "\"3000\"")
-    target_compile_definitions(
-        test PRIVATE 
-            REQUEST_SERVER_ADDR=${REQUEST_SERVER_ADDR}
-            REQUEST_SERVER_PORT=${REQUEST_SERVER_PORT}
-            SAMPLE_SERVER_ADDR=${SAMPLE_SERVER_ADDR}
-            SAMPLE_SERVER_PORT=${SAMPLE_SERVER_PORT}
+
+    # Common test settings macro
+    macro(configure_test_executable target_name)
+        target_include_directories(${target_name} 
+            PRIVATE tests/common
+            PRIVATE tests/${target_name}
+        )
+        target_link_libraries(${target_name} PRIVATE nanopb::protobuf-nanopb-static bcp-fetch m)
+        target_compile_definitions(
+            ${target_name} PRIVATE 
+                REQUEST_SERVER_ADDR=${REQUEST_SERVER_ADDR}
+                REQUEST_SERVER_PORT=${REQUEST_SERVER_PORT}
+                SAMPLE_SERVER_ADDR=${SAMPLE_SERVER_ADDR}
+                SAMPLE_SERVER_PORT=${SAMPLE_SERVER_PORT}
+        )
+    endmacro()
+
+    # Test executable for request_sample
+    add_executable(request_sample
+        tests/request_sample/main.c
+        tests/common/common.c
     )
+    configure_test_executable(request_sample)
+
+    # Test executable for send_sample
+    add_executable(send_sample
+        tests/send_sample/main.c
+        tests/send_sample/test_loop.c
+        tests/common/common.c
+    )
+    configure_test_executable(send_sample)
+
+    # Test executable for command_server
+    add_executable(command_server
+        tests/command_server/main.c
+        tests/common/common.c
+    )
+    configure_test_executable(command_server)
+
+    # Test executable for command client
+    add_executable(command_client
+        tests/command_client/main.c
+        tests/command_client/test_client.c
+        tests/common/common.c
+    )
+    configure_test_executable(command_client)
 
 endif()

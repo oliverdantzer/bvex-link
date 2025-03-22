@@ -9,17 +9,17 @@
 #include <unistd.h>     // close
 
 #ifdef TEST_SOCK_PORT
-void print_ai_connected(struct sockaddr* addr, int family)
+void print_ai_connected(const struct sockaddr* addr, const int family)
 {
     char ipstr[INET6_ADDRSTRLEN];
-    void* ip_addr;
+    const void* ip_addr;
     int port;
     if(family == AF_INET) { // IPv4
-        struct sockaddr_in* ipv4 = (struct sockaddr_in*)addr;
+        const struct sockaddr_in* ipv4 = (const struct sockaddr_in*)addr;
         ip_addr = &(ipv4->sin_addr);
         port = ntohs(ipv4->sin_port);
     } else { // IPv6
-        struct sockaddr_in6* ipv6 = (struct sockaddr_in6*)addr;
+        const struct sockaddr_in6* ipv6 = (const struct sockaddr_in6*)addr;
         ip_addr = &(ipv6->sin6_addr);
         port = ntohs(ipv6->sin6_port);
     }
@@ -28,7 +28,7 @@ void print_ai_connected(struct sockaddr* addr, int family)
 }
 #endif
 
-int connected_udp_socket(char* node, char* service)
+int connected_udp_socket(const char* node, const char* service)
 {
     // --- GET LINKED LIST servinfo OF addrinfo STRUCTS CONTAINING
     // --- ADDRESS INFORMATION FOR node:service ---
