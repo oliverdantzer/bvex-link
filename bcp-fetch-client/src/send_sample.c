@@ -69,6 +69,9 @@ send_status_t send_sample_async(int socket_fd, const Sample sample)
 send_status_t send_sample_int32(int socket_fd, const char* metric_id,
                                 float timestamp, int32_t value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
@@ -86,6 +89,9 @@ send_status_t send_sample_int32(int socket_fd, const char* metric_id,
 send_status_t send_sample_int64(int socket_fd, const char* metric_id,
                                 float timestamp, int64_t value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
@@ -103,6 +109,9 @@ send_status_t send_sample_int64(int socket_fd, const char* metric_id,
 send_status_t send_sample_float(int socket_fd, const char* metric_id,
                                 float timestamp, float value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
@@ -120,6 +129,9 @@ send_status_t send_sample_float(int socket_fd, const char* metric_id,
 send_status_t send_sample_double(int socket_fd, const char* metric_id,
                                  float timestamp, double value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
@@ -137,6 +149,9 @@ send_status_t send_sample_double(int socket_fd, const char* metric_id,
 send_status_t send_sample_bool(int socket_fd, const char* metric_id,
                                float timestamp, bool value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
@@ -154,6 +169,9 @@ send_status_t send_sample_bool(int socket_fd, const char* metric_id,
 send_status_t send_sample_string(int socket_fd, const char* metric_id,
                                  float timestamp, const char* value)
 {
+    if(!metric_id || *metric_id == 0 || !value || *value == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
        strnlen(value, STRING_VALUE_MAX_SIZE) == STRING_VALUE_MAX_SIZE) {
@@ -174,6 +192,10 @@ send_status_t send_sample_file(int socket_fd, const char* metric_id,
                                float timestamp, const char* filepath,
                                const char* extension)
 {
+    if(!metric_id || *metric_id == 0 || !filepath || *filepath == 0 ||
+       !extension || *extension == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
     if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
        strnlen(filepath, FILE_PATH_MAX_SIZE) == FILE_PATH_MAX_SIZE ||
