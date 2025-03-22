@@ -39,12 +39,13 @@ if(BCP_FETCH_GTEST)
     add_executable(gtest
         gtest/connected_udp_socket.cpp
         gtest/send_sample.cpp
+        gtest/request_sample.cpp
         test_common/decode_sample.h
     )
     target_include_directories(gtest
         PRIVATE
             src/generated/nanopb
-            test_common/decode_sample.h
+            test_common
     )
     set_target_properties(gtest PROPERTIES LINKER_LANGUAGE CXX)
     target_link_libraries(gtest PRIVATE 
