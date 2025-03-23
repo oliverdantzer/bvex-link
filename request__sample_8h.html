@@ -99,7 +99,7 @@ $(function(){initNavTree('request__sample_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">request_sample.h File Reference</div></div>
 </div><!--header-->
@@ -145,26 +145,20 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the result of a double request.  <a href="structRequestDoubleResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a904ce9527a60e97963b0c13730f70e35" id="r_a904ce9527a60e97963b0c13730f70e35"><td class="memItemLeft" align="right" valign="top"><a id="a904ce9527a60e97963b0c13730f70e35" name="a904ce9527a60e97963b0c13730f70e35"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_SOCKET_CREATION</b>&#160;&#160;&#160;-1</td></tr>
-<tr class="separator:a904ce9527a60e97963b0c13730f70e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394161d112d9bbfaa502849046151bc6" id="r_a394161d112d9bbfaa502849046151bc6"><td class="memItemLeft" align="right" valign="top"><a id="a394161d112d9bbfaa502849046151bc6" name="a394161d112d9bbfaa502849046151bc6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_ENCODING_FAILED</b>&#160;&#160;&#160;-2</td></tr>
-<tr class="separator:a394161d112d9bbfaa502849046151bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba658a84cd51f4d3ffbffb3774e4314" id="r_a4ba658a84cd51f4d3ffbffb3774e4314"><td class="memItemLeft" align="right" valign="top"><a id="a4ba658a84cd51f4d3ffbffb3774e4314" name="a4ba658a84cd51f4d3ffbffb3774e4314"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_SEND_FAILED</b>&#160;&#160;&#160;-3</td></tr>
-<tr class="separator:a4ba658a84cd51f4d3ffbffb3774e4314"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a762b1f4242a1e461f788f6d5a6a9e781" id="r_a762b1f4242a1e461f788f6d5a6a9e781"><td class="memItemLeft" align="right" valign="top"><a id="a762b1f4242a1e461f788f6d5a6a9e781" name="a762b1f4242a1e461f788f6d5a6a9e781"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_RECV_FAILED</b>&#160;&#160;&#160;-4</td></tr>
-<tr class="separator:a762b1f4242a1e461f788f6d5a6a9e781"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb7cbdfa450905c30353611223d0802f" id="r_afb7cbdfa450905c30353611223d0802f"><td class="memItemLeft" align="right" valign="top"><a id="afb7cbdfa450905c30353611223d0802f" name="afb7cbdfa450905c30353611223d0802f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_DECODING_FAILED</b>&#160;&#160;&#160;-5</td></tr>
-<tr class="separator:afb7cbdfa450905c30353611223d0802f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae830790f91d9f11962d375097a7fa4f4" id="r_ae830790f91d9f11962d375097a7fa4f4"><td class="memItemLeft" align="right" valign="top"><a id="ae830790f91d9f11962d375097a7fa4f4" name="ae830790f91d9f11962d375097a7fa4f4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERR_INVALID_RESPONSE_TYPE</b>&#160;&#160;&#160;-6</td></tr>
-<tr class="separator:ae830790f91d9f11962d375097a7fa4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ae294f7983f9a28dcda0a4e0622b49e72" id="r_ae294f7983f9a28dcda0a4e0622b49e72"><td class="memItemLeft" align="right" valign="top"><a id="ae294f7983f9a28dcda0a4e0622b49e72" name="ae294f7983f9a28dcda0a4e0622b49e72"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>request_status_t</b> { <br />
+&#160;&#160;<b>REQUEST_STATUS_OK</b> = 0
+, <b>REQUEST_STATUS_SOCKET_CREATION_ERROR</b> = -1
+, <b>REQUEST_STATUS_ENCODING_ERROR</b> = -2
+, <b>REQUEST_STATUS_SEND_ERROR</b> = -3
+, <br />
+&#160;&#160;<b>REQUEST_STATUS_RECV_ERROR</b> = -4
+, <b>REQUEST_STATUS_DECODING_ERROR</b> = -5
+, <b>REQUEST_STATUS_INVALID_RESPONSE_TYPE</b> = -6
+<br />
+ }</td></tr>
+<tr class="separator:ae294f7983f9a28dcda0a4e0622b49e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -210,8 +204,8 @@ Functions</h2></td></tr>
 <div class="ttc" id="arequest__sample_8h_html"><div class="ttname"><a href="request__sample_8h.html">request_sample.h</a></div><div class="ttdoc">API to request sample data from the onboard server.</div></div>
 <div class="ttc" id="arequest__sample_8h_html_a6f35717ba1b13b08fb2b56685145b2c4"><div class="ttname"><a href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(const Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_ae8867a0791f746be48a7ddd0906462a9"><div class="ttname"><a href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a></div><div class="ttdeci">Requester make_requester(const char *metric_id, const char *node, const char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:172</div></div>
-<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:44</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:179</div></div>
+<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:51</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae8867a0791f746be48a7ddd0906462a9" name="ae8867a0791f746be48a7ddd0906462a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8867a0791f746be48a7ddd0906462a9">&#9670;&#160;</a></span>make_requester()</h2>
@@ -321,7 +315,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a66cac95d7c69e68a89dbf6840dd266e0"><div class="ttname"><a href="#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a></div><div class="ttdeci">RequestFloatResult request_float(const Requester *reqr)</div><div class="ttdoc">Sends a request for a float value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:143</div></div>
+<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:150</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -355,7 +349,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a89c2ec9483476654344d0f6fe45f579b"><div class="ttname"><a href="#a89c2ec9483476654344d0f6fe45f579b">request_int</a></div><div class="ttdeci">RequestIntResult request_int(const Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:89</div></div>
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:96</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -389,7 +383,7 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a5e7ce227a7015915387f22506ab8de26"><div class="ttname"><a href="#a5e7ce227a7015915387f22506ab8de26">request_string</a></div><div class="ttdeci">RequestStringResult request_string(const Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:116</div></div>
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:123</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
