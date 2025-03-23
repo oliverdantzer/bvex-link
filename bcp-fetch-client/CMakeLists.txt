@@ -40,6 +40,7 @@ if(BCP_FETCH_GTEST)
         gtest/connected_udp_socket.cpp
         gtest/send_sample.cpp
         gtest/request_sample.cpp
+        gtest/command_server.cpp
         test_common/decode_sample.h
     )
     target_include_directories(gtest
