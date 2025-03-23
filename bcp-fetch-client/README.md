@@ -28,6 +28,14 @@ pip install protobuf grpcio-tools
 ~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/generated/nanopb primitive.proto sample.proto request.proto response.proto
 ```
 
+## Run unit tests
+
+```bash
+cmake --preset=debug
+cmake --build build
+./build/gtest
+```
+
 ## Manual testing
 First, run the onboard server, then build the library with tests:
 ```bash
