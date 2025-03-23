@@ -33,158 +33,148 @@ send_status_t send_sample(int socket_fd, const Sample message)
     }
     return 0;
 }
-
-void* send_sample_one_arg(void* arg)
-{
-    const send_sample_data_t* data = (const send_sample_data_t*)arg;
-    send_sample(data->socket_fd, data->sample);
-    free((void*)data); // Free the allocated data after sending
-    return NULL;
-}
-
-send_status_t send_sample_async(int socket_fd, const Sample sample)
-{
-    send_sample_data_t* temp_data = malloc(sizeof(send_sample_data_t));
-    if(temp_data == NULL) {
-#ifdef DEBUG
-        fprintf(stderr, "Memory allocation failed for temp_data.\n");
-#endif
-        return SEND_STATUS_MEMORY_ALLOCATION_ERROR;
-    }
-    temp_data->socket_fd = socket_fd;
-    temp_data->sample = sample;
-    pthread_t temp_thread;
-    int rc = pthread_create(&temp_thread, NULL, send_sample_one_arg, temp_data);
-    if(rc != 0) {
-#ifdef DEBUG
-        fprintf(stderr, "Failed to create temp_thread: %d\n", rc);
-#endif
-        free(temp_data); // Free temp_data if thread creation fails
-        return SEND_STATUS_THREAD_CREATION_ERROR;
-    }
-    pthread_detach(temp_thread); // Detach thread to let it run independently
-    return SEND_STATUS_OK;
-}
-
 send_status_t send_sample_int32(int socket_fd, const char* metric_id,
                                 float timestamp, int32_t value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_int_val_tag;
     sample.data.primitive.value.int_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_int64(int socket_fd, const char* metric_id,
                                 float timestamp, int64_t value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_long_val_tag;
     sample.data.primitive.value.long_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_float(int socket_fd, const char* metric_id,
                                 float timestamp, float value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_float_val_tag;
     sample.data.primitive.value.float_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_double(int socket_fd, const char* metric_id,
                                  float timestamp, double value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_double_val_tag;
     sample.data.primitive.value.double_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_bool(int socket_fd, const char* metric_id,
                                float timestamp, bool value)
 {
+    if(!metric_id || *metric_id == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_bool_val_tag;
     sample.data.primitive.value.bool_val = value;
-    return send_sample_async(socket_fd, sample);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_string(int socket_fd, const char* metric_id,
                                  float timestamp, const char* value)
 {
+    if(!metric_id || *metric_id == 0 || !value || *value == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
-       strlen(value) >= sizeof(((Sample*)0)->data.primitive.value.string_val)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
+       strnlen(value, STRING_VALUE_MAX_SIZE) == STRING_VALUE_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_primitive_tag;
     sample.data.primitive.which_value = primitive_Primitive_string_val_tag;
-    strcpy(sample.data.primitive.value.string_val, value);
-    return send_sample_async(socket_fd, sample);
+    strlcpy(sample.data.primitive.value.string_val, value,
+            STRING_VALUE_MAX_SIZE);
+    return send_sample(socket_fd, sample);
 }
 
 send_status_t send_sample_file(int socket_fd, const char* metric_id,
                                float timestamp, const char* filepath,
                                const char* extension)
 {
+    if(!metric_id || *metric_id == 0 || !filepath || *filepath == 0 ||
+       !extension || *extension == 0) {
+        return SEND_STATUS_ENCODING_ERROR;
+    }
 #ifdef BCP_FETCH_BOUNDS_CHECKING
-    if(strlen(metric_id) >= sizeof(((Sample*)0)->metric_id) ||
-       strlen(filepath) >= sizeof(((Sample*)0)->data.file.filepath) ||
-       strlen(extension) >= sizeof(((Sample*)0)->data.file.extension)) {
+    if(strnlen(metric_id, METRIC_ID_MAX_SIZE) == METRIC_ID_MAX_SIZE ||
+       strnlen(filepath, FILE_PATH_MAX_SIZE) == FILE_PATH_MAX_SIZE ||
+       strnlen(extension, EXTENSION_MAX_SIZE) == EXTENSION_MAX_SIZE) {
         return BOUNDS_CHECK_ERROR;
     }
 #endif
     Sample sample = Sample_init_zero;
-    strcpy(sample.metric_id, metric_id);
+    strlcpy(sample.metric_id, metric_id, METRIC_ID_MAX_SIZE);
     sample.timestamp = timestamp;
     sample.which_data = Sample_file_tag;
-    strcpy(sample.data.file.filepath, filepath);
-    strcpy(sample.data.file.extension, extension);
-    return send_sample_async(socket_fd, sample);
+    strlcpy(sample.data.file.filepath, filepath, FILE_PATH_MAX_SIZE);
+    strlcpy(sample.data.file.extension, extension, EXTENSION_MAX_SIZE);
+    return send_sample(socket_fd, sample);
 }

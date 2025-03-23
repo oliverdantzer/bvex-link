@@ -5,7 +5,7 @@
  * This header provides a function to create a UDP socket that are
  * connected to a specific endpoint. This should be used to create a
  * socket for the send sample functions in send_sample.h.
- * 
+ *
  * ### Example usage
  * @code
  * #include <stdio.h>
@@ -37,6 +37,12 @@
  * @endcode
  */
 
+#pragma once
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Makes UDP socket, connects to node:service, and returns socket file
  * descriptor.
@@ -55,3 +61,7 @@
  * descriptor.
  */
 int connected_udp_socket(const char* node, const char* service);
+
+#ifdef __cplusplus
+}
+#endif

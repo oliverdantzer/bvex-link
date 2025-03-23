@@ -111,6 +111,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <netinet/in.h>
 #include <pthread.h>
 #include <sys/socket.h>
@@ -176,3 +180,7 @@ int command_server_broadcast(const command_server_t* server,
  * @param server Pointer to the command server
  */
 void command_server_destroy(command_server_t* server);
+
+#ifdef __cplusplus
+}
+#endif

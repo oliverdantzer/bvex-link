@@ -25,6 +25,10 @@
  *  @endcode
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -140,3 +144,7 @@ send_status_t send_sample_string(int socket_fd, const char* metric_id,
 send_status_t send_sample_file(int socket_fd, const char* metric_id,
                                float timestamp, const char* filepath,
                                const char* extension);
+
+#ifdef __cplusplus
+}
+#endif
