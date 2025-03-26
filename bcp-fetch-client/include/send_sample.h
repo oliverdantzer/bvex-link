@@ -32,6 +32,10 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+/**
+ * @example gtest/send_sample.cpp
+ */
+
 typedef enum {
     SEND_STATUS_OK = 0,
     SEND_STATUS_ENCODING_ERROR,

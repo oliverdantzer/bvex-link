@@ -35,6 +35,10 @@ extern "C" {
 #include "../src/generated/nanopb/request.pb.h"
 #include "../src/generated/nanopb/response.pb.h"
 
+/**
+ * @example gtest/request_sample.cpp
+ */
+
 typedef enum {
     REQUEST_STATUS_OK = 0,
     REQUEST_STATUS_SOCKET_CREATION_ERROR = -1,

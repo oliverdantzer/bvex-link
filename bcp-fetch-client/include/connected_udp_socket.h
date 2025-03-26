@@ -44,6 +44,10 @@ extern "C" {
 #endif
 
 /**
+ * @example gtest/connected_udp_socket.cpp
+ */
+
+/**
  * @brief Makes UDP socket, connects to node:service, and returns socket file
  * descriptor.
  *
