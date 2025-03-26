@@ -109,84 +109,84 @@ $(function(){initNavTree('request__sample_8h_source.html',''); initResizable(tru
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;../src/generated/nanopb/request.pb.h&quot;</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;../src/generated/nanopb/response.pb.h&quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    REQUEST_STATUS_OK = 0,</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    REQUEST_STATUS_SOCKET_CREATION_ERROR = -1,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    REQUEST_STATUS_ENCODING_ERROR = -2,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    REQUEST_STATUS_SEND_ERROR = -3,</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    REQUEST_STATUS_RECV_ERROR = -4,</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    REQUEST_STATUS_DECODING_ERROR = -5,</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    REQUEST_STATUS_INVALID_RESPONSE_TYPE = -6</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} request_status_t;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="};">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structRequester.html">   51</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">int</span> socket_fd;         <span class="comment">// Socket file descriptor</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id; <span class="comment">// Metric ID</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <a class="code hl_struct" href="structRequester.html">Requester</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    REQUEST_STATUS_OK = 0,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    REQUEST_STATUS_SOCKET_CREATION_ERROR = -1,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    REQUEST_STATUS_ENCODING_ERROR = -2,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    REQUEST_STATUS_SEND_ERROR = -3,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    REQUEST_STATUS_RECV_ERROR = -4,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    REQUEST_STATUS_DECODING_ERROR = -5,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    REQUEST_STATUS_INVALID_RESPONSE_TYPE = -6</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} request_status_t;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structRequester.html">   55</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordtype">int</span> socket_fd;         <span class="comment">// Socket file descriptor</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id; <span class="comment">// Metric ID</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <a class="code hl_struct" href="structRequester.html">Requester</a>;</div>
 </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="{" data-end="};">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="structMakeRequesterArgs.html">   59</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id; <span class="comment">// Metric ID</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* node;      <span class="comment">// Node address</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* service;   <span class="comment">// Service address</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <a class="code hl_struct" href="structMakeRequesterArgs.html">MakeRequesterArgs</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="};">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="structMakeRequesterArgs.html">   63</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id; <span class="comment">// Metric ID</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* node;      <span class="comment">// Node address</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* service;   <span class="comment">// Service address</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <a class="code hl_struct" href="structMakeRequesterArgs.html">MakeRequesterArgs</a>;</div>
 </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9">   90</a></span><a class="code hl_struct" href="structRequester.html">Requester</a> <a class="code hl_function" href="request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9">make_requester</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id, <span class="keyword">const</span> <span class="keywordtype">char</span>* node,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                         <span class="keyword">const</span> <span class="keywordtype">char</span>* service);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="foldopen" id="foldopen00096" data-start="{" data-end="};">
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="structRequestIntResult.html">   96</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    request_status_t err; <span class="comment">// Error code</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">int</span> value;            <span class="comment">// Integer value</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>} <a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9">   94</a></span><a class="code hl_struct" href="structRequester.html">Requester</a> <a class="code hl_function" href="request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9">make_requester</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* metric_id, <span class="keyword">const</span> <span class="keywordtype">char</span>* node,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                         <span class="keyword">const</span> <span class="keywordtype">char</span>* service);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="structRequestIntResult.html">  100</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    request_status_t err; <span class="comment">// Error code</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">int</span> value;            <span class="comment">// Integer value</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>} <a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a>;</div>
 </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b">  118</a></span><a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a> <a class="code hl_function" href="request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b">request_int</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="};">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="structRequestStringResult.html">  123</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    request_status_t err; <span class="comment">// Error code</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">char</span>* value;          <span class="comment">// String value</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>} <a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b">  122</a></span><a class="code hl_struct" href="structRequestIntResult.html">RequestIntResult</a> <a class="code hl_function" href="request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b">request_int</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="};">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="structRequestStringResult.html">  127</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    request_status_t err; <span class="comment">// Error code</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordtype">char</span>* value;          <span class="comment">// String value</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>} <a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a>;</div>
 </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26">  145</a></span><a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a> <a class="code hl_function" href="request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26">request_string</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="foldopen" id="foldopen00150" data-start="{" data-end="};">
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="structRequestFloatResult.html">  150</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    request_status_t err; <span class="comment">// Error code</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordtype">double</span> value;         <span class="comment">// Float value</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>} <a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26">  149</a></span><a class="code hl_struct" href="structRequestStringResult.html">RequestStringResult</a> <a class="code hl_function" href="request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26">request_string</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="};">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="structRequestFloatResult.html">  154</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    request_status_t err; <span class="comment">// Error code</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordtype">double</span> value;         <span class="comment">// Float value</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>} <a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a>;</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0">  174</a></span><a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a> <a class="code hl_function" href="request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="foldopen" id="foldopen00179" data-start="{" data-end="};">
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="structRequestDoubleResult.html">  179</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    request_status_t err; <span class="comment">// Error code</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordtype">double</span> value;         <span class="comment">// Double value</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>} <a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a>;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0">  178</a></span><a class="code hl_struct" href="structRequestFloatResult.html">RequestFloatResult</a> <a class="code hl_function" href="request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="foldopen" id="foldopen00183" data-start="{" data-end="};">
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="structRequestDoubleResult.html">  183</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    request_status_t err; <span class="comment">// Error code</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordtype">double</span> value;         <span class="comment">// Double value</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>} <a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a>;</div>
 </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4">  203</a></span><a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> <a class="code hl_function" href="request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>}</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4">  207</a></span><a class="code hl_struct" href="structRequestDoubleResult.html">RequestDoubleResult</a> <a class="code hl_function" href="request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structRequester.html">Requester</a>* reqr);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="arequest__sample_8h_html_a5e7ce227a7015915387f22506ab8de26"><div class="ttname"><a href="request__sample_8h.html#a5e7ce227a7015915387f22506ab8de26">request_string</a></div><div class="ttdeci">RequestStringResult request_string(const Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_a66cac95d7c69e68a89dbf6840dd266e0"><div class="ttname"><a href="request__sample_8h.html#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a></div><div class="ttdeci">RequestFloatResult request_float(const Requester *reqr)</div><div class="ttdoc">Sends a request for a float value sample from the metric id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_a6f35717ba1b13b08fb2b56685145b2c4"><div class="ttname"><a href="request__sample_8h.html#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(const Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_a89c2ec9483476654344d0f6fe45f579b"><div class="ttname"><a href="request__sample_8h.html#a89c2ec9483476654344d0f6fe45f579b">request_int</a></div><div class="ttdeci">RequestIntResult request_int(const Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_ae8867a0791f746be48a7ddd0906462a9"><div class="ttname"><a href="request__sample_8h.html#ae8867a0791f746be48a7ddd0906462a9">make_requester</a></div><div class="ttdeci">Requester make_requester(const char *metric_id, const char *node, const char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div></div>
-<div class="ttc" id="astructMakeRequesterArgs_html"><div class="ttname"><a href="structMakeRequesterArgs.html">MakeRequesterArgs</a></div><div class="ttdoc">Structure to hold arguments for making a requester.</div><div class="ttdef"><b>Definition</b> request_sample.h:59</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:179</div></div>
-<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:150</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:96</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:123</div></div>
-<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:51</div></div>
+<div class="ttc" id="astructMakeRequesterArgs_html"><div class="ttname"><a href="structMakeRequesterArgs.html">MakeRequesterArgs</a></div><div class="ttdoc">Structure to hold arguments for making a requester.</div><div class="ttdef"><b>Definition</b> request_sample.h:63</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:183</div></div>
+<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:154</div></div>
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:100</div></div>
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:127</div></div>
+<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:55</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

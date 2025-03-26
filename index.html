@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BCP Telemetry Client: Main Page</title>
+<title>BCP Telemetry Client: BCP Fetch</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,10 +96,59 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">BCP Telemetry Client Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">BCP Fetch </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a></p>
+<p>Provides a C library for sending and requesting data. Intended to be consumed by <a href="https://github.com/fissellab/bcp">BVEX's onboard computer code</a>.</p>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Building</h1>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Requirements</h2>
+<ul>
+<li><code>vcpkg</code>, <code>$VCPKG_ROOT</code> defined</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Steps</h2>
+<ul>
+<li><code>vcpkg install</code></li>
+<li><code>cmake --preset=vcpkg</code></li>
+<li><code>cmake --build build</code></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Consuming bcp-fetch</h1>
+<ul>
+<li>Requires transitive dependency <code>nanopb</code></li>
+<li>Easiest way to do this is with <code>vcpkg</code> and <code>cmake</code><ul>
+<li><a href="https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-bash">Integrate consumer project with vcpkg</a> and add <code>nanopb</code> to your manifest dependencies</li>
+<li>Add this project's directory with <code>add_subdirectory</code></li>
+<li>You can now link <code>bcp-fetch</code> to your targets</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Generating new nanopb headers</h1>
+<div class="fragment"><div class="line">pip install protobuf grpcio-tools</div>
+</div><!-- fragment --> <div class="fragment"><div class="line">~/devtools/nanopb/generator/nanopb_generator.py --output-dir=./src/generated/nanopb primitive.proto sample.proto request.proto response.proto</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md9"></a>
+Run unit tests</h1>
+<div class="fragment"><div class="line">cmake --preset=debug</div>
+<div class="line">cmake --build build</div>
+<div class="line">./build/gtest</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+Manual testing</h1>
+<p>First, run the onboard server, then build the library with tests: </p><div class="fragment"><div class="line">cmake --preset=debug</div>
+<div class="line">cmake --build build</div>
+</div><!-- fragment --><p>Test sample sending: </p><div class="fragment"><div class="line">./build/test sample testfloat float 12.0</div>
+<div class="line">./build/test sample teststring string hello</div>
+<div class="line">./build/test sample teststring file /home/oliver/dev/bvex-link/test-samples/boat.png png</div>
+</div><!-- fragment --><p>Test requests sending: </p><div class="fragment"><div class="line">./build/test sample testfloat float 12.0</div>
+<div class="line">./build/test request testfloat float</div>
+<div class="line"> </div>
+<div class="line">./build/test sample teststring string hello</div>
+<div class="line">./build/test request teststring string</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

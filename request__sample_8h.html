@@ -204,8 +204,8 @@ Functions</h2></td></tr>
 <div class="ttc" id="arequest__sample_8h_html"><div class="ttname"><a href="request__sample_8h.html">request_sample.h</a></div><div class="ttdoc">API to request sample data from the onboard server.</div></div>
 <div class="ttc" id="arequest__sample_8h_html_a6f35717ba1b13b08fb2b56685145b2c4"><div class="ttname"><a href="#a6f35717ba1b13b08fb2b56685145b2c4">request_double</a></div><div class="ttdeci">RequestDoubleResult request_double(const Requester *reqr)</div><div class="ttdoc">Sends a request for a double value sample from the metric id of reqr from the server reqr....</div></div>
 <div class="ttc" id="arequest__sample_8h_html_ae8867a0791f746be48a7ddd0906462a9"><div class="ttname"><a href="#ae8867a0791f746be48a7ddd0906462a9">make_requester</a></div><div class="ttdeci">Requester make_requester(const char *metric_id, const char *node, const char *service)</div><div class="ttdoc">Creates a requester. Used by functions like request_int to specify endpoint and metric ID to request ...</div></div>
-<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:179</div></div>
-<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:51</div></div>
+<div class="ttc" id="astructRequestDoubleResult_html"><div class="ttname"><a href="structRequestDoubleResult.html">RequestDoubleResult</a></div><div class="ttdoc">Structure to hold the result of a double request.</div><div class="ttdef"><b>Definition</b> request_sample.h:183</div></div>
+<div class="ttc" id="astructRequester_html"><div class="ttname"><a href="structRequester.html">Requester</a></div><div class="ttdoc">Structure to hold requester information.</div><div class="ttdef"><b>Definition</b> request_sample.h:55</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae8867a0791f746be48a7ddd0906462a9" name="ae8867a0791f746be48a7ddd0906462a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8867a0791f746be48a7ddd0906462a9">&#9670;&#160;</a></span>make_requester()</h2>
@@ -250,6 +250,8 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use altitudeRequester</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Threading multiple requests to the same <a class="el" href="structRequester.html" title="Structure to hold requester information.">Requester</a> is not recommended. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="gtest_2request_sample_8cpp-example.html#a1">gtest/request_sample.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -282,7 +284,9 @@ Functions</h2></td></tr>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="gtest_2request_sample_8cpp-example.html#a12">gtest/request_sample.cpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 <a id="a66cac95d7c69e68a89dbf6840dd266e0" name="a66cac95d7c69e68a89dbf6840dd266e0"></a>
@@ -315,8 +319,10 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a66cac95d7c69e68a89dbf6840dd266e0"><div class="ttname"><a href="#a66cac95d7c69e68a89dbf6840dd266e0">request_float</a></div><div class="ttdeci">RequestFloatResult request_float(const Requester *reqr)</div><div class="ttdoc">Sends a request for a float value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:150</div></div>
-</div><!-- fragment --> 
+<div class="ttc" id="astructRequestFloatResult_html"><div class="ttname"><a href="structRequestFloatResult.html">RequestFloatResult</a></div><div class="ttdoc">Structure to hold the result of a float request.</div><div class="ttdef"><b>Definition</b> request_sample.h:154</div></div>
+</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="gtest_2request_sample_8cpp-example.html#a8">gtest/request_sample.cpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 <a id="a89c2ec9483476654344d0f6fe45f579b" name="a89c2ec9483476654344d0f6fe45f579b"></a>
@@ -349,8 +355,10 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a89c2ec9483476654344d0f6fe45f579b"><div class="ttname"><a href="#a89c2ec9483476654344d0f6fe45f579b">request_int</a></div><div class="ttdeci">RequestIntResult request_int(const Requester *reqr)</div><div class="ttdoc">Sends requests an integer value sample from the metrid id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:96</div></div>
-</div><!-- fragment --> 
+<div class="ttc" id="astructRequestIntResult_html"><div class="ttname"><a href="structRequestIntResult.html">RequestIntResult</a></div><div class="ttdoc">Structure to hold the result of an integer request.</div><div class="ttdef"><b>Definition</b> request_sample.h:100</div></div>
+</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="gtest_2request_sample_8cpp-example.html#a4">gtest/request_sample.cpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 <a id="a5e7ce227a7015915387f22506ab8de26" name="a5e7ce227a7015915387f22506ab8de26"></a>
@@ -383,8 +391,10 @@ Functions</h2></td></tr>
 <div class="line">   <span class="comment">// use result.value</span></div>
 <div class="line">}</div>
 <div class="ttc" id="arequest__sample_8h_html_a5e7ce227a7015915387f22506ab8de26"><div class="ttname"><a href="#a5e7ce227a7015915387f22506ab8de26">request_string</a></div><div class="ttdeci">RequestStringResult request_string(const Requester *reqr)</div><div class="ttdoc">Sends a request for a string value sample from the metric id of reqr from the server reqr....</div></div>
-<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:123</div></div>
-</div><!-- fragment --> 
+<div class="ttc" id="astructRequestStringResult_html"><div class="ttname"><a href="structRequestStringResult.html">RequestStringResult</a></div><div class="ttdoc">Structure to hold the result of a string request.</div><div class="ttdef"><b>Definition</b> request_sample.h:127</div></div>
+</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="gtest_2request_sample_8cpp-example.html#a16">gtest/request_sample.cpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 </div><!-- contents -->
