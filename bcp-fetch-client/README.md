@@ -1,5 +1,7 @@
 # BCP Fetch
 
+Provides a C library for sending and requesting data. Intended to be consumed by [BVEX's onboard computer code](https://github.com/fissellab/bcp).
+
 ## Building
 
 ### Requirements
@@ -12,13 +14,13 @@
 - `cmake --preset=vcpkg`
 - `cmake --build build`
 
-## Consuming `telemetry-uplink` library
+## Consuming bcp-fetch
 
 - Requires transitive dependency `nanopb`
 - Easiest way to do this is with `vcpkg` and `cmake`
     - [Integrate consumer project with vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-bash) and add `nanopb` to your manifest dependencies
     - Add this project's directory with `add_subdirectory`
-    - You can now link `telemetry-uplink` to your targets
+    - You can now link `bcp-fetch` to your targets
 
 ## Generating new nanopb headers
 ```bash

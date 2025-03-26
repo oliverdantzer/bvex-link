@@ -109,6 +109,10 @@
  * @endcode
  */
 
+/**
+ * @example gtest/command_server.cpp
+ */
+
 #pragma once
 
 #ifdef __cplusplus

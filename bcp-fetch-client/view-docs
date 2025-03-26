@@ -21,4 +21,6 @@ fi
 doxygen
 
 # Open the generated index.html file in the default web browser
-xdg-open "$DOCS_DIR/index.html"
+if [ "$1" = "open" ]; then
+    xdg-open "$DOCS_DIR/index.html"
+fi
