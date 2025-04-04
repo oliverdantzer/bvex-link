@@ -134,7 +134,10 @@ RequestIntResult request_int(const Requester* reqr)
     RequestResult request_result = request((Requester*)reqr);
     if(request_result.err) {
         result.err = request_result.err;
-    } else if(request_result.response.primitive.which_value !=
+        return result;
+    }
+    
+    if(request_result.response.primitive.which_value !=
               primitive_Primitive_int_val_tag) {
 #ifdef DEBUG
         fprintf(stderr, "Invalid response type.\n");
@@ -143,9 +146,11 @@ RequestIntResult request_int(const Requester* reqr)
                     request_result.response.primitive.which_value));
 #endif
         result.err = REQUEST_STATUS_INVALID_RESPONSE_TYPE;
-    } else {
-        result.value = request_result.response.primitive.value.int_val;
+        return result;
     }
+
+    result.err = REQUEST_STATUS_OK;
+    result.value = request_result.response.primitive.value.int_val;
     return result;
 }
 
@@ -172,6 +177,7 @@ RequestFloatResult request_float(const Requester* reqr)
     }
 
     result.value = request_result.response.primitive.value.float_val;
+    result.err = REQUEST_STATUS_OK;
     return result;
 }
 
@@ -198,6 +204,7 @@ RequestDoubleResult request_double(const Requester* reqr)
     }
 
     result.value = request_result.response.primitive.value.double_val;
+    result.err = REQUEST_STATUS_OK;
     return result;
 }
 
@@ -224,5 +231,6 @@ RequestStringResult request_string(const Requester* reqr)
     }
 
     result.value = strdup(request_result.response.primitive.value.string_val);
+    result.err = REQUEST_STATUS_OK;
     return result;
 }
