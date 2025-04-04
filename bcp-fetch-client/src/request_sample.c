@@ -100,6 +100,7 @@ RequestResult request(Requester* reqr)
     }
 
     result.response = response;
+    result.err = REQUEST_STATUS_OK;
     return result;
 }
 
