@@ -40,9 +40,7 @@ typedef enum {
     SEND_STATUS_OK = 0,
     SEND_STATUS_ENCODING_ERROR,
     SEND_STATUS_SEND_ERROR,
-    SEND_STATUS_MEMORY_ALLOCATION_ERROR,
-    SEND_STATUS_THREAD_CREATION_ERROR,
-    BOUNDS_CHECK_ERROR,
+    SEND_STATUS_INVALID_PARAMETER,  /**< Returned when a parameter is invalid (e.g. null string, empty string, or string exceeds size limits) */
 } send_status_t;
 
 #define STRING_VALUE_MAX_SIZE 4096
@@ -54,8 +52,8 @@ typedef enum {
  * @brief Sends an int32_t sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
- * METRIC_ID_MAX_SIZE.
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
+ * METRIC_ID_MAX_SIZE. Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
  * @param timestamp The timestamp of the sample.
  * @param value The int32_t value to send.
  * @return send_status_t Status code indicating success or type of error.
@@ -67,7 +65,7 @@ send_status_t send_sample_int32(int socket_fd, const char* metric_id,
  * @brief Sends an int64_t sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The int64_t value to send.
@@ -80,7 +78,7 @@ send_status_t send_sample_int64(int socket_fd, const char* metric_id,
  * @brief Sends a float sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The float value to send.
@@ -93,7 +91,7 @@ send_status_t send_sample_float(int socket_fd, const char* metric_id,
  * @brief Sends a double sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The double value to send.
@@ -106,7 +104,7 @@ send_status_t send_sample_double(int socket_fd, const char* metric_id,
  * @brief Sends a boolean sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
  * METRIC_ID_MAX_SIZE.
  * @param timestamp The timestamp of the sample.
  * @param value The boolean value to send.
@@ -121,11 +119,11 @@ send_status_t send_sample_bool(int socket_fd, const char* metric_id,
  * @note The string value must have a null terminator.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
- * METRIC_ID_MAX_SIZE.
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
+ * METRIC_ID_MAX_SIZE. Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
  * @param timestamp The timestamp of the sample.
- * @param value The string value to send. Must be less than
- * STRING_VALUE_MAX_SIZE.
+ * @param value The string value to send. Must be non-null, non-empty, and less than
+ * STRING_VALUE_MAX_SIZE. Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
  * @return send_status_t Status code indicating success or type of error.
  */
 send_status_t send_sample_string(int socket_fd, const char* metric_id,
@@ -135,12 +133,13 @@ send_status_t send_sample_string(int socket_fd, const char* metric_id,
  * @brief Sends a file sample.
  *
  * @param socket_fd The socket file descriptor.
- * @param metric_id The identifier for the metric. Must be less than
- * METRIC_ID_MAX_SIZE.
+ * @param metric_id The identifier for the metric. Must be non-null, non-empty, and less than
+ * METRIC_ID_MAX_SIZE. Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
  * @param timestamp The timestamp of the sample.
- * @param filepath The path to the file to send. Must be less than
- * FILE_PATH_MAX_SIZE.
- * @param extension The file extension. Must be less than EXTENSION_MAX_SIZE.
+ * @param filepath The path to the file to send. Must be non-null, non-empty, and less than
+ * FILE_PATH_MAX_SIZE. Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
+ * @param extension The file extension. Must be non-null, non-empty, and less than EXTENSION_MAX_SIZE.
+ * Returns SEND_STATUS_INVALID_PARAMETER if these conditions are not met.
  * @return send_status_t Status code indicating success or type of error.
  */
 send_status_t send_sample_file(int socket_fd, const char* metric_id,

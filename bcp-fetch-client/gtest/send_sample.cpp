@@ -269,5 +269,5 @@ TEST_F(SendSampleTest, InvalidSocket)
 TEST_F(SendSampleTest, NullMetricId)
 {
     send_status_t status = send_sample_int32(client_fd, nullptr, 1234.5f, 42);
-    EXPECT_EQ(status, SEND_STATUS_ENCODING_ERROR);
+    EXPECT_EQ(status, SEND_STATUS_INVALID_PARAMETER);
 }

@@ -16,13 +16,16 @@ add_library(bcp-fetch
     src/generated/nanopb/response.pb.c
     src/request_sample.c
     src/socket.c
+    src/sample.c
     src/send_sample.c
     src/command_server.c
 )
 
 target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
 target_include_directories(bcp-fetch
-    PRIVATE src/generated/nanopb
+    PRIVATE
+        src/generated/nanopb
+        src
     PUBLIC include
 )
 
