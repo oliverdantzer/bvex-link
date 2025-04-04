@@ -113,16 +113,22 @@ int main(int argc, char** argv)
         const char* value = argv[4];
 
         if(strcmp(type, "float") == 0) {
-            send_sample_float(socket_fd, id, timestamp, strtof(value, NULL));
+            sample_sender_float_t* sender = make_sample_sender_float((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            send_float(sender, timestamp, strtof(value, NULL));
+            destroy_sample_sender((sample_sender_t*)sender);
         } else if(strcmp(type, "string") == 0) {
-            send_sample_string(socket_fd, id, timestamp, value);
+            sample_sender_string_t* sender = make_sample_sender_string((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            send_string(sender, timestamp, value);
+            destroy_sample_sender((sample_sender_t*)sender);
         } else if(strcmp(type, "file") == 0) {
             if(argc < 6) {
                 printf("Error: file type requires extension argument\n");
                 close(socket_fd);
                 return 1;
             }
-            send_sample_file(socket_fd, id, timestamp, value, argv[5]);
+            sample_sender_file_t* sender = make_sample_sender_file((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            send_file(sender, timestamp, value, argv[5]);
+            destroy_sample_sender((sample_sender_t*)sender);
         } else {
             printf("Error: unknown type '%s'\n", type);
             close(socket_fd);

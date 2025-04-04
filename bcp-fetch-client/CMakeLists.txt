@@ -16,8 +16,9 @@ add_library(bcp-fetch
     src/generated/nanopb/response.pb.c
     src/request_sample.c
     src/socket.c
-    src/sample.c
-    src/send_sample.c
+    src/send_sample/sample_sender.c
+    src/send_sample/primitive_sender.c
+    src/send_sample/file_sender.c
     src/command_server.c
 )
 
