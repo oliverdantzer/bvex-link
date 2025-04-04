@@ -2,17 +2,12 @@ cmake_minimum_required(VERSION 3.24)
 
 project(controller-sim VERSION 1.0 LANGUAGES C CXX)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(nanopb CONFIG REQUIRED)
-
-option(BCP_FETCH_DISABLE_BOUNDS_CHECKING "Disable bounds checking for better performance (not recommended for development)" OFF)
-IF(NOT BCP_FETCH_DISABLE_BOUNDS_CHECKING)
-    add_definitions(-DBCP_FETCH_BOUNDS_CHECKING)
-ENDIF()
 
 add_library(bcp-fetch
     src/generated/nanopb/sample.pb.c
@@ -57,7 +52,6 @@ if(BCP_FETCH_GTEST)
         # GTest::gmock
         # GTest::gmock_main
     )
-    target_compile_definitions(gtest PRIVATE BCP_FETCH_BOUNDS_CHECKING)
 
     include(GoogleTest)
     gtest_discover_tests(gtest)
