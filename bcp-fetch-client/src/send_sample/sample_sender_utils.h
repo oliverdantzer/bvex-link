@@ -5,11 +5,11 @@
 
 bool validate_string(const char* str, size_t max_size);
 
-typedef struct {
+struct sample_sender_s {
     int socket_fd;         // Socket file descriptor
     const char* metric_id; // Metric ID to send samples for
     Sample sample;
-} sample_sender_t;
+};
 
 send_sample_status_t send_sample(sample_sender_t* sender, const Sample message);
 

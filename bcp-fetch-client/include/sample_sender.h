@@ -52,16 +52,18 @@ typedef enum {
 
 #define member_size(type, member) (sizeof(((type*)0)->member))
 
-const size_t METRIC_ID_MAX_SIZE = member_size(Sample, metric_id);
-const size_t PRIMITIVE_STRING_VALUE_MAX_SIZE =
-    member_size(primitive_Primitive, value.string_val);
-const size_t FILE_PATH_MAX_SIZE = member_size(File, filepath);
-const size_t EXTENSION_MAX_SIZE = member_size(File, extension);
+extern const size_t METRIC_ID_MAX_SIZE;
+extern const size_t PRIMITIVE_STRING_VALUE_MAX_SIZE;
+extern const size_t FILE_PATH_MAX_SIZE;
+extern const size_t EXTENSION_MAX_SIZE;
 
-typedef sample_sender_primitive_t;
-typedef sample_sender_int32_t;
-typedef sample_sender_float_t;
-typedef sample_sender_string_t;
+struct sample_sender_s;
+typedef struct sample_sender_s sample_sender_t;
+
+typedef sample_sender_t sample_sender_int32_t;
+typedef sample_sender_t sample_sender_float_t;
+typedef sample_sender_t sample_sender_string_t;
+typedef sample_sender_t sample_sender_file_t;
 
 // Function declarations for creating primitive senders
 sample_sender_int32_t* make_sample_sender_int32(sample_sender_params_t params,
@@ -79,15 +81,13 @@ send_sample_status_t send_float(sample_sender_float_t* sender, float timestamp,
 send_sample_status_t send_string(sample_sender_string_t* sender,
                                  float timestamp, const char* value);
 
-typedef sample_sender_file_t;
-
 sample_sender_file_t* make_sample_sender_file(sample_sender_params_t params,
                                               sample_sender_status_t* status);
 
 send_sample_status_t send_file(sample_sender_file_t* sender, float timestamp,
                                const char* filepath, const char* extension);
 
-
+void destroy_sample_sender(sample_sender_t* sender);
 
 #ifdef __cplusplus
 }

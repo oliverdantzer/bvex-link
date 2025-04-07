@@ -2,6 +2,7 @@
 #include "sample.pb.h"
 #include "sample_sender.h"
 #include "sample_sender_utils.h"
+
 typedef sample_sender_t sample_sender_primitive_t;
 static sample_sender_primitive_t* make_sample_sender_primitive(
     sample_sender_params_t params, pb_size_t primitive_val_tag,

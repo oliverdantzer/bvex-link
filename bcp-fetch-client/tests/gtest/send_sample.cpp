@@ -3,8 +3,6 @@
 #include <connected_udp_socket.h>
 #include <gtest/gtest.h>
 #include <netinet/in.h>
-#include "primitive_sender.h"
-#include "file_sender.h"
 #include "sample_sender.h"
 #include <string.h>
 #include <sys/socket.h>

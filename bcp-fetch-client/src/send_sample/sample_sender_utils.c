@@ -10,6 +10,12 @@
 #include <string.h>
 #include <unistd.h>
 
+const size_t METRIC_ID_MAX_SIZE = member_size(Sample, metric_id);
+const size_t PRIMITIVE_STRING_VALUE_MAX_SIZE =
+    member_size(primitive_Primitive, value.string_val);
+const size_t FILE_PATH_MAX_SIZE = member_size(File, filepath);
+const size_t EXTENSION_MAX_SIZE = member_size(File, extension);
+
 bool validate_string(const char* str, size_t max_size)
 {
     if(str == NULL) {
