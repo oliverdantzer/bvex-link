@@ -1,6 +1,6 @@
 #include "primitive_sender.h"
-#include "generated/nanopb/sample.pb.h"
 #include "generated/nanopb/primitive.pb.h"
+#include "generated/nanopb/sample.pb.h"
 #include "sample_sender.h"
 
 static sample_sender_primitive_t* make_sample_sender_primitive(
@@ -11,11 +11,13 @@ static sample_sender_primitive_t* make_sample_sender_primitive(
     if(sender == NULL) {
         return NULL;
     }
-    sender->sample = Sample_init_zero;
-    strlcpy(sender->sample.metric_id, params.metric_id, member_size(Sample, metric_id));
+    sender->sample = (Sample)Sample_init_zero;
+    strlcpy(sender->sample.metric_id, params.metric_id,
+            member_size(Sample, metric_id));
     sender->sample.timestamp = 0.0f;
     sender->sample.which_data = Sample_primitive_tag;
-    sender->sample.data.primitive = primitive_Primitive_init_zero;
+    sender->sample.data.primitive =
+        (primitive_Primitive)primitive_Primitive_init_zero;
     sender->sample.data.primitive.which_value = primitive_val_tag;
     *status = SAMPLE_SENDER_STATUS_OK;
     return sender;
@@ -36,8 +38,8 @@ static send_sample_status_t send_primitive(
 sample_sender_int32_t* make_sample_sender_int32(sample_sender_params_t params,
                                                 sample_sender_status_t* status)
 {
-    return make_sample_sender_primitive(
-        params, primitive_Primitive_int_val_tag, status);
+    return make_sample_sender_primitive(params, primitive_Primitive_int_val_tag,
+                                        status);
 }
 
 send_sample_status_t send_int32(const sample_sender_int32_t* sender,
