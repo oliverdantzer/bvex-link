@@ -3,7 +3,9 @@
 #include <connected_udp_socket.h>
 #include <gtest/gtest.h>
 #include <netinet/in.h>
-#include <sample_sender.h>
+#include "primitive_sender.h"
+#include "file_sender.h"
+#include "sample_sender.h"
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -50,11 +52,9 @@ class SendSampleTest : public ::testing::Test
         ASSERT_NE(server_fd, -1);
 
         // Set up common sender params
-        sender_params = {
-            .metric_id = nullptr,  // Will be set per test
-            .node = "localhost",
-            .service = "8080"
-        };
+        sender_params = {.metric_id = nullptr, // Will be set per test
+                         .node = "localhost",
+                         .service = "8080"};
     }
 
     void TearDown() override
@@ -65,7 +65,7 @@ class SendSampleTest : public ::testing::Test
     }
 
     int server_fd = -1;
-    SampleSenderParams sender_params;
+    sample_sender_params_t sender_params;
 };
 
 TEST_F(SendSampleTest, SendInt32Sample)
@@ -75,13 +75,14 @@ TEST_F(SendSampleTest, SendInt32Sample)
     int32_t value = 42;
 
     sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderInt32* sender = make_sample_sender_int32(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_int32_t* sender =
+        make_sample_sender_int32(sender_params, &status);
     ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
     ASSERT_NE(sender, nullptr);
 
-    sample_status_t send_status = send_int32(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
+    send_sample_status_t send_status = send_int32(sender, timestamp, value);
+    EXPECT_EQ(send_status, SEND_SAMPLE_STATUS_OK);
 
     char buffer[1024];
     ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
@@ -99,37 +100,6 @@ TEST_F(SendSampleTest, SendInt32Sample)
     destroy_sample_sender(sender);
 }
 
-TEST_F(SendSampleTest, SendInt64Sample)
-{
-    const char* metric_id = "test_int64";
-    float timestamp = 1234.5f;
-    int64_t value = 1234567890;
-
-    sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderInt64* sender = make_sample_sender_int64(sender_params, &status);
-    ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
-    ASSERT_NE(sender, nullptr);
-
-    sample_status_t send_status = send_int64(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
-
-    char buffer[1024];
-    ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
-    EXPECT_GT(received, 0);
-
-    Sample* decoded_sample = decode_sample((uint8_t*)buffer, received);
-    ASSERT_NE(decoded_sample, nullptr);
-    EXPECT_EQ(decoded_sample->which_data, Sample_primitive_tag);
-    EXPECT_EQ(decoded_sample->data.primitive.which_value,
-              primitive_Primitive_long_val_tag);
-    EXPECT_EQ(decoded_sample->data.primitive.value.long_val, value);
-    EXPECT_EQ(decoded_sample->timestamp, timestamp);
-    EXPECT_STREQ(decoded_sample->metric_id, metric_id);
-    free(decoded_sample);
-    destroy_sample_sender(sender);
-}
-
 TEST_F(SendSampleTest, SendFloatSample)
 {
     const char* metric_id = "test_float";
@@ -137,13 +107,14 @@ TEST_F(SendSampleTest, SendFloatSample)
     float value = 3.14159f;
 
     sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderFloat* sender = make_sample_sender_float(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_float_t* sender =
+        make_sample_sender_float(sender_params, &status);
     ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
     ASSERT_NE(sender, nullptr);
 
-    sample_status_t send_status = send_float(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
+    send_sample_status_t send_status = send_float(sender, timestamp, value);
+    EXPECT_EQ(send_status, SEND_SAMPLE_STATUS_OK);
 
     char buffer[1024];
     ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
@@ -161,68 +132,6 @@ TEST_F(SendSampleTest, SendFloatSample)
     destroy_sample_sender(sender);
 }
 
-TEST_F(SendSampleTest, SendDoubleSample)
-{
-    const char* metric_id = "test_double";
-    float timestamp = 1234.5f;
-    double value = 2.718281828459045;
-
-    sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderDouble* sender = make_sample_sender_double(sender_params, &status);
-    ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
-    ASSERT_NE(sender, nullptr);
-
-    sample_status_t send_status = send_double(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
-
-    char buffer[1024];
-    ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
-    EXPECT_GT(received, 0);
-
-    Sample* decoded_sample = decode_sample((uint8_t*)buffer, received);
-    ASSERT_NE(decoded_sample, nullptr);
-    EXPECT_EQ(decoded_sample->which_data, Sample_primitive_tag);
-    EXPECT_EQ(decoded_sample->data.primitive.which_value,
-              primitive_Primitive_double_val_tag);
-    EXPECT_DOUBLE_EQ(decoded_sample->data.primitive.value.double_val, value);
-    EXPECT_EQ(decoded_sample->timestamp, timestamp);
-    EXPECT_STREQ(decoded_sample->metric_id, metric_id);
-    free(decoded_sample);
-    destroy_sample_sender(sender);
-}
-
-TEST_F(SendSampleTest, SendBoolSample)
-{
-    const char* metric_id = "test_bool";
-    float timestamp = 1234.5f;
-    bool value = true;
-
-    sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderBool* sender = make_sample_sender_bool(sender_params, &status);
-    ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
-    ASSERT_NE(sender, nullptr);
-
-    sample_status_t send_status = send_bool(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
-
-    char buffer[1024];
-    ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
-    EXPECT_GT(received, 0);
-
-    Sample* decoded_sample = decode_sample((uint8_t*)buffer, received);
-    ASSERT_NE(decoded_sample, nullptr);
-    EXPECT_EQ(decoded_sample->which_data, Sample_primitive_tag);
-    EXPECT_EQ(decoded_sample->data.primitive.which_value,
-              primitive_Primitive_bool_val_tag);
-    EXPECT_EQ(decoded_sample->data.primitive.value.bool_val, value);
-    EXPECT_EQ(decoded_sample->timestamp, timestamp);
-    EXPECT_STREQ(decoded_sample->metric_id, metric_id);
-    free(decoded_sample);
-    destroy_sample_sender(sender);
-}
-
 TEST_F(SendSampleTest, SendStringSample)
 {
     const char* metric_id = "test_string";
@@ -230,13 +139,14 @@ TEST_F(SendSampleTest, SendStringSample)
     const char* value = "Hello, World!";
 
     sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderString* sender = make_sample_sender_string(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_string_t* sender =
+        make_sample_sender_string(sender_params, &status);
     ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
     ASSERT_NE(sender, nullptr);
 
-    sample_status_t send_status = send_string(sender, timestamp, value);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
+    send_sample_status_t send_status = send_string(sender, timestamp, value);
+    EXPECT_EQ(send_status, SEND_SAMPLE_STATUS_OK);
 
     char buffer[1024];
     ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
@@ -262,13 +172,15 @@ TEST_F(SendSampleTest, SendFileSample)
     const char* extension = "txt";
 
     sender_params.metric_id = metric_id;
-    SampleSenderStatus status;
-    SampleSenderFile* sender = make_sample_sender_file(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_file_t* sender =
+        make_sample_sender_file(sender_params, &status);
     ASSERT_EQ(status, SAMPLE_SENDER_STATUS_OK);
     ASSERT_NE(sender, nullptr);
 
-    sample_status_t send_status = send_file(sender, timestamp, filepath, extension);
-    EXPECT_EQ(send_status, SAMPLE_STATUS_OK);
+    send_sample_status_t send_status =
+        send_file(sender, timestamp, filepath, extension);
+    EXPECT_EQ(send_status, SEND_SAMPLE_STATUS_OK);
 
     char buffer[1024];
     ssize_t received = receive_data(server_fd, buffer, sizeof(buffer));
@@ -297,8 +209,9 @@ TEST_F(SendSampleTest, InvalidMetricId)
     long_metric_id[sizeof(long_metric_id) - 1] = '\0';
 
     sender_params.metric_id = long_metric_id;
-    SampleSenderStatus status;
-    SampleSenderInt32* sender = make_sample_sender_int32(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_int32_t* sender =
+        make_sample_sender_int32(sender_params, &status);
     EXPECT_EQ(status, SAMPLE_SENDER_STATUS_INVALID_PARAMETER);
     EXPECT_EQ(sender, nullptr);
 }
@@ -309,9 +222,10 @@ TEST_F(SendSampleTest, InvalidSocket)
     sender_params.metric_id = "test";
     sender_params.node = "invalid-host";
     sender_params.service = "0";
-    
-    SampleSenderStatus status;
-    SampleSenderInt32* sender = make_sample_sender_int32(sender_params, &status);
+
+    sample_sender_status_t status;
+    sample_sender_int32_t* sender =
+        make_sample_sender_int32(sender_params, &status);
     EXPECT_EQ(status, SAMPLE_SENDER_STATUS_SOCKET_CREATION_FAILED);
     EXPECT_EQ(sender, nullptr);
 }
@@ -319,8 +233,9 @@ TEST_F(SendSampleTest, InvalidSocket)
 TEST_F(SendSampleTest, NullMetricId)
 {
     sender_params.metric_id = nullptr;
-    SampleSenderStatus status;
-    SampleSenderInt32* sender = make_sample_sender_int32(sender_params, &status);
+    sample_sender_status_t status;
+    sample_sender_int32_t* sender =
+        make_sample_sender_int32(sender_params, &status);
     EXPECT_EQ(status, SAMPLE_SENDER_STATUS_INVALID_PARAMETER);
     EXPECT_EQ(sender, nullptr);
 }

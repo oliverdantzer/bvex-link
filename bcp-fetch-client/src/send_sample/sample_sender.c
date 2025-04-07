@@ -55,7 +55,7 @@ send_sample_status_t send_sample(sample_sender_t* sender, const Sample message)
 }
 
 sample_sender_t* make_sample_sender(sample_sender_params_t params,
-                                           sample_sender_status_t* status)
+                                    sample_sender_status_t* status)
 {
     if(!validate_string(params.metric_id, member_size(Sample, metric_id))) {
         *status = SAMPLE_SENDER_STATUS_INVALID_PARAMETER;
