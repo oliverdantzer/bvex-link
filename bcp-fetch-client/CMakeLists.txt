@@ -16,7 +16,7 @@ add_library(bcp-fetch
     src/generated/nanopb/response.pb.c
     src/request_sample.c
     src/socket.c
-    src/send_sample/sample_sender.c
+    src/send_sample/sample_sender_utils.c
     src/send_sample/primitive_sender.c
     src/send_sample/file_sender.c
     src/command_server.c
@@ -26,6 +26,7 @@ target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
 target_include_directories(bcp-fetch
     PRIVATE
         src/generated/nanopb
+        src/send_sample
     PUBLIC include
 )
 

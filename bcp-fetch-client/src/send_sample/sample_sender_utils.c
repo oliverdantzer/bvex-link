@@ -1,6 +1,7 @@
-#include "sample_sender.h"
+#include "sample_sender_utils.h"
 #include "connected_udp_socket.h"
 #include "sample.pb.h"
+#include "sample_sender.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <pb_encode.h>

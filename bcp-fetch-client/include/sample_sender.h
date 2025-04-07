@@ -25,7 +25,8 @@
 extern "C" {
 #endif
 
-#include "../src/generated/nanopb/sample.pb.h"
+#include "primitive.pb.h"
+#include "sample.pb.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -51,25 +52,42 @@ typedef enum {
 
 #define member_size(type, member) (sizeof(((type*)0)->member))
 
-#define STRING_VALUE_MAX_SIZE 4096
-#define METRIC_ID_MAX_SIZE 64
-#define FILE_PATH_MAX_SIZE 128
-#define EXTENSION_MAX_SIZE 16
+const size_t METRIC_ID_MAX_SIZE = member_size(Sample, metric_id);
+const size_t PRIMITIVE_STRING_VALUE_MAX_SIZE =
+    member_size(primitive_Primitive, value.string_val);
+const size_t FILE_PATH_MAX_SIZE = member_size(File, filepath);
+const size_t EXTENSION_MAX_SIZE = member_size(File, extension);
 
-bool validate_string(const char* str, size_t max_size);
+typedef sample_sender_primitive_t;
+typedef sample_sender_int32_t;
+typedef sample_sender_float_t;
+typedef sample_sender_string_t;
 
-typedef struct {
-    int socket_fd;         // Socket file descriptor
-    const char* metric_id; // Metric ID to send samples for
-    Sample sample;
-} sample_sender_t;
+// Function declarations for creating primitive senders
+sample_sender_int32_t* make_sample_sender_int32(sample_sender_params_t params,
+                                                sample_sender_status_t* status);
+sample_sender_float_t* make_sample_sender_float(sample_sender_params_t params,
+                                                sample_sender_status_t* status);
+sample_sender_string_t* make_sample_sender_string(
+    sample_sender_params_t params, sample_sender_status_t* status);
 
-send_sample_status_t send_sample(sample_sender_t* sender, const Sample message);
+// Function declarations for sending primitive values
+send_sample_status_t send_int32(sample_sender_int32_t* sender, float timestamp,
+                                int32_t value);
+send_sample_status_t send_float(sample_sender_float_t* sender, float timestamp,
+                                float value);
+send_sample_status_t send_string(sample_sender_string_t* sender,
+                                 float timestamp, const char* value);
 
-sample_sender_t* make_sample_sender(sample_sender_params_t params,
-                                    sample_sender_status_t* status);
+typedef sample_sender_file_t;
 
-void destroy_sample_sender(sample_sender_t* sender);
+sample_sender_file_t* make_sample_sender_file(sample_sender_params_t params,
+                                              sample_sender_status_t* status);
+
+send_sample_status_t send_file(sample_sender_file_t* sender, float timestamp,
+                               const char* filepath, const char* extension);
+
+
 
 #ifdef __cplusplus
 }

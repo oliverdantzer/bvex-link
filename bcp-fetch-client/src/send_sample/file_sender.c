@@ -1,6 +1,6 @@
-#include "file_sender.h"
 #include "sample.pb.h"
 #include "sample_sender.h"
+#include "sample_sender_utils.h"
 
 typedef sample_sender_t sample_sender_file_t;
 sample_sender_file_t* make_sample_sender_file(sample_sender_params_t params,
