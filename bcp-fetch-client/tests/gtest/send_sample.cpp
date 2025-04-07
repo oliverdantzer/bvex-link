@@ -1,9 +1,9 @@
 #include "../common/decode_sample.h"
+#include "sample_sender.h"
 #include <arpa/inet.h>
 #include <connected_udp_socket.h>
 #include <gtest/gtest.h>
 #include <netinet/in.h>
-#include "sample_sender.h"
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -95,7 +95,7 @@ TEST_F(SendSampleTest, SendInt32Sample)
     EXPECT_EQ(decoded_sample->timestamp, timestamp);
     EXPECT_STREQ(decoded_sample->metric_id, metric_id);
     free(decoded_sample);
-    destroy_sample_sender(sender);
+    destroy_sample_sender((sample_sender_t*)sender);
 }
 
 TEST_F(SendSampleTest, SendFloatSample)
@@ -127,7 +127,7 @@ TEST_F(SendSampleTest, SendFloatSample)
     EXPECT_EQ(decoded_sample->timestamp, timestamp);
     EXPECT_STREQ(decoded_sample->metric_id, metric_id);
     free(decoded_sample);
-    destroy_sample_sender(sender);
+    destroy_sample_sender((sample_sender_t*)sender);
 }
 
 TEST_F(SendSampleTest, SendStringSample)
@@ -159,7 +159,7 @@ TEST_F(SendSampleTest, SendStringSample)
     EXPECT_EQ(decoded_sample->timestamp, timestamp);
     EXPECT_STREQ(decoded_sample->metric_id, metric_id);
     free(decoded_sample);
-    destroy_sample_sender(sender);
+    destroy_sample_sender((sample_sender_t*)sender);
 }
 
 TEST_F(SendSampleTest, SendFileSample)
@@ -192,7 +192,7 @@ TEST_F(SendSampleTest, SendFileSample)
     EXPECT_EQ(decoded_sample->timestamp, timestamp);
     EXPECT_STREQ(decoded_sample->metric_id, metric_id);
     free(decoded_sample);
-    destroy_sample_sender(sender);
+    destroy_sample_sender((sample_sender_t*)sender);
 
     // Clean up test file
     unlink(filepath);

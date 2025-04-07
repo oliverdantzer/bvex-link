@@ -59,10 +59,17 @@ extern const size_t EXTENSION_MAX_SIZE;
 struct sample_sender_s;
 typedef struct sample_sender_s sample_sender_t;
 
-typedef sample_sender_t sample_sender_int32_t;
-typedef sample_sender_t sample_sender_float_t;
-typedef sample_sender_t sample_sender_string_t;
-typedef sample_sender_t sample_sender_file_t;
+struct sample_sender_int32_s;
+typedef struct sample_sender_int32_s sample_sender_int32_t;
+
+struct sample_sender_float_s;
+typedef struct sample_sender_float_s sample_sender_float_t;
+
+struct sample_sender_string_s;
+typedef struct sample_sender_string_s sample_sender_string_t;
+
+struct sample_sender_file_s;
+typedef struct sample_sender_file_s sample_sender_file_t;
 
 // Function declarations for creating primitive senders
 sample_sender_int32_t* make_sample_sender_int32(sample_sender_params_t params,
