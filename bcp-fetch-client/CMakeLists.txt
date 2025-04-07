@@ -26,7 +26,6 @@ target_link_libraries(bcp-fetch PRIVATE nanopb::protobuf-nanopb-static)
 target_include_directories(bcp-fetch
     PRIVATE
         src/generated/nanopb
-        src
     PUBLIC include
 )
 
