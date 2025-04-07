@@ -7,6 +7,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+bool validate_string(const char* str, size_t max_size)
+{
+    if(str == NULL) {
+        return false;
+    }
+
+    size_t len = strlen(str);
+    size_t size = len + 1;
+    if(len == 0 || size > max_size) {
+        return false;
+    }
+
+    return true;
+}
 
 static ssize_t encode_sample(uint8_t* buffer, size_t buffer_size,
                              const Sample sample)
