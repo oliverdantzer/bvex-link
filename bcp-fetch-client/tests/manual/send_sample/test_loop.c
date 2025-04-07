@@ -5,12 +5,35 @@
 #include <time.h>
 #include <unistd.h>
 
-void run_telemetry_loop(int socket_fd, bool measure_timing)
+void run_telemetry_loop(const char* node, const char* service,
+                        bool measure_timing)
 {
     const int TIMING_WINDOW = 1000;
     double timing_buffer[TIMING_WINDOW];
     int timing_index = 0;
     struct timespec start_time, end_time;
+
+    // Create senders for each metric
+    sample_sender_status_t status;
+    sample_sender_params_t temp_params = {
+        .metric_id = "temperature", .node = node, .service = service};
+    sample_sender_params_t roll_params = {
+        .metric_id = "roll", .node = node, .service = service};
+
+    sample_sender_int32_t* temp_sender =
+        make_sample_sender_int32(temp_params, &status);
+    if(status != SAMPLE_SENDER_STATUS_OK) {
+        printf("Failed to create temperature sender\n");
+        return;
+    }
+
+    sample_sender_float_t* roll_sender =
+        make_sample_sender_float(roll_params, &status);
+    if(status != SAMPLE_SENDER_STATUS_OK) {
+        printf("Failed to create roll sender\n");
+        destroy_sample_sender((sample_sender_t*)temp_sender);
+        return;
+    }
 
     while(1) {
         if(measure_timing) {
@@ -24,13 +47,10 @@ void run_telemetry_loop(int socket_fd, bool measure_timing)
 
         // Generate and send simulated sensor data
         int temp = (int)generate_sinusoid(20.0, 1.0 / 60.0, 0.0, t) + 20;
-        long altitude =
-            (long)generate_sinusoid(1000.0, 1.0 / 120.0, 0.0, t) + 10000;
         float roll = generate_sinusoid(1.0, 1.0 / 60.0, 0.0, t);
 
-        send_sample_int32(socket_fd, "temperature", timestamp, temp);
-        send_sample_int64(socket_fd, "altitude", timestamp, altitude);
-        send_sample_float(socket_fd, "roll", timestamp, roll);
+        send_int32(temp_sender, timestamp, temp);
+        send_float(roll_sender, timestamp, roll);
 
         if(measure_timing) {
             clock_gettime(CLOCK_MONOTONIC, &end_time);
@@ -52,4 +72,8 @@ void run_telemetry_loop(int socket_fd, bool measure_timing)
 
         usleep(1000); // 1ms delay
     }
+
+    // Cleanup
+    destroy_sample_sender((sample_sender_t*)temp_sender);
+    destroy_sample_sender((sample_sender_t*)roll_sender);
 }

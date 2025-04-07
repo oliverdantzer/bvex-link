@@ -25,9 +25,8 @@
 extern "C" {
 #endif
 
-#include "primitive.pb.h"
-#include "sample.pb.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 typedef enum {

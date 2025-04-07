@@ -198,7 +198,6 @@ TEST_F(SendSampleTest, SendFileSample)
     unlink(filepath);
 }
 
-#ifdef BCP_FETCH_BOUNDS_CHECKING
 TEST_F(SendSampleTest, InvalidMetricId)
 {
     // Create a metric_id that exceeds the maximum size
@@ -213,7 +212,6 @@ TEST_F(SendSampleTest, InvalidMetricId)
     EXPECT_EQ(status, SAMPLE_SENDER_STATUS_INVALID_PARAMETER);
     EXPECT_EQ(sender, nullptr);
 }
-#endif
 
 TEST_F(SendSampleTest, InvalidSocket)
 {

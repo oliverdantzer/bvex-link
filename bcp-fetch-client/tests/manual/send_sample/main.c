@@ -1,6 +1,4 @@
 #include "connected_udp_socket.h"
-#include "file_sender.h"
-#include "primitive_sender.h"
 #include "sample_sender.h"
 #include "test_loop.h"
 #include <netinet/in.h>
@@ -36,20 +34,13 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    int socket_fd =
-        connected_udp_socket(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT);
-    if(socket_fd < 0) {
-        printf("Failed to connect to server\n");
-        return 1;
-    }
-
     const char* cmd = argv[1];
     float timestamp = (float)time(NULL);
 
     if(strcmp(cmd, "loop") == 0) {
-        run_telemetry_loop(socket_fd, false);
+        run_telemetry_loop(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT, false);
     } else if(strcmp(cmd, "loop-timing") == 0) {
-        run_telemetry_loop(socket_fd, true);
+        run_telemetry_loop(SAMPLE_SERVER_ADDR, SAMPLE_SERVER_PORT, true);
     } else if(strcmp(cmd, "perf-test") == 0) {
         int recver_socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
         if(recver_socket_fd < 0) {
@@ -98,7 +89,7 @@ int main(int argc, char** argv)
         }
 
         // Run telemetry loop with timing measurements
-        run_telemetry_loop(sender_socket_fd, true);
+        run_telemetry_loop("127.0.0.1", "3001", true);
 
         // Cleanup
         close(sender_socket_fd);
@@ -106,7 +97,6 @@ int main(int argc, char** argv)
     } else if(strcmp(cmd, "send") == 0) {
         if(argc < 5) {
             printf("Error: 'send' requires type, id, and value arguments\n");
-            close(socket_fd);
             return 1;
         }
 
@@ -133,7 +123,6 @@ int main(int argc, char** argv)
         } else if(strcmp(type, "file") == 0) {
             if(argc < 6) {
                 printf("Error: file type requires extension argument\n");
-                close(socket_fd);
                 return 1;
             }
             sample_sender_file_t* sender = make_sample_sender_file(
@@ -145,16 +134,13 @@ int main(int argc, char** argv)
             destroy_sample_sender((sample_sender_t*)sender);
         } else {
             printf("Error: unknown type '%s'\n", type);
-            close(socket_fd);
             return 1;
         }
         sleep(1); // Allow time for sample to be sent
     } else {
         printf("Unknown command: %s\n", cmd);
-        close(socket_fd);
         return 1;
     }
 
-    close(socket_fd);
     return 0;
 }
