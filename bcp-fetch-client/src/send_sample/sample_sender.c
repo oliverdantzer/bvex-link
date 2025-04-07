@@ -1,6 +1,6 @@
 #include "sample_sender.h"
 #include "connected_udp_socket.h"
-#include "generated/nanopb/sample.pb.h"
+#include "sample.pb.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <pb_encode.h>
@@ -38,7 +38,7 @@ send_sample_status_t send_sample(sample_sender_t* sender, const Sample message)
     return SEND_SAMPLE_STATUS_OK;
 }
 
-static sample_sender_t* make_sample_sender(sample_sender_params_t params,
+sample_sender_t* make_sample_sender(sample_sender_params_t params,
                                            sample_sender_status_t* status)
 {
     if(!validate_string(params.metric_id, member_size(Sample, metric_id))) {

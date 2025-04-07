@@ -10,14 +10,16 @@ extern "C" {
 #include <stdint.h>
 
 // Type definition for file sender
-typedef struct sample_sender_t sample_sender_file_t;
+typedef sample_sender_t sample_sender_file_t;
 
 // Function to create a file sender
-sample_sender_file_t* make_sample_sender_file(sample_sender_params_t params, sample_sender_status_t* status);
+sample_sender_file_t* make_sample_sender_file(sample_sender_params_t params,
+                                              sample_sender_status_t* status);
 
 // Function to send a file
-sample_status_t send_file(const sample_sender_file_t* sender, float timestamp, const char* filepath, const char* extension);
+send_sample_status_t send_file(sample_sender_file_t* sender, float timestamp,
+                               const char* filepath, const char* extension);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
