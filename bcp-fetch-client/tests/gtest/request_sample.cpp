@@ -1,5 +1,5 @@
 #include "request_sample.h"
-#include "../test_common/test_server.hpp"
+#include "test_server.hpp"
 #include <arpa/inet.h>
 #include <chrono>
 #include <gtest/gtest.h>

@@ -1,6 +1,6 @@
 #include "test_client.h"
 #include "command_server.h"
-#include "common.h"
+#include "data.h"
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>

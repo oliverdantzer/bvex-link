@@ -1,6 +1,6 @@
 #include "test_loop.h"
-#include "common.h"
-#include "send_sample.h"
+#include "data.h"
+#include "sample_sender.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>

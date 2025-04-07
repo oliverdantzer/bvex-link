@@ -1,4 +1,4 @@
-#include "../test_common/decode_sample.h"
+#include "../common/decode_sample.h"
 #include <arpa/inet.h>
 #include <connected_udp_socket.h>
 #include <gtest/gtest.h>

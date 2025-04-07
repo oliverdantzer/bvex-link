@@ -35,16 +35,15 @@ option(BCP_FETCH_GTEST "Build test executable with Google Test" OFF)
 if(BCP_FETCH_GTEST)
     find_package(GTest REQUIRED)
     add_executable(gtest
-        gtest/connected_udp_socket.cpp
-        gtest/send_sample.cpp
-        gtest/request_sample.cpp
-        gtest/command_server.cpp
-        test_common/decode_sample.h
+        tests/gtest/connected_udp_socket.cpp
+        tests/gtest/send_sample.cpp
+        tests/gtest/request_sample.cpp
+        tests/gtest/command_server.cpp
     )
     target_include_directories(gtest
         PRIVATE
             src/generated/nanopb
-            test_common
+            tests/common
     )
     set_target_properties(gtest PROPERTIES LINKER_LANGUAGE CXX)
     target_link_libraries(gtest PRIVATE 
@@ -52,8 +51,6 @@ if(BCP_FETCH_GTEST)
         GTest::gtest_main
         bcp-fetch
         nanopb::protobuf-nanopb-static
-        # GTest::gmock
-        # GTest::gmock_main
     )
 
     include(GoogleTest)
@@ -81,7 +78,7 @@ if(BCP_FETCH_TEST)
     macro(configure_test_executable target_name)
         target_include_directories(${target_name} 
             PRIVATE tests/common
-            PRIVATE tests/${target_name}
+            PRIVATE tests/manual/${target_name}
         )
         target_link_libraries(${target_name} PRIVATE nanopb::protobuf-nanopb-static bcp-fetch m)
         target_compile_definitions(
@@ -95,31 +92,27 @@ if(BCP_FETCH_TEST)
 
     # Test executable for request_sample
     add_executable(request_sample
-        tests/request_sample/main.c
-        tests/common/common.c
+        tests/manual/request_sample/main.c
     )
     configure_test_executable(request_sample)
 
     # Test executable for send_sample
     add_executable(send_sample
-        tests/send_sample/main.c
-        tests/send_sample/test_loop.c
-        tests/common/common.c
+        tests/manual/send_sample/main.c
+        tests/manual/send_sample/test_loop.c
     )
     configure_test_executable(send_sample)
 
     # Test executable for command_server
     add_executable(command_server
-        tests/command_server/main.c
-        tests/common/common.c
+        tests/manual/command_server/main.c
     )
     configure_test_executable(command_server)
 
     # Test executable for command client
     add_executable(command_client
-        tests/command_client/main.c
-        tests/command_client/test_client.c
-        tests/common/common.c
+        tests/manual/command_client/main.c
+        tests/manual/command_client/test_client.c
     )
     configure_test_executable(command_client)
 

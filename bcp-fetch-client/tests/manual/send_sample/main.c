@@ -1,5 +1,7 @@
 #include "connected_udp_socket.h"
-#include "send_sample.h"
+#include "file_sender.h"
+#include "primitive_sender.h"
+#include "sample_sender.h"
 #include "test_loop.h"
 #include <netinet/in.h>
 #include <stdio.h>
@@ -113,11 +115,19 @@ int main(int argc, char** argv)
         const char* value = argv[4];
 
         if(strcmp(type, "float") == 0) {
-            sample_sender_float_t* sender = make_sample_sender_float((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            sample_sender_float_t* sender = make_sample_sender_float(
+                (sample_sender_params_t){.metric_id = id,
+                                         .node = SAMPLE_SERVER_ADDR,
+                                         .service = SAMPLE_SERVER_PORT},
+                NULL);
             send_float(sender, timestamp, strtof(value, NULL));
             destroy_sample_sender((sample_sender_t*)sender);
         } else if(strcmp(type, "string") == 0) {
-            sample_sender_string_t* sender = make_sample_sender_string((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            sample_sender_string_t* sender = make_sample_sender_string(
+                (sample_sender_params_t){.metric_id = id,
+                                         .node = SAMPLE_SERVER_ADDR,
+                                         .service = SAMPLE_SERVER_PORT},
+                NULL);
             send_string(sender, timestamp, value);
             destroy_sample_sender((sample_sender_t*)sender);
         } else if(strcmp(type, "file") == 0) {
@@ -126,7 +136,11 @@ int main(int argc, char** argv)
                 close(socket_fd);
                 return 1;
             }
-            sample_sender_file_t* sender = make_sample_sender_file((sample_sender_params_t){.metric_id = id, .node = SAMPLE_SERVER_ADDR, .service = SAMPLE_SERVER_PORT}, NULL);
+            sample_sender_file_t* sender = make_sample_sender_file(
+                (sample_sender_params_t){.metric_id = id,
+                                         .node = SAMPLE_SERVER_ADDR,
+                                         .service = SAMPLE_SERVER_PORT},
+                NULL);
             send_file(sender, timestamp, value, argv[5]);
             destroy_sample_sender((sample_sender_t*)sender);
         } else {
