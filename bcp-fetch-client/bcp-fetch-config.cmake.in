@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+# Stores directory of the config file in variable bcp-fetch_CMAKE_DIR
+get_filename_component(bcp-fetch_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+# if targets not already included, include them
+if(NOT TARGET oliverdantzer::bcp-fetch AND NOT bcp-fetch_BINARY_DIR)
+  include("${bcp-fetch_CMAKE_DIR}/bcp-fetch-targets.cmake")
+endif()
+
+check_required_components(bcp-fetch)

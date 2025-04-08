@@ -1,0 +1,4 @@
+# Cython output files
+*.c
+*.cpp
+*.cxx
