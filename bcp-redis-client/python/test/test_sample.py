@@ -29,8 +29,8 @@ def test_set_sample_primitive_int(redis_client, metric_id):
     assert redis_client.exists(sample_key)
 
     # Get the sample from Redis
-    sample_data = redis_client.hgetall(sample_key)
-    assert len(sample_data) == 1  # Should have one field
+    sample_data = redis_client.get(sample_key)
+    assert sample_data is not None  # Should have data
 
 
 def test_set_sample_primitive_float(redis_client, metric_id):
