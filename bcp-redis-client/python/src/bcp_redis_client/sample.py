@@ -1,10 +1,11 @@
 import redis
-from bcp_redis_client.encode import (
-    Primitive,
-    encode_sample,
-    decode_sample,
-    PrimitiveType,
+from bvex_codec.sample import (
     Sample,
+    SampleMetadata,
+    WhichDataType,
+    PrimitiveData,
+    FileData,
+    PrimitiveType,
 )
 import time
 from threading import Thread, Lock
