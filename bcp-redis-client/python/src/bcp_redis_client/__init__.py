@@ -5,23 +5,9 @@ This package provides functionality for encoding, decoding, and managing sample 
 in Redis with support for primitive types (int, float, str, bytes, bool).
 """
 
-from .encode import (
-    Primitive,
-    PrimitiveType,
-    Sample,
-    SampleType,
-    encode_sample,
-    decode_sample,
-)
 from .sample import set_sample_primitive, SampleSubscriber
 
 __all__ = [
-    "Primitive",
-    "PrimitiveType",
-    "Sample",
-    "SampleType",
-    "encode_sample",
-    "decode_sample",
     "set_sample_primitive",
     "SampleSubscriber",
 ]
