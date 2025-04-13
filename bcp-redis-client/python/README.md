@@ -7,19 +7,22 @@ pip install -r requirements.txt
 ```
 
 # Tests
-Start redis (su required):
+Start redis server on port 6379:
 ```bash
-docker run -d --name redis -p 6379:6379 redis:7.4
-docker exec -it redis redis-cli
+sudo docker run -d --name redis -p 6379:6379 redis:7.4
 ```
 ```bash
-
 pip install -e .
 python -m pytest test/test_sample.py
 ```
 
 # Development
-Redis insight (su required):
+Redis insight:
 ```bash
-docker run -d --name redisinsight -p 5540:5540 redis/redisinsight:latest
+sudo docker run -d --name redisinsight -p 5540:5540 redis/redisinsight:latest
+xdg-open http://localhost:5540
+```
+Redis CLI:
+```
+sudo docker exec -it redis redis-cli
 ```
