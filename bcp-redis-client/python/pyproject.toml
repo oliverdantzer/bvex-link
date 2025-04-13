@@ -14,8 +14,13 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/bcp_redis_client"]
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["bcp_redis_client*"]
+
+[tool.pytest.ini_options]
+python_files = ["test_*.py", "*_test.py"]
+testpaths = ["tests"]
