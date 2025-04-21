@@ -1,3 +1,4 @@
 redis[hiredis]
 pytest
 -e file:../../codec  # install bvex-codec package in editable mode
+pytest-asyncio
