@@ -1,0 +1,6 @@
+-e file:../bcp-redis-client/python
+-e file:../codec
+redis[hiredis]
+pydantic
+pytest
+pytest-asyncio
