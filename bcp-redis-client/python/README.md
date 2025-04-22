@@ -7,10 +7,10 @@ pip install -r requirements.txt
 ```
 
 # Tests
-Start redis server on port 6379:
-```bash
-sudo docker run -d --name redis -p 6379:6379 redis:7.4
-```
+Start redis server on port 6379.
+- Create and start: `sudo docker run -d --name redis -p 6379:6379 redis:7.4`
+- Start: `sudo docker start redis`
+
 ```bash
 pip install -e .
 python -m pytest test/test_sample.py

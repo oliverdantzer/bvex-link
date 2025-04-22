@@ -1,6 +1,6 @@
 import pytest
 import redis.asyncio as redis
-from bcp_redis_client import set_sample_primitive, get_all_metric_ids
+from bcp_redis_client.asyncio import get_all_metric_ids
 import asyncio
 
 @pytest.mark.asyncio

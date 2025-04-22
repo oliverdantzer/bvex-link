@@ -1,9 +1,8 @@
-import redis.asyncio as redis
+import redis.asyncio
 from typing import Set
-import asyncio
+from bvex_codec.sample import Sample
 
-
-async def get_all_metric_ids(r: redis.Redis) -> Set[str]:
+async def get_all_metric_ids(r: redis.asyncio.Redis) -> Set[str]:
     metric_keys: Set[str] = set()
     cursor = 0
     while True:
@@ -20,3 +19,9 @@ async def get_all_metric_ids(r: redis.Redis) -> Set[str]:
             metric_ids.add(parts[1])
 
     return metric_ids
+
+async def get_sample(r: redis.asyncio.Redis, metric_id: str) -> Sample | None:
+    sample_json = await r.get(f"sample-cache:{metric_id}")
+    if sample_json is None:
+        return None
+    return Sample.model_validate_json(sample_json)
