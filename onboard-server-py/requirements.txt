@@ -1,5 +1,6 @@
 -e file:../bcp-redis-client/python
 -e file:../codec
+-e file:.
 redis[hiredis]
 pydantic
 pytest

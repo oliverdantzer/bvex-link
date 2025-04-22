@@ -2,27 +2,28 @@ import pytest
 import asyncio
 import bcp_redis_client
 import redis
-from bvex_codec.telecommand import Subscribe
+from bvex_codec.telecommand import Subscribe, Telecommand
 from bvex_codec.telemetry import Telemetry
 from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
-import subprocess
-
-subprocess.run(["python3", "server.py"])
-
 
 @pytest.mark.asyncio
 async def test_subscribe_sample():
-    # onboard ----
+    # --- ONBOARD ---
     r = redis.Redis()
     bcp_redis_client.set_sample_primitive(r, "test", 1)
 
-    # ground ----
+    # --- GROUND ---
+    # connect to server and subscribe to test metric id
     reader, writer = await asyncio.open_connection("localhost", 8888)
     cmd = Subscribe(metric_id="test")
-    writer.write(cmd.model_dump_json().encode())
+    tc = Telecommand.from_command(cmd)
+    writer.write(tc.model_dump_json().encode())
     await writer.drain()
+    print("sent")
 
-    data = await reader.read(4096)
+    # await server to downlink sample with 2 second timeout
+    async with asyncio.timeout(10.0):
+        data = await reader.read(4096)
     telemetry = Telemetry.model_validate_json(data.decode())
     assert telemetry.which_type == "sample"
     assert isinstance(telemetry.data, Sample)
