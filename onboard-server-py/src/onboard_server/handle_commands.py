@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 r = redis.Redis()
 r_async = redis.asyncio.Redis()
-max_downlink_hz = 10
+max_downlink_hz = 2
 
 
 async def downlink_latest_sample(writer: asyncio.StreamWriter, sample: Sample) -> int:
@@ -55,7 +55,8 @@ async def downlink_loop(
                 sock_buf_size = bytes_sent * 2
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, sock_buf_size)
 
-            await asyncio.sleep(bytes_sent / get_bps())
+            min_sleep = 1 / max_downlink_hz
+            await asyncio.sleep(max(min_sleep, bytes_sent / get_bps()))
         else:
             # sleep for 1 second if no data was sent
             # to avoid busy-waiting on a new sample
