@@ -1,13 +1,14 @@
 # Install dependencies
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
 # Tests
 Start redis server on port 6379.
+- [Install docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 - Create and start: `sudo docker run -d --name redis -p 6379:6379 redis:7.4`
 - Start: `sudo docker start redis`
 
@@ -26,3 +27,6 @@ Redis CLI:
 ```
 sudo docker exec -it redis redis-cli
 ```
+
+# Production
+Redis daemon
