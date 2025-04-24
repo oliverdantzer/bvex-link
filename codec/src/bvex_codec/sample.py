@@ -39,19 +39,26 @@ class PrimitiveData(BaseModel):
 
     @field_validator("value")
     @classmethod
-    def validate_value_type(cls, v: Any, info: ValidationInfo) -> Any:
+    def validate_value_type(cls, v: Any, info: ValidationInfo) -> PrimitiveType:
         if "which_primitive" not in info.data:
             return v
 
         which_primitive = info.data["which_primitive"]
-        if which_primitive == WhichPrimitive.INT and not isinstance(v, int):
-            raise ValueError(f"Expected int for INT primitive, got {type(v)}")
-        elif which_primitive == WhichPrimitive.FLOAT and not isinstance(v, float):
-            raise ValueError(f"Expected float for FLOAT primitive, got {type(v)}")
-        elif which_primitive == WhichPrimitive.STR and not isinstance(v, str):
-            raise ValueError(f"Expected str for STR primitive, got {type(v)}")
-        elif which_primitive == WhichPrimitive.BOOL and not isinstance(v, bool):
-            raise ValueError(f"Expected bool for BOOL primitive, got {type(v)}")
+        try:
+            if which_primitive == WhichPrimitive.INT:
+                return int(v)
+            elif which_primitive == WhichPrimitive.FLOAT:
+                return float(v)
+            elif which_primitive == WhichPrimitive.STR:
+                return str(v)
+            elif which_primitive == WhichPrimitive.BOOL:
+                return bool(v)
+            else:
+                assert False, f"Invalid primitive type: {which_primitive}"
+        except Exception as e:
+            raise ValueError(
+                f"Failed to coerce value to {which_primitive}: {str(e)}"
+            ) from e
         return v
 
 
@@ -94,7 +101,7 @@ class WhichDataType(str, Enum):
 
 class SampleMetadata(BaseModel):
     metric_id: str
-    timestamp: float
+    timestamp: float | int
     which_data_type: WhichDataType
 
 

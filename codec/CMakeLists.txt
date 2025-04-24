@@ -5,14 +5,14 @@ project(bvex-codec VERSION 1.0 LANGUAGES C CXX)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
-find_package(cjson CONFIG REQUIRED)
+find_package(cJSON CONFIG REQUIRED)
 
 add_library(bvex_codec
-    src/c/sample.c
-    src/c/primitive.c
+    src/src_c/sample.c
+    src/src_c/primitive.c
 )
 
-target_link_libraries(bvex_codec PRIVATE cjson::cjson)
+target_link_libraries(bvex_codec PRIVATE cjson)
 target_include_directories(bvex_codec
     PRIVATE src/src_c
     PUBLIC src/include_c

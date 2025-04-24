@@ -3,6 +3,9 @@
 ## test
 
 ```bash
-pip install -e .
+vcpkg install
+cmake --preset=default
+cmake --build build
+pip install -r requirements.txt
 pytest
 ```

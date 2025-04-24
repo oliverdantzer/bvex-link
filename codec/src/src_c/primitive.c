@@ -1,5 +1,8 @@
 #include <cjson/cJSON.h>
 #include "sample.h"
+#include <stdbool.h>
+#include <string.h>
+#include "primitive.h"
 
 char *encode_int_sample(const char *metric_id, double timestamp, int value) {
   cJSON *root = cJSON_CreateObject();

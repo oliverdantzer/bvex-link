@@ -36,7 +36,7 @@ char *encode_sample(const char *metric_id, double timestamp,
   cJSON_AddItemToObject(root, "data", data);
 
   // Convert to string
-  char *json_str = cJSON_Print(root);
+  char *json_str = cJSON_PrintUnformatted(root);
 
   // Clean up
   cJSON_Delete(root);
