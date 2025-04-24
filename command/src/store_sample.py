@@ -34,3 +34,5 @@ def store_primitive(data: bytes, sample: SampleMetadata):
         metric_dir, f"sample-{sample.sample_id}.{sample.data_type}")
     with open(sample_file, "wb") as f:
         f.write(data)
+
+        

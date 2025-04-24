@@ -4,3 +4,4 @@ pillow==10.4.0
 protobuf
 click
 click_shell
+-e file:../codec
