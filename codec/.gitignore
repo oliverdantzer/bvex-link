@@ -1,4 +1,12 @@
+# python stuff
 **/*.__pycache__
 **/*.egg-info
 .pytest_cache/
 venv/
+
+# cmake build files
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+build/
