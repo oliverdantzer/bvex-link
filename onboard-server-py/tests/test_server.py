@@ -19,7 +19,6 @@ async def test_subscribe_sample():
     tc = Telecommand.from_command(cmd)
     writer.write(tc.model_dump_json().encode())
     await writer.drain()
-    print("sent")
 
     # await server to downlink sample with 2 second timeout
     async with asyncio.timeout(2.0):
