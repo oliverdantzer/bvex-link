@@ -83,7 +83,7 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
 
 
 async def run(started_event: asyncio.Event | None = None):
-    server = await asyncio.start_server(handle_connection, "127.0.0.1", port)
+    server = await asyncio.start_server(handle_connection, "0.0.0.0", port)
     try:
         # handle_connection is called for each new connection established
         addrs = ", ".join(str(sock.getsockname()) for sock in server.sockets)
