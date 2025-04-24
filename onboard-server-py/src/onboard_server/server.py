@@ -44,15 +44,20 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
                 await current_task
             except asyncio.CancelledError:
                 pass
+            except ConnectionError:
+                pass
 
     command_queue = queue.Queue()
     try:
         # loop through messages until reader is closed
         while True:
-            await asyncio.sleep(0.2)  # sleep to avoid busy-waiting
             # reader.read() does not block until data is available, immediately returns
             # if no data is available, returns empty bytes
-            data = await reader.read()
+            try:
+                data = await reader.read(4096)
+            except ConnectionError:
+                logger.info(f"Client {client_str} disconnected")
+                return
             tc = decode_telecommand(data)
             if tc is not None:
                 logger.info(f"Received telecommand of type: {tc.which_command}")
@@ -60,18 +65,20 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
                     await cancel_current_task()
                     command_queue.queue.clear()
                 elif isinstance(tc, End):
-                    break
+                    return
                 else:
                     if current_task is None:
                         current_task = asyncio.create_task(run_command(writer, tc.data))
                     else:
                         command_queue.put(tc)
+            await asyncio.sleep(0.2)  # sleep to avoid busy-waiting
     except asyncio.CancelledError:
         raise
     finally:
         await cancel_current_task()
-        writer.close()
-        await writer.wait_closed()
+        if not writer.is_closing():
+            writer.close()
+            await writer.wait_closed()
         logger.info(f"Closed connection from {client_str}")
 
 

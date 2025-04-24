@@ -22,7 +22,7 @@ async def test_subscribe_sample():
     print("sent")
 
     # await server to downlink sample with 2 second timeout
-    async with asyncio.timeout(10.0):
+    async with asyncio.timeout(2.0):
         data = await reader.read(4096)
     telemetry = Telemetry.model_validate_json(data.decode())
     assert telemetry.which_type == "sample"
