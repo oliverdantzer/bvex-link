@@ -9,6 +9,8 @@ first start the server
 ```
 python3 run.py
 ```
+and [start redis](../bcp-redis-client/python/README.md)
+
 then run the tests
 ```
 pytest
