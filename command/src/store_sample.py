@@ -1,42 +1,13 @@
 import os
 from bvex_codec.sample import Sample, WhichPrimitive, PrimitiveData, FileData
-from netCDF4 import Dataset
+import aiofiles
 import numpy as np
+import time
 
 SAMPLE_STORE_DIR = os.path.abspath("data")
 
 
-def create_netcdf_file(file_path: str) -> None:
-    """Create a new NetCDF file with the appropriate structure for storing primitive data."""
-    with Dataset(file_path, 'w', format='NETCDF4') as nc:
-        # Create dimensions
-        nc.createDimension('time', None)  # Unlimited dimension for time
 
-        # Create variables
-        # Double precision float for timestamps
-        timestamp_var = nc.createVariable('timestamp', 'f8', ('time',))
-        # Double precision float for values
-        value_var = nc.createVariable('value', 'f8', ('time',))
-
-        # Add attributes to variables
-        timestamp_var.units = 'seconds since 1970-01-01 00:00:00'
-        timestamp_var.long_name = 'Unix timestamp'
-        value_var.long_name = 'Primitive value'
-
-
-def write_to_netcdf(file_path: str, value: float | int | bool, timestamp: float) -> None:
-    """Write a primitive value and its timestamp to the NetCDF file."""
-    with Dataset(file_path, 'a') as nc:
-        # Convert boolean to float if necessary
-        if isinstance(value, bool):
-            value = float(value)
-
-        # Get the current size of the time dimension
-        time_size = len(nc.dimensions['time'])
-
-        # Write the new data
-        nc.variables['timestamp'][time_size] = timestamp
-        nc.variables['value'][time_size] = value
 
 
 class SampleStore:
@@ -46,7 +17,7 @@ class SampleStore:
         self.sample_store_dir_path = sample_store_dir_path
         self.primitive_files: dict[str, str] = {}
 
-    def store_sample(self, sample: Sample):
+    async def store_sample(self, sample: Sample):
         def store_file(sample: Sample):
             assert isinstance(sample.data, FileData)
             metric_dir = os.path.join(
@@ -58,24 +29,27 @@ class SampleStore:
             with open(sample_file, "wb") as f:
                 f.write(sample.data.data)
 
-        def store_primitive(sample: Sample):
+        async def store_primitive(sample: Sample):
             assert isinstance(sample.data, PrimitiveData)
             assert sample.data.which_primitive in [
                 WhichPrimitive.FLOAT, WhichPrimitive.BOOL, WhichPrimitive.INT]
+            assert isinstance(sample.data.value, float) or isinstance(
+                sample.data.value, int) or isinstance(sample.data.value, bool)
+            
+            filepath = os.path.join(
+                    self.sample_store_dir_path, f"metric-{sample.metadata.metric_id}.csv")
+            
             if sample.metadata.metric_id not in self.primitive_files:
-                self.primitive_files[sample.metadata.metric_id] = os.path.join(
-                    self.sample_store_dir_path, f"metric-{sample.metadata.metric_id}.nc")
-                create_netcdf_file(
-                    self.primitive_files[sample.metadata.metric_id])
-            sample_file = self.primitive_files[sample.metadata.metric_id]
-            value = sample.data.value
-            assert isinstance(value, float) or isinstance(
-                value, int) or isinstance(value, bool)
-            write_to_netcdf(sample_file, value, sample.metadata.timestamp)
+                self.primitive_files[sample.metadata.metric_id] = filepath
+                async with aiofiles.open(filepath, mode='w') as f:
+                    await f.write("timestamp,value\n")
+            
+            async with aiofiles.open(filepath, mode='a') as f:
+                await f.write(f"{time.ctime()},{sample.data.value}\n")
 
         if isinstance(sample.data, FileData):
             store_file(sample)
         elif isinstance(sample.data, PrimitiveData):
-            store_primitive(sample)
+            await store_primitive(sample)
         else:
             raise ValueError(f"Unknown data type: {type(sample.data)}")

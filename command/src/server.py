@@ -22,8 +22,8 @@ async def run_server():
     sync_metric_ids_task = asyncio.create_task(
         sync_metric_ids(remote_addr, metric_ids_store))
 
-    def store_sample(sample: Sample):
-        sample_store.store_sample(sample)
+    async def store_sample(sample: Sample):
+        await sample_store.store_sample(sample)
         print(sample)
     subscribe_all_task = asyncio.create_task(
         subscribe_all(remote_addr, metric_ids_store, store_sample))

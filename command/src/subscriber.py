@@ -5,10 +5,11 @@ from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
 from typing import Callable
 from .sync_metric_ids import MetricIdsStore
 from pydantic import ValidationError
+from typing import Awaitable
 
 
 async def subscribe(
-    remote_addr: tuple[str, int], metric_id: str, store_sample: Callable[[Sample], None]
+    remote_addr: tuple[str, int], metric_id: str, store_sample: Callable[[Sample], Awaitable[None]]
 ):
     reader, writer = await asyncio.open_connection(remote_addr[0], remote_addr[1])
     try:
@@ -18,19 +19,20 @@ async def subscribe(
         await writer.drain()
 
         while True:
-            data = await reader.read(1024)
+            data = await reader.read(4096)
             if data:
                 try:
                     telemetry = Telemetry.model_validate_json(data.decode())
                 except ValidationError as e:
+                    # packet likely was corrupted
                     print(e)
                     continue
                 if isinstance(telemetry.data, Sample):
-                    store_sample(telemetry.data)
+                    await store_sample(telemetry.data)
             else:
                 await asyncio.sleep(0.1)
     except Exception as e:
-        print(f"Error: {type(e)}")
+        print(f"Error: {e}")
         raise e
     finally:
         writer.close()
@@ -40,7 +42,7 @@ async def subscribe(
 async def subscribe_all(
     remote_addr: tuple[str, int],
     metric_id_store: MetricIdsStore,
-    store_sample: Callable[[Sample], None],
+    store_sample: Callable[[Sample], Awaitable[None]],
 ):
     subscriptions: dict[str, asyncio.Task] = {}
 
