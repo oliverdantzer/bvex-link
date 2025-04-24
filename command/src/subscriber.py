@@ -3,7 +3,7 @@ from bvex_codec.telecommand import Subscribe, Telecommand
 from bvex_codec.telemetry import Telemetry, WhichTMMessageType
 from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
 from typing import Callable
-from sync_metric_ids import MetricIdsStore
+from .sync_metric_ids import MetricIdsStore
 from pydantic import ValidationError
 
 
