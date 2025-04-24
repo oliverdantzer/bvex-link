@@ -1,13 +1,23 @@
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+## Ubuntu installation
+
+Install Python version 3.13
 ```
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.13
+sudo apt install python3.13-venv
+```
+
+Create virtual env, install requirements
+`python3.13 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+`
 
 # tests
 first start the server
 ```
-python3 run.py
+python run.py
 ```
 and [start redis](../bcp-redis-client/python/README.md)
 
