@@ -39,9 +39,11 @@ async def downlink_loop(
     sock_buf_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
 
     # downlink forever
+    last_sample = None
     while True:
         sample = await get_sample_async(r_async, metric_id)
-        if sample is not None:
+        if sample is not None and sample != last_sample:
+            last_sample = sample
             bytes_sent = await downlink_latest_sample(writer, sample)
 
             if (
