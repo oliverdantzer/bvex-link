@@ -1,17 +1,22 @@
-Python version 3.13
+## Ubuntu installation
 
-Create virtual env
-`python3 -m venv venv`
+Install Python version 3.13
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.13
+sudo apt install python3.13-venv
+```
 
-Activate venv Linux
-`source ./venv`
-
-Activating virtual env on Windows
-`source ./win-venv.sh`
+Create virtual env, install requirements
+`python3.13 -m venv venv
+source venv/bin/activate
+python3.13 -m pip install -r requirements.txt
+`
 
 Running
 ```bash
-python3 src/server.py
+python3.13 src/server.py
 ```
 
 src/generated/nano_pb2 can be built by running make in https://github.com/nanopb/nanopb/tree/master/generator/proto

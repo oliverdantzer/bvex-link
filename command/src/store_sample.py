@@ -14,14 +14,14 @@ def create_netcdf_file(file_path: str) -> None:
 
         # Create variables
         # Double precision float for timestamps
-        nc.createVariable('timestamp', 'f8', ('time',))
+        timestamp_var = nc.createVariable('timestamp', 'f8', ('time',))
         # Double precision float for values
-        nc.createVariable('value', 'f8', ('time',))
+        value_var = nc.createVariable('value', 'f8', ('time',))
 
-        # Add attributes
-        nc.timestamp.units = 'seconds since 1970-01-01 00:00:00'
-        nc.timestamp.long_name = 'Unix timestamp'
-        nc.value.long_name = 'Primitive value'
+        # Add attributes to variables
+        timestamp_var.units = 'seconds since 1970-01-01 00:00:00'
+        timestamp_var.long_name = 'Unix timestamp'
+        value_var.long_name = 'Primitive value'
 
 
 def write_to_netcdf(file_path: str, value: float | int | bool, timestamp: float) -> None:

@@ -4,6 +4,7 @@ from bvex_codec.telemetry import Telemetry, WhichTMMessageType
 from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
 from typing import Callable
 from sync_metric_ids import MetricIdsStore
+from pydantic import ValidationError
 
 
 async def subscribe(
@@ -19,11 +20,18 @@ async def subscribe(
         while True:
             data = await reader.read(1024)
             if data:
-                telemetry = Telemetry.model_validate_json(data.decode())
+                try:
+                    telemetry = Telemetry.model_validate_json(data.decode())
+                except ValidationError as e:
+                    print(e)
+                    continue
                 if isinstance(telemetry.data, Sample):
                     store_sample(telemetry.data)
             else:
                 await asyncio.sleep(0.1)
+    except Exception as e:
+        print(f"Error: {type(e)}")
+        raise e
     finally:
         writer.close()
         await writer.wait_closed()
