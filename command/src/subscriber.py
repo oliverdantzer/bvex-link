@@ -9,7 +9,7 @@ from typing import Awaitable
 
 
 async def subscribe(
-    remote_addr: tuple[str, int], metric_id: str, store_sample: Callable[[Sample], Awaitable[None]]
+    remote_addr: tuple[str, int], metric_id: str, handle_sample: Callable[[Sample], Awaitable[None]]
 ):
     reader, writer = await asyncio.open_connection(remote_addr[0], remote_addr[1])
     try:
@@ -28,7 +28,7 @@ async def subscribe(
                     print(e)
                     continue
                 if isinstance(telemetry.data, Sample):
-                    await store_sample(telemetry.data)
+                    await handle_sample(telemetry.data)
             else:
                 await asyncio.sleep(0.1)
     except Exception as e:
@@ -42,7 +42,7 @@ async def subscribe(
 async def subscribe_all(
     remote_addr: tuple[str, int],
     metric_id_store: MetricIdsStore,
-    store_sample: Callable[[Sample], Awaitable[None]],
+    handle_sample: Callable[[Sample], Awaitable[None]],
 ):
     subscriptions: dict[str, asyncio.Task] = {}
 
@@ -66,7 +66,7 @@ async def subscribe_all(
     async def add_subscription(metric_id: str):
         if metric_id not in subscriptions:
             subscriptions[metric_id] = asyncio.create_task(
-                subscribe(remote_addr, metric_id, store_sample)
+                subscribe(remote_addr, metric_id, handle_sample)
             )
 
     async def add_subscriptions(metric_ids: set[str]):
@@ -82,6 +82,7 @@ async def subscribe_all(
 
             # non-subscribed metric ids to subscribe to
             add_metric_ids = new_metric_ids - subscribed_metric_ids
+            print("Subscribing to new metric ids:", add_metric_ids)
             await add_subscriptions(add_metric_ids)
     finally:
         await cancel_subscriptions(set(subscriptions.keys()))

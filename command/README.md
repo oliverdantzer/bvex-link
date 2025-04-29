@@ -14,6 +14,8 @@ source venv/bin/activate
 python -m pip install -r requirements.txt
 `
 
+[Start redis server](../redis-instructions.md)
+
 Running
 ```bash
 python src/server.py
