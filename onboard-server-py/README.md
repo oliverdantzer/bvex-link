@@ -1,12 +1,6 @@
-## Ubuntu installation
+## Setup
 
-Install Python version 3.13
-```
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install python3.13
-sudo apt install python3.13-venv
-```
+[Install Python version 3.13](../python-instructions.md)
 
 Create virtual env, install requirements
 `python3.13 -m venv venv

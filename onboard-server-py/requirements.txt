@@ -1,6 +1,6 @@
--e file:../bcp-redis-client/python
--e file:../codec
--e file:.
+-e file:../bcp-redis-client/python --config-settings editable_mode=strict
+-e file:../codec --config-settings editable_mode=strict
+-e file:. --config-settings editable_mode=strict
 redis[hiredis]
 pydantic
 pytest
