@@ -47,6 +47,18 @@ def set_sample_file(r: redis.Redis, metric_id: str, file_path: str):
     )
     set_sample(r, metric_id, sample)
 
+def set_sample_file_from_bytes(r: redis.Redis, metric_id: str, data: bytes, filename: str):
+    file = FileData(filename=filename, data=data)
+    sample = Sample(
+        metadata=SampleMetadata(
+            metric_id=metric_id,
+            timestamp=time.time(),
+            which_data_type=WhichDataType.FILE,
+        ),
+        data=file,
+    )
+    set_sample(r, metric_id, sample)
+
 
 def get_sample(r: redis.Redis, metric_id: str) -> Sample | None:
     sample_json = r.get(f"sample-cache:{metric_id}")
@@ -102,7 +114,7 @@ class SampleSubscriber:
 
     def get_sample_primitive(self) -> PrimitiveType | None:
         sample = self.get_sample()
-        if sample is None:
+        if sample is None or not isinstance(sample.data, PrimitiveData):
             return None
         return sample.data.value
 

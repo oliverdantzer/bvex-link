@@ -13,6 +13,7 @@ from .sample import (
     set_sample,
     set_sample_primitive,
     set_sample_file,
+    set_sample_file_from_bytes,
     get_sample,
     SampleSubscriber,
 )
@@ -27,6 +28,7 @@ sample = {
     "set_sample": set_sample,
     "set_sample_primitive": set_sample_primitive,
     "set_sample_file": set_sample_file,
+    "set_sample_file_from_bytes": set_sample_file_from_bytes,
     "get_sample": get_sample,
     "SampleSubscriber": SampleSubscriber,
 }
