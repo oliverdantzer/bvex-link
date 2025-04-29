@@ -1,6 +1,9 @@
-python-dotenv==1.0.1
-matplotlib==3.9.2
-pillow==10.4.0
+python-dotenv
+matplotlib
+pillow
 protobuf
 click
 click_shell
+-e file:../codec --config-settings editable_mode=strict
+netCDF4
+aiofiles
