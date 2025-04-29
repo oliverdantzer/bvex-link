@@ -77,6 +77,8 @@ class FileData(BaseModel):
             return base64.b64decode(v.encode("utf-8"))
         elif isinstance(v, bytes):
             return v
+        elif isinstance(v, bytearray):
+            return bytes(v)
         else:
             raise ValueError(f"Expected str or bytes for data field, got {type(v)}")
 
