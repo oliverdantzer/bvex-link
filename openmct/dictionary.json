@@ -1,0 +1,27 @@
+{
+    "name": "Bvex Payload",
+    "key": "bvex",
+    "measurements": [
+        {
+            "name": "Test",
+            "key": "test",
+            "values": [
+                {
+                    "key": "value",
+                    "name": "Value",
+                    "units": "kilograms",
+                    "format": "number"
+                },
+                {
+                    "key": "utc",
+                    "source": "timestamp",
+                    "name": "Timestamp",
+                    "format": "utc",
+                    "hints": {
+                        "domain": 1
+                    }
+                }
+            ]
+        }
+    ]
+}
