@@ -8,6 +8,12 @@ source venv/bin/activate
 python -m pip install -r requirements.txt
 `
 
+# running
+```
+python run.py
+```
+
+
 # tests
 first start the server
 ```
