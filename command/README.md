@@ -12,7 +12,7 @@ python -m pip install -r requirements.txt
 
 Running
 ```bash
-python src/server.py
+python run.py
 ```
 
 src/generated/nano_pb2 can be built by running make in https://github.com/nanopb/nanopb/tree/master/generator/proto
