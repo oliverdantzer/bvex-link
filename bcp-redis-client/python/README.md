@@ -3,18 +3,21 @@
 ```bash
 python3.13 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 # Tests
 [Start redis server](../../redis-instructions.md)
 
 ```bash
-pip install -e .
 python -m pytest test/test_sample.py
 ```
 
+## manual tests
 
+```bash
+python manual_tests/test_sin_set.py
+```
 
 # Production
 Redis daemon
