@@ -11,6 +11,10 @@ ONBOARD_SERVER_IP=onboard.server.ip docker compose -f command-compose.yml up
 ```
 
 ### Running onboard server as a daemon
+First build the onboard server service
+```bash
+docker compose -f onboard-server-compose.yml up --build
+```
 Create systemd service file for the onboard server
 ```bash
 cp ./onboard-server.service /etc/systemd/system/onboard-server.service

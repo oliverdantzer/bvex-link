@@ -3,7 +3,7 @@ Description=Onboard Server
 After=network.target
 
 [Service]
-ExecStart=docker run -p 8000:8000 onboard-server
+ExecStart=docker compose -f onboard-server-compose.yml up --no-build
 Restart=always
 RestartSec=5
 User=root
