@@ -11,8 +11,8 @@ from .config import config
 
 async def run_server():
     remote_addr: tuple[str, int] = (
-        config.REMOTE_IP_ADDR,
-        config.REMOTE_PORT,
+        config.ONBOARD_SERVER_IP,
+        config.ONBOARD_SERVER_PORT,
     )
     metric_ids_store = MetricIdsStore()
     sync_metric_ids_task = asyncio.create_task(

@@ -1,22 +1,31 @@
 # BVEX OpenMCT Command Interface
 
+## Environment variables
+To run in development or production, the following environment variables must be defined:
+- `TELEMETRY_SERVER_IP`
+- `TELEMETRY_SERVER_PORT`
+
+This should usually be done by putting a file named `.env` in this directory. The code will automatically read environment variables from this file.
+
+An example of the contents of `.env` can be found in the file `.env.example`.
+
+> Environment variables defined before running the code will be overriden by those defined in the `.env` file.
+
 ## Production
 
 The following steps should be followed to run this module
 
 ### 1. Build the Docker image:
 ```bash
-docker build \
---build-arg TELEMETRY_SERVER_IP=your.server.ip \
---build-arg TELEMETRY_SERVER_PORT=8000 \
--t openmct .
+docker build -t openmct .
 ```
-> For running the interface on the **same host as the
-> command server**, you can pass no command line arguments,
-> which defaults the environment variables specifying the address
-> of the telemetry server to localhost:8000
+> To build without a .env file in this directory, you can pass environment
+> variables through the build command:
 > ```bash
-> docker build -t openmct .
+> docker build \
+> -e TELEMETRY_SERVER_IP=telemetry.server.ip \
+>    TELEMETRY_SERVER_PORT=8000 \
+> -t openmct .
 > ```
 ### 2. Run the container:
 ```bash

@@ -9,6 +9,7 @@ import express from "express";
 
 const TELEMETRY_SERVER_ADDR = `${process.env.TELEMETRY_SERVER_IP}:${process.env.TELEMETRY_SERVER_PORT}`;
 const TELEMETRY_SERVER_URL = `http://${TELEMETRY_SERVER_ADDR}`;
+console.log("Telemetry server url:", TELEMETRY_SERVER_URL);
 const TELEMETRY_REALTIME_SERVER_URL = `ws://${TELEMETRY_SERVER_ADDR}/realtime`;
 
 const app = express();
@@ -16,11 +17,11 @@ const app = express();
 await fetch(`${TELEMETRY_SERVER_URL}/test`).catch((e) => {
   console.error("Unable to connect to history server");
   process.exit(1);
-})
+});
 
 const historyServerProxyMiddleware = createProxyMiddleware({
   target: TELEMETRY_SERVER_URL,
-  changeOrigin: true
+  changeOrigin: true,
 });
 // proxy requests for /history to the history server
 app.use("/history", historyServerProxyMiddleware);
