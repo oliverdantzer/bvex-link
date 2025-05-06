@@ -8,7 +8,7 @@
     "start": "node dist/server/server.js",
     "clean": "rm -rf node_modules package-lock.json dist",
     "build": "tsc",
-    "dev": "nodemon --watch src --watch server --ext ts,js --exec \"npm run build && node dist/server/server.js\""
+    "dev": "nodemon --watch src --watch server --ext ts,js --exec \"npm run build && npm run start\""
   },
   "author": "Oliver Dantzer",
   "license": "MIT",

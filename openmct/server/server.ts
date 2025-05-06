@@ -7,22 +7,26 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import "dotenv/config";
 import express from "express";
 
+const TELEMETRY_SERVER_ADDR = `${process.env.TELEMETRY_SERVER_IP}:${process.env.TELEMETRY_SERVER_PORT}`;
+const TELEMETRY_SERVER_URL = `http://${TELEMETRY_SERVER_ADDR}`;
+const TELEMETRY_REALTIME_SERVER_URL = `ws://${TELEMETRY_SERVER_ADDR}/realtime`;
+
 const app = express();
 
-await fetch(`${process.env.TELEMETRY_SERVER_ADDR}/test`).catch((e) => {
+await fetch(`${TELEMETRY_SERVER_URL}/test`).catch((e) => {
   console.error("Unable to connect to history server");
   process.exit(1);
 })
 
 const historyServerProxyMiddleware = createProxyMiddleware({
-  target: process.env.TELEMETRY_SERVER_ADDR,
+  target: TELEMETRY_SERVER_URL,
   changeOrigin: true
 });
 // proxy requests for /history to the history server
 app.use("/history", historyServerProxyMiddleware);
 
 const realtimeServerProxyMiddleware = createProxyMiddleware({
-  target: process.env.TELEMETRY_REALTIME_SERVER_ADDR,
+  target: TELEMETRY_REALTIME_SERVER_URL,
   changeOrigin: true,
   ws: true,
   pathRewrite: {
