@@ -5,7 +5,7 @@ from typing import Any, Annotated
 
 class Subscribe(BaseModel):
     metric_id: str
-
+    bps: int
 
 class GetMetricIds(BaseModel):
     pass
