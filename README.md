@@ -9,6 +9,7 @@ To run the command module and an openmct interface, run the following, where onb
 ```bash
 ONBOARD_SERVER_IP=onboard.server.ip docker compose -f command-compose.yml up
 ```
+Then navigate to the link (http://localhost/8080) to view the openmct, and interact with the terminal to send commands.
 
 ### Running onboard server as a daemon
 First build the onboard server service

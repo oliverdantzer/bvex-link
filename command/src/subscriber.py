@@ -3,17 +3,17 @@ from bvex_codec.telecommand import Subscribe, Telecommand
 from bvex_codec.telemetry import Telemetry, WhichTMMessageType
 from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
 from typing import Callable
-from .sync_metric_ids import MetricIdsStore
+from .sync_metric_ids import MetricIdsStore, MetricInfo
 from pydantic import ValidationError
 from typing import Awaitable
 
 
 async def subscribe(
-    remote_addr: tuple[str, int], metric_id: str, handle_sample: Callable[[Sample], Awaitable[None]]
+    remote_addr: tuple[str, int], metric_id: str, bps: int, handle_sample: Callable[[Sample], Awaitable[None]]
 ):
     reader, writer = await asyncio.open_connection(remote_addr[0], remote_addr[1])
     try:
-        cmd = Subscribe(metric_id=metric_id)
+        cmd = Subscribe(metric_id=metric_id, bps=bps)
         tc = Telecommand.from_command(cmd)
         writer.write(tc.model_dump_json().encode())
         await writer.drain()
@@ -63,26 +63,31 @@ async def subscribe_all(
             for metric_id in metric_ids:
                 tg.create_task(cancel_subscription(metric_id))
 
-    async def add_subscription(metric_id: str):
-        if metric_id not in subscriptions:
-            subscriptions[metric_id] = asyncio.create_task(
-                subscribe(remote_addr, metric_id, handle_sample)
+    async def add_subscription(metric_info: MetricInfo):
+        if metric_info.metric_id not in subscriptions:
+            subscriptions[metric_info.metric_id] = asyncio.create_task(
+                subscribe(remote_addr, metric_info.metric_id, metric_info.bps, handle_sample)
             )
-
-    async def add_subscriptions(metric_ids: set[str]):
-        async with asyncio.TaskGroup() as tg:
-            for metric_id in metric_ids:
-                tg.create_task(add_subscription(metric_id))
+    
+    async def re_subscribe(metric_info: MetricInfo):
+        if metric_info.metric_id in subscriptions:
+            await cancel_subscription(metric_info.metric_id)
+        await add_subscription(metric_info)
 
     try:
         while True:
             await metric_id_store.updated.wait()
-            new_metric_ids = metric_id_store.get()
+            new_metrics = metric_id_store.get_updated_metrics()
             subscribed_metric_ids = get_subscribed_metric_ids()
+            async with asyncio.TaskGroup() as tg:
+                for new_metric in new_metrics:
+                    # if metric id is not subscribed, add it to subscriptions
+                    if new_metric.metric_id not in subscribed_metric_ids:
+                        tg.create_task(add_subscription(new_metric))
+                    # if metric info changed, cancel the subscription and add it again
+                    else:
+                        tg.create_task(re_subscribe(new_metric))
+            
 
-            # non-subscribed metric ids to subscribe to
-            add_metric_ids = new_metric_ids - subscribed_metric_ids
-            print("Subscribing to new metric ids:", add_metric_ids)
-            await add_subscriptions(add_metric_ids)
     finally:
         await cancel_subscriptions(set(subscriptions.keys()))

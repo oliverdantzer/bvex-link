@@ -3,25 +3,52 @@ from bvex_codec.telecommand import GetMetricIds, Telecommand
 from bvex_codec.telemetry import Telemetry, WhichTMMessageType, MetricIds
 from bvex_codec.sample import Sample, WhichDataType, PrimitiveData
 from typing import Callable
+from dataclasses import dataclass
 
+
+@dataclass
+class MetricInfo:
+    metric_id: str
+    bps: int = 0
+    updated = asyncio.Event()  # indicates if this metric info has been updated
 
 class MetricIdsStore:
     def __init__(self):
-        self.metric_ids = set()
-        self.updated = asyncio.Event()
+        self.metrics: dict[str, MetricInfo] = {}
+        self.updated = asyncio.Event() # indicates if metric ids were updated
 
-    # if new metric ids are different from current, 
+    # if new metric ids are different from current,
     # updates metric ids and sets updated flag
-    def update(self, new_metric_ids: list[str]):
-        if self.metric_ids != set(new_metric_ids):
-            self.metric_ids.clear()
-            self.metric_ids.update(new_metric_ids)
+    def update(self, latest_metric_ids: list[str]):
+        new_metric_ids = set(latest_metric_ids) - set(self.metrics.keys())
+        if new_metric_ids:
             self.updated.set()
+            for metric_id in new_metric_ids:
+                self.metrics[metric_id] = MetricInfo(metric_id=metric_id)
 
-    # returns set of current metric ids, clears updated flag
-    def get(self) -> set[str]:
-        self.updated.clear()
-        return self.metric_ids.copy()
+    def update_bps(self, metric_id: str, bps: int):
+        for metric_info in self.metrics.values():
+            if metric_info.metric_id == metric_id:
+                metric_info.bps = bps
+                metric_info.updated.set()
+                self.updated.set()
+                break
+        if self.updated.is_set():
+            return True
+        else:
+            return False
+    
+    def get_metrics(self) -> set[MetricInfo]:
+        return set(self.metrics.values())
+    
+    def get_updated_metrics (self) -> set[MetricInfo]:
+        updated_metrics = set()
+        if self.updated.is_set():
+            for metric_info in self.metrics.values():
+                if metric_info.updated.is_set():
+                    updated_metrics.add(metric_info)
+                    metric_info.updated.clear()
+        return updated_metrics
 
 
 async def sync_metric_ids(remote_addr: tuple[str, int], metric_ids: MetricIdsStore):
