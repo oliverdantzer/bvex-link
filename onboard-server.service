@@ -1,0 +1,13 @@
+[Unit]
+Description=Onboard Server
+After=network.target
+
+[Service]
+ExecStart=docker run -p 8000:8000 onboard-server
+Restart=always
+RestartSec=5
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

@@ -11,3 +11,4 @@ fastapi
 uvicorn
 redis[hiredis]
 websockets
+dotenv

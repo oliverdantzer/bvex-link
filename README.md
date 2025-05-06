@@ -9,3 +9,19 @@ To run the command module and an openmct interface, run the following, where onb
 ```bash
 ONBOARD_SERVER_IP=onboard.server.ip docker compose -f command-compose.yml up
 ```
+
+### Running onboard server as a daemon
+Create systemd service file for the onboard server
+```bash
+cp ./onboard-server.service /etc/systemd/system/onboard-server.service
+```
+Reload systemd and Enable the Service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start onboard-server.service
+sudo systemctl enable onboard-server.service
+```
+Verify the Service
+```bash
+sudo systemctl status onboard-server.service
+```

@@ -1,0 +1,11 @@
+services:
+  command:
+    build:
+      context: ./
+      dockerfile: ./onboard-server-py/Dockerfile
+    ports:
+      - "8888:8888"
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
