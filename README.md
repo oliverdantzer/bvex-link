@@ -1,7 +1,5 @@
 # bvex link
 
-## [onboard telemetry client documentation](https://oliverdantzer.github.io/bvex-link)
-
 ## Running in production
 
 ### Running onboard server as a daemon
