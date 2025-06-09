@@ -41,9 +41,11 @@ async def downlink_loop(
     # downlink forever
     last_sample = None
     while True:
+        print("awaiting sample for metric_id", metric_id)
         sample = await get_sample_async(r_async, metric_id)
         if sample is not None and sample != last_sample:
             last_sample = sample
+            print(f"downlinking {sample.metadata.metric_id}")
             bytes_sent = await downlink_latest_sample(writer, sample)
 
             if (

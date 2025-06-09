@@ -9,12 +9,13 @@ import express from "express";
 
 const TELEMETRY_SERVER_ADDR = `${process.env.TELEMETRY_SERVER_IP}:${process.env.TELEMETRY_SERVER_PORT}`;
 const TELEMETRY_SERVER_URL = `http://${TELEMETRY_SERVER_ADDR}`;
-console.log("Telemetry server url:", TELEMETRY_SERVER_URL);
 const TELEMETRY_REALTIME_SERVER_URL = `ws://${TELEMETRY_SERVER_ADDR}/realtime`;
 
 const app = express();
 
-await fetch(`${TELEMETRY_SERVER_URL}/test`).catch((e) => {
+await fetch(`${TELEMETRY_SERVER_URL}/test`, {
+  signal: AbortSignal.timeout(2000),
+}).catch((e) => {
   console.error("Unable to connect to history server");
   process.exit(1);
 });
@@ -22,9 +23,20 @@ await fetch(`${TELEMETRY_SERVER_URL}/test`).catch((e) => {
 const historyServerProxyMiddleware = createProxyMiddleware({
   target: TELEMETRY_SERVER_URL,
   changeOrigin: true,
+  // on: {
+  //   proxyReq: (proxyReq, req, res) => {
+  //     console.log(
+  //       `[PROXY] ${req.method} ${req.url} -> ${TELEMETRY_SERVER_URL}${req}`
+  //     );
+  //   },
+  // },
+  pathRewrite: {
+    "^": "history", // Re-add history to path because this it is initially removed
+  },
 });
 // proxy requests for /history to the history server
 app.use("/history", historyServerProxyMiddleware);
+console.log(`/history proxied to ${TELEMETRY_SERVER_URL}/history`);
 
 const realtimeServerProxyMiddleware = createProxyMiddleware({
   target: TELEMETRY_REALTIME_SERVER_URL,

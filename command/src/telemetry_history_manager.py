@@ -22,5 +22,6 @@ class TelemetryHistoryManager:
         except ValueError:
             raise HTTPException(
                 400, detail="Invalid date format. Expected ISO-8601 string.")
-        samples = await self.r.zrangebyscore(f"{TELEMETRY_HISTORY_KEY}:{metric_id}", start_timestamp, end_timestamp)
-        return [Sample.model_validate_json(sample) for sample in samples]
+        sample_jsons: list[str] = await self.r.zrangebyscore(f"{TELEMETRY_HISTORY_KEY}:{metric_id}", start_timestamp, end_timestamp)
+        samples = [Sample.model_validate_json(sample) for sample in sample_jsons]
+        return samples

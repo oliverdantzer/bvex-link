@@ -24,7 +24,6 @@ class RealtimeTelemetryConnectionManager:
     
     async def websocket_endpoint(self, websocket: WebSocket):
         await self.connect(websocket)
-        print("connected")
         try:
             while True:
                 message = await websocket.receive_text()

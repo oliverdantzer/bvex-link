@@ -8,13 +8,13 @@ from .sync_metric_ids import MetricInfo
 class CLI:
     def __init__(
         self,
-        handle_set_bps: Callable[[str, int], bool],
-        handle_set_max_bps: Callable[[int], str],
-        get_metric_info: Callable[[], set[MetricInfo]],
+        handle_set_bps: Callable[[str, int], None],
+        handle_set_max_bps: Callable[[int], None],
+        get_metric_infos: Callable[[], set[MetricInfo]]
     ):
         self.handle_set_bps = handle_set_bps
         self.handle_set_max_bps = handle_set_max_bps
-        self.get_metric_info = get_metric_info
+        self.get_metric_infos = get_metric_infos
         self.app = self.create_app()
 
     def create_app(self):
@@ -26,9 +26,7 @@ class CLI:
         @click.argument("metric_id", type=str)
         @click.argument("bits_per_second", type=int)
         def setbps(metric_id: str, bits_per_second: int):
-            success = self.handle_set_bps(metric_id, bits_per_second)
-            if not success:
-                click.echo(f"Failed to set bps for {metric_id}")
+            self.handle_set_bps(metric_id, bits_per_second)
         
         @app.command()
         @click.argument("bits_per_second", type=int)
@@ -36,8 +34,12 @@ class CLI:
             click.echo(self.handle_set_max_bps(bits_per_second))
 
         @app.command()
-        def getmetricinfo():
-            click.echo(self.get_metric_info())
+        def getmetricinfos():
+            metric_infos = self.get_metric_infos()
+            if not metric_infos:
+                click.echo("No metric infos recieved from onboard server.")
+            for metric_info in metric_infos:
+                click.echo(str(metric_info))
 
         return app
 

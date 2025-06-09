@@ -10,7 +10,12 @@
                     "key": "value",
                     "name": "Value",
                     "units": "kilograms",
-                    "format": "number"
+                    "format": "float",
+                    "min": -100,
+                    "max": 100,
+                    "hints": {
+                        "range": 1
+                    }
                 },
                 {
                     "key": "utc",

@@ -1,14 +1,13 @@
 import asyncio
 import os
 from .cli import CLI
-from .subscriber import subscribe_all
-from .sync_metric_ids import MetricIdsStore, sync_metric_ids
+from .sync_metric_ids import MetricSubscribeHandler
 from bvex_codec.sample import Sample
-from dotenv import load_dotenv
 from .telemetry_server import TelemetryServer
 from .config import config
 from .cli import CLI
 import threading
+import queue
 
 
 async def run_server():
@@ -16,43 +15,52 @@ async def run_server():
         config.ONBOARD_SERVER_IP,
         config.ONBOARD_SERVER_PORT,
     )
-    metric_ids_store = MetricIdsStore()
-    sync_metric_ids_task = asyncio.create_task(
-        sync_metric_ids(remote_addr, metric_ids_store))
     telemetry_server = TelemetryServer(
         config.TELEMETRY_SERVER_PORT)
-    
-    max_bps = 10000
-    metric_id_bps = {}
-    def set_max_bps(bps: int) -> str:
-        nonlocal max_bps, metric_ids_store
-        max_bps = bps
-        msg = ""
-        acc = 0
-        for metric_info in metric_ids_store.get_metrics():
-            acc += metric_info.bps
-            if acc > max_bps:
-                metric_ids_store.update_bps(
-                    metric_info.metric_id, 0)
-                msg += f"Metric id {metric_info.metric_id} is set to 0 bps\n"
-        return msg
-    cli = CLI(
-        handle_set_bps=metric_ids_store.update_bps,
-        handle_set_max_bps=set_max_bps,
-        get_metric_info=metric_ids_store.get_metrics,
-        )
-    cli_thread = threading.Thread(
-        target=cli.run,
-    )
-    cli_thread.start()
+    bps_distribution_mode = config.DEFAULT_BPS_DISTRIBUTION_MODE
+    max_bps = config.DEFAULT_MAX_BPS
 
     async def handle_sample(sample: Sample):
         # await sample_store.store_sample(sample)
         await telemetry_server.add_sample(sample)
-        # print(sample)
-    subscribe_all_task = asyncio.create_task(
-        subscribe_all(remote_addr, metric_ids_store, handle_sample))
 
-    await asyncio.gather(sync_metric_ids_task, subscribe_all_task, 
-                         telemetry_server.run())
+    metric_ids_store = MetricSubscribeHandler(
+        remote_addr,
+        handle_sample,
+        bps_distribution_mode,
+        max_bps)
+    metric_id_bps = {}
+
+    update_bps_queue: asyncio.Queue[tuple[str, int]] = asyncio.Queue()
+    set_max_bps_queue: asyncio.Queue[int] = asyncio.Queue()
+
+    def update_bps_sync(metric_id: str, bps: int):
+        update_bps_queue.put_nowait((metric_id, bps))
+    def set_max_bps_sync(bps: int):
+        set_max_bps_queue.put_nowait(bps)
+
+    async def handle_update_bps_queue():
+        while True:
+            update = await update_bps_queue.get()
+            await metric_ids_store.update_bps(
+                update[0], update[1])
+    async def handle_set_max_bps_queue():
+        while True:
+            bps = await set_max_bps_queue.get()
+            await metric_ids_store.set_max_bps(bps)
+        
+    cli = CLI(
+        handle_set_bps=update_bps_sync,
+        handle_set_max_bps=set_max_bps_sync,
+        get_metric_infos=metric_ids_store.get_metrics,
+    )
+    cli_thread = threading.Thread(
+        target=cli.run,
+    )
+    cli_thread.start()
+    async with metric_ids_store:
+        await asyncio.gather(
+            handle_update_bps_queue(),
+            handle_set_max_bps_queue(),
+            telemetry_server.run())
     cli_thread.join()

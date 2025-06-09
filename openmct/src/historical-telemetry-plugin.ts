@@ -1,5 +1,6 @@
 import { DomainObject, OpenMCT } from "openmct";
 import { Sample, TelemetryPoint } from "./sample";
+import { time } from "console";
 
 interface RequestOptions {
   filters?: any; // Adjust type if filters have a specific structure
@@ -24,9 +25,12 @@ export function HistoricalTelemetryPlugin() {
         domainObject: any,
         options: RequestOptions
       ): Promise<TelemetryPoint[]> {
-        const start_date = new Date(options.start).toISOString();
-        const end_date = new Date(options.end).toISOString();
-        var url = "history/samples/" +
+        let start_timestamp = options.start || 0; // posix timestamp
+        const end_timestamp = options.end || Date.now(); // posix timestamp
+        const start_date = new Date(start_timestamp).toISOString();
+        const end_date = new Date(end_timestamp).toISOString();
+        var url =
+          "history/samples/" +
           domainObject.identifier.key +
           "?start=" +
           start_date +
@@ -34,17 +38,27 @@ export function HistoricalTelemetryPlugin() {
           end_date;
         let response = await fetch(url);
         let data: Sample[] = await response.json();
-        let points: TelemetryPoint[] = data.map(
-          function (sample) {
-            const secondsSinceEpoch = sample.metadata.timestamp;
-            const millisecondsSinceEpoch = secondsSinceEpoch * 1000;
-            return {
-              timestamp: millisecondsSinceEpoch,
-              value: sample.data.value,
-              id: sample.metadata.metric_id,
-            };
+        let points: TelemetryPoint[] = data.map(function (sample) {
+          const secondsSinceEpoch = sample.metadata.timestamp;
+          const millisecondsSinceEpoch = secondsSinceEpoch * 1000;
+          return {
+            timestamp: millisecondsSinceEpoch,
+            value: sample.data.value,
+            id: sample.metadata.metric_id,
+          };
+        });
+
+        points.forEach((point) => {
+          if (
+            point.timestamp < options.start ||
+            point.timestamp > options.end
+          ) {
+            throw new Error(
+              `Telemetry point out of range: ${point.timestamp} not in [${options.start}, ${options.end}]`
+            );
           }
-        );
+        });
+
         return points;
       },
     };

@@ -1,5 +1,14 @@
 # BVEX Command module
 
+## Usage
+
+After running in the terminal, you have access to the bvex cli.
+Enter `getmetricinfos` to see what the available metrics are.
+To start seeing samples from a metric, allocate bps to it using
+```
+setbps {METRIC NAME} 1000
+``
+
 ## Environment variables
 To run in development or production, the following environment variables must be defined:
 - `ONBOARD_SERVER_IP`

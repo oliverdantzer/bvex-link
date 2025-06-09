@@ -53,8 +53,10 @@ class TelemetryServer:
 
         realtime_interactive_endpoint = http_endpoint_realtime_interactive(port)
         self.app.add_api_route("/realtime-interactive", realtime_interactive_endpoint)
-
-        self.app.add_api_route("/test", lambda: "Hello World!", methods=["GET"])
+        
+        async def test_endpoint():
+            return "Hello World!"
+        self.app.add_api_route("/test", test_endpoint, methods=["GET"])
 
         self.config = Config(
             app=self.app, host="0.0.0.0", port=port, log_level="warning"
@@ -69,4 +71,5 @@ class TelemetryServer:
                 tg.create_task(self.sample_store.store_sample(sample))
 
     async def run(self):
+        print(f"Telemetry server starting on port {self.config.port}")
         await self.server.serve()
