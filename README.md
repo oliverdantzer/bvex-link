@@ -4,14 +4,10 @@
 
 ## Running in production
 
-### Command and interface
-To run the command module and an openmct interface, run the following, where onboard.server.ip is replaced with the actual IP address of the onboard server.
-```bash
-ONBOARD_SERVER_IP=onboard.server.ip docker compose -f command-compose.yml up
-```
-Then navigate to the link (http://localhost/8080) to view the openmct, and interact with the terminal to send commands.
-
 ### Running onboard server as a daemon
+
+> This will be run on the ophiuchius machine
+
 First build the onboard server service
 ```bash
 docker compose -f onboard-server-compose.yml up --build
@@ -30,3 +26,21 @@ Verify the Service
 ```bash
 sudo systemctl status onboard-server.service
 ```
+
+### Command and interface
+
+> This will be run on the saggitarius machine
+
+To run the command module and an openmct interface, run the following, where onboard.server.ip is replaced with the actual IP address of the onboard server.
+```bash
+ONBOARD_SERVER_IP=onboard.server.ip docker compose -f command-compose.yml up
+```
+Then navigate to the link (http://localhost/8080) to view the openmct, and interact with the terminal to send commands. You can type `help` in the terminal to view the list of commands.
+
+### Sending and requesting data from the onboard server
+
+> This will be used on the ophiuchius and saggitarius machines
+
+To interact with the onboard server from python code, view the instructions [./bcp-redis-client/python/](here).
+
+Using C code, you must install the library [./bcp-redis-client/c/](here).
