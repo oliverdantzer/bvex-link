@@ -1,0 +1,13 @@
+[Unit]
+Description=Onboard Server
+After=network.target
+
+[Service]
+ExecStart=docker compose -f onboard-server-compose.yml up --no-build
+Restart=always
+RestartSec=5
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

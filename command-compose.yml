@@ -1,0 +1,18 @@
+services:
+  command:
+    build:
+      context: ./
+      dockerfile: ./command/Dockerfile
+    environment:
+      - ONBOARD_SERVER_IP=${ONBOARD_SERVER_IP}
+      - ONBOARD_SERVER_PORT=8888
+    ports:
+      - "8000:8000"
+  openmct:
+    build:
+      context: ./openmct
+    environment:
+      - TELEMETRY_SERVER_IP=localhost
+      - TELEMETRY_SERVER_PORT=3000
+    ports:
+      - "8080:8080"

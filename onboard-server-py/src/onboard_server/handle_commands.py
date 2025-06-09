@@ -32,7 +32,7 @@ async def downlink_latest_sample(writer: asyncio.StreamWriter, sample: Sample) -
 async def downlink_loop(
     writer: asyncio.StreamWriter,
     metric_id: str,
-    get_bps: Callable[[], int],
+    bps: int,
 ):
     # get socket we are writing to
     sock = writer.get_extra_info("socket")
@@ -41,9 +41,11 @@ async def downlink_loop(
     # downlink forever
     last_sample = None
     while True:
+        print("awaiting sample for metric_id", metric_id)
         sample = await get_sample_async(r_async, metric_id)
         if sample is not None and sample != last_sample:
             last_sample = sample
+            print(f"downlinking {sample.metadata.metric_id}")
             bytes_sent = await downlink_latest_sample(writer, sample)
 
             if (
@@ -58,7 +60,7 @@ async def downlink_loop(
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, sock_buf_size)
 
             min_sleep = 1 / max_downlink_hz
-            await asyncio.sleep(max(min_sleep, bytes_sent / get_bps()))
+            await asyncio.sleep(max(min_sleep, bytes_sent / bps))
         else:
             # sleep for 1 second if no data was sent
             # to avoid busy-waiting on a new sample
@@ -69,7 +71,7 @@ async def downlink_loop(
 async def handle_subscribe(writer: asyncio.StreamWriter, cmd: Subscribe):
     try:
         logger.info(f"downlinking {cmd.metric_id}")
-        await downlink_loop(writer, cmd.metric_id, lambda: 10000)
+        await downlink_loop(writer, cmd.metric_id, cmd.bps)
     except asyncio.CancelledError:
         logger.info(f"downlink cancelled for {cmd.metric_id}")
         raise

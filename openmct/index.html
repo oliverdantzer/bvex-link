@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Open MCT Tutorials</title>
+    <script src="node_modules/openmct/dist/openmct.js"></script>
+    <script src="dist/src/dictionary-plugin.js" type="module"></script>
+    <script src="dist/src/historical-telemetry-plugin.js" type="module"></script>
+    <script src="dist/src/realtime-telemetry-plugin.js" type="module"></script>
+    <script type="module">
+        import { DictionaryPlugin } from './dist/src/dictionary-plugin.js';
+        import { HistoricalTelemetryPlugin } from './dist/src/historical-telemetry-plugin.js';
+        import { RealtimeTelemetryPlugin } from './dist/src/realtime-telemetry-plugin.js';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            openmct.setAssetPath('node_modules/openmct/dist');
+            openmct.install(openmct.plugins.LocalStorage());
+            openmct.install(openmct.plugins.MyItems());
+            openmct.install(openmct.plugins.UTCTimeSystem());
+            openmct.install(openmct.plugins.Espresso());  // dark theme
+
+            openmct.install(DictionaryPlugin(openmct));
+            openmct.install(HistoricalTelemetryPlugin());
+            openmct.install(RealtimeTelemetryPlugin());
+
+            openmct.time.setTimeSystem('utc');
+
+            openmct.start();
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

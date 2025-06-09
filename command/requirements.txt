@@ -7,3 +7,8 @@ click_shell
 -e file:../codec --config-settings editable_mode=strict
 netCDF4
 aiofiles
+fastapi
+uvicorn
+redis[hiredis]
+websockets
+dotenv
