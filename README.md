@@ -39,6 +39,6 @@ Then navigate to the link (http://localhost/8080) to view the openmct, and inter
 
 > This will be used on the ophiuchius and saggitarius machines
 
-To interact with the onboard server from python code, view the instructions [./bcp-redis-client/python/](here).
+To interact with the onboard server from python code, view the instructions [./bcp-redis-client/python/](./bcp-redis-client/python/).
 
-Using C code, you must install the library [./bcp-redis-client/c/](here).
+Using C code, you must install the library [./bcp-redis-client/c/](./bcp-redis-client/c/).
