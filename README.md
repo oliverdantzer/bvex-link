@@ -27,7 +27,7 @@ sudo systemctl status onboard-server.service
 
 ### Command and interface
 
-> This will be run on the saggitarius machine
+> This will be run on the perseus machine
 
 To run the command module and an openmct interface, run the following, where onboard.server.ip is replaced with the actual IP address of the onboard server.
 ```bash
