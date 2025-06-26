@@ -6,6 +6,8 @@ from .sample import (
     WhichDataType,
     SampleMetadata,
     Sample,
+    FileSample,
+    PrimitiveSample
 )
 
 from .telemetry import (

@@ -1,3 +1,4 @@
-from .server import run, handle_connection
+from .server import run, OnboardServer
+from .config import config
 
-__all__ = ["run", "handle_connection"]
+__all__ = ["run", "OnboardServer", "config"]

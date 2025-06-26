@@ -32,7 +32,6 @@ python run.py
 ```
 
 ### Running tests
-With the onboard server running, execute:
 ```
 pytest
 ```

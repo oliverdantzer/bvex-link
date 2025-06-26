@@ -29,11 +29,14 @@ python -m pip install -r requirements.txt
 [Start redis server](../../redis-instructions.md)
 
 ```bash
-python -m pytest test/test_sample.py
+python -m pytest
 ```
 
 ### manual tests
 
 ```bash
 python manual_tests/test_sin_set.py
+```
+```bash
+python manual_tests/test_images.py
 ```

@@ -35,7 +35,10 @@
                 {
                     "key": "url",
                     "name": "URL",
-                    "format": "string"
+                    "format": "string",
+                    "hints": {
+                        "image": 1
+                    }
                 },
                 {
                     "key": "utc",

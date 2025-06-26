@@ -34,13 +34,20 @@ docker run -p 8080:8080 openmct
 
 ## Development
 
-### 1. Install node js
+### Install and run
+#### 1. Install node js
 - `curl -fsSL https://fnm.vercel.app/install | bash` [install fnm](https://github.com/Schniz/fnm#installation)
 - `fnm install 22` install node v22
 - `fnm use 22`
 
-### 2. Run in development mode
+#### 2. Run in development mode
 ```
 npm i
 npm run dev
 ```
+
+### Dev guide
+
+- To import new modules, they must be imported as scripts in index.html
+- `npm run dev` must be rerun after installing new packages to node_modules
+- When importing files, you must add the .js extension

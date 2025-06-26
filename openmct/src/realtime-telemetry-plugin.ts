@@ -1,4 +1,4 @@
-import { Sample, TelemetryPoint } from "./sample";
+import { Sample, TelemetryPoint, sampleToTelemetryPoint } from "./sample.js";
 import { OpenMCT } from "openmct";
 
 type ListenerCallback = (point: TelemetryPoint) => void;
@@ -16,11 +16,7 @@ export function RealtimeTelemetryPlugin() {
     socket.onmessage = function (event) {
       const sample: Sample = JSON.parse(event.data);
       const key = sample.metadata.metric_id;
-      const point: TelemetryPoint = {
-        timestamp: sample.metadata.timestamp * 1000,
-        value: sample.data.value,
-        id: key,
-      };
+      const point: TelemetryPoint = sampleToTelemetryPoint(sample);
       listener[key].forEach((callback) => {
         callback(point);
       });

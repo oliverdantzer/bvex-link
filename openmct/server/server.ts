@@ -10,6 +10,7 @@ import express from "express";
 const TELEMETRY_SERVER_ADDR = `${process.env.TELEMETRY_SERVER_IP}:${process.env.TELEMETRY_SERVER_PORT}`;
 const TELEMETRY_SERVER_URL = `http://${TELEMETRY_SERVER_ADDR}`;
 const TELEMETRY_REALTIME_SERVER_URL = `ws://${TELEMETRY_SERVER_ADDR}/realtime`;
+console.log("telemetry server url", TELEMETRY_SERVER_URL);
 
 const app = express();
 

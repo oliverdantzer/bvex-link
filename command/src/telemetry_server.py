@@ -13,7 +13,9 @@ from .telemetry_realtime_manager import RealtimeTelemetryConnectionManager
 from .telemetry_history_manager import TelemetryHistoryManager
 from .telemetry_realtime_interactive import http_endpoint_realtime_interactive
 import os
-from .store_sample import SampleStore
+from .config import config
+from .store_file_sample import store_file_sample
+from bvex_codec.sample import FileSample
 
 TELEMETRY_HISTORY_KEY = "telemetry_history"
 
@@ -30,13 +32,11 @@ class TelemetryServer:
             allow_headers=["*"],
         )
 
-        self.sample_store = SampleStore(os.path.relpath("data"))
-
-        # Create ./files directory if it doesn't exist
-        os.makedirs("./files", exist_ok=True)
+        # Create file store directory if it doesn't exist
+        os.makedirs(config.FILE_STORE_DIR_ABSPATH, exist_ok=True)
 
         # exposes "http://0.0.0.0:port/images"
-        self.app.mount("/files", StaticFiles(directory="./files"), name="images")
+        self.app.mount("/files", StaticFiles(directory=config.FILE_STORE_DIR_ABSPATH), name="images")
 
         # exposes "http://0.0.0.0:port/{metric_id}?start={num1}&end={num2}"
         self.history_manager = TelemetryHistoryManager()
@@ -67,9 +67,10 @@ class TelemetryServer:
         async with asyncio.TaskGroup() as tg:
             tg.create_task(self.realtime_manager.notify_all_subscribers(sample))
             tg.create_task(self.history_manager.add_sample(sample))
-            if isinstance(sample.data, FileData):
-                tg.create_task(self.sample_store.store_sample(sample))
+            if isinstance(sample, FileSample):
+                tg.create_task(store_file_sample(sample))
 
     async def run(self):
         print(f"Telemetry server starting on port {self.config.port}")
+        await self.history_manager.clear_history()
         await self.server.serve()

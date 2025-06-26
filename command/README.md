@@ -7,7 +7,7 @@ Enter `getmetricinfos` to see what the available metrics are.
 To start seeing samples from a metric, allocate bps to it using
 ```
 setbps {METRIC NAME} 1000
-``
+```
 
 ## Environment variables
 To run in development or production, the following environment variables must be defined:
@@ -57,3 +57,10 @@ Running
 ```bash
 python run.py
 ```
+
+### Development tips
+- To kill old hanging instances of the command server, run:
+```
+sudo lsof -i :8000
+```
+Then run `sudo kill -9 <PID>` for each process's PID

@@ -1,5 +1,5 @@
 import { DomainObject, OpenMCT } from "openmct";
-import { Sample, TelemetryPoint } from "./sample";
+import { PrimitivePoint, Sample, TelemetryPoint, sampleToTelemetryPoint } from "./sample.js";
 import { time } from "console";
 
 interface RequestOptions {
@@ -38,15 +38,8 @@ export function HistoricalTelemetryPlugin() {
           end_date;
         let response = await fetch(url);
         let data: Sample[] = await response.json();
-        let points: TelemetryPoint[] = data.map(function (sample) {
-          const secondsSinceEpoch = sample.metadata.timestamp;
-          const millisecondsSinceEpoch = secondsSinceEpoch * 1000;
-          return {
-            timestamp: millisecondsSinceEpoch,
-            value: sample.data.value,
-            id: sample.metadata.metric_id,
-          };
-        });
+        let points: TelemetryPoint[] = data.map(sampleToTelemetryPoint);
+        console.log("hello", points);
 
         points.forEach((point) => {
           if (

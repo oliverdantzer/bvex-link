@@ -133,3 +133,9 @@ class Sample(BaseModel):
         elif which_data_type == WhichDataType.FILE and not isinstance(v, FileData):
             raise ValueError(f"Expected FileData for FILE data type, got {type(v)}")
         return v
+
+class FileSample(Sample):
+    data: FileData
+
+class PrimitiveSample(Sample):
+    data: PrimitiveData

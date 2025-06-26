@@ -21,7 +21,6 @@ async def run_server():
     max_bps = config.DEFAULT_MAX_BPS
 
     async def handle_sample(sample: Sample):
-        # await sample_store.store_sample(sample)
         await telemetry_server.add_sample(sample)
 
     metric_ids_store = MetricSubscribeHandler(

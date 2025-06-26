@@ -22,6 +22,4 @@ async def get_all_metric_ids(r: redis.asyncio.Redis) -> Set[str]:
 
 async def get_sample(r: redis.asyncio.Redis, metric_id: str) -> Sample | None:
     sample_json = await r.get(f"sample-cache:{metric_id}")
-    if sample_json is None:
-        return None
     return Sample.model_validate_json(sample_json)

@@ -2,15 +2,29 @@ from fastapi import HTTPException
 from bvex_codec import Sample
 import redis.asyncio as redis
 import dateutil.parser as dp
+from bvex_codec.sample import FileSample
+from .config import config
+
+# TODO: give telemetry history manager aenter and aexit
+# clear history on aenter
+# refactor store_file_sample to into this manager
 
 TELEMETRY_HISTORY_KEY = "telemetry_history"
+
 
 
 class TelemetryHistoryManager:
     def __init__(self):
         self.r = redis.Redis()
+    
+    async def clear_history(self):
+        # Clear telemetry history keys on initialization
+        keys_to_clear = await self.r.keys(f"{TELEMETRY_HISTORY_KEY}:*")
+        if keys_to_clear:
+            await self.r.delete(*keys_to_clear)
 
     async def add_sample(self, sample: Sample):
+        print("new sample :)")
         await self.r.zadd(f"{TELEMETRY_HISTORY_KEY}:{sample.metadata.metric_id}",
                                        {sample.model_dump_json(): sample.metadata.timestamp})
 
